@@ -50,8 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 SQLiteDatabase db = this.getWritableDatabase();
 
                 ContentValues values = new ContentValues();
-                // `id` and `timestamp` will be inserted automatically.
-                // no need to add them
+
                 values.put(Drug.columnName, farmaco.getName());
                 values.put(Drug.columnPrice,farmaco.getPrice());
                 values.put(Drug.columnEffect,farmaco.getScope());
@@ -73,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         {
             drugEntity find=new drugEntity();
             // get only readable database
-            SQLiteDatabase db=getWritableDatabase();
+            SQLiteDatabase db=getReadableDatabase();
 
             //do the query and save the result using a Cursor
             Cursor current=db.query(Drug.nameTable,new String[] {Drug.columnName, Drug.columnEffect, Drug.columnPrice},Drug.columnName
@@ -111,7 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             }
             String queryRequest= "SELECT * FROM "+ Drug.nameTable +"ORDER BY "+ option;
-            SQLiteDatabase db=getWritableDatabase();   //try to use getReadable...
+            SQLiteDatabase db=getReadableDatabase();   //try to use getReadable...
             Cursor current=db.rawQuery(queryRequest, null);
             if(!current.moveToFirst())
             {  Log.d("current tag","current is empty, no value found!");
@@ -137,9 +136,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
  public int countElements()
     {
+        int count=0;
+        String queryRequest= "SELECT * FROM "+ Drug.nameTable;
+        SQLiteDatabase db=getReadableDatabase();
+        Cursor current =db.rawQuery(queryRequest,null);
+        count=current.getCount();
+        db.close();
+        current.close();
         return 0;
-        // TODO implement this method
     }
+
+    /**
+     *
+     * @param drug object we want to update
+     * @return  raw's id of new object we've update on db
+     */
+ public long updateDrug(drugEntity drug)
+ {
+     // get writable database as we want to write data
+     SQLiteDatabase db = this.getWritableDatabase();
+
+     ContentValues values = new ContentValues();
+
+     values.put(Drug.columnName, drug.getName());
+     values.put(Drug.columnPrice,drug.getPrice());
+     values.put(Drug.columnEffect,drug.getScope());
+     // update row
+     long id = db.update("drugs",values,Drug.columnName+"=?",new String[]{drug.getName()});
+
+     // close db connection
+     db.close();
+
+     return id;
+ }
+    public void deleteDrug(drugEntity drug) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Drug.nameTable, Drug.columnName+ " = ?",
+                new String[]{drug.getName()});
+        db.close();
+    }
+
 
 
 }

@@ -3,9 +3,6 @@ package database;
 /**
  * Created by Cristian on 13/04/2018.
  */
-/**
- * Created by Cristian on 13/04/2018.
- */
 
 public class Drug {
 
@@ -16,33 +13,6 @@ public class Drug {
     {mName=null;
         mScope=null;
         mPrice=null;}
-
-
-
-
-    public String getName() {
-        return mName;
-    }
-
-    public void setName(String name) {
-        mName = name;
-    }
-
-    public String getScope() {
-        return mScope;
-    }
-
-    public void setScope(String scope) {
-        mScope = scope;
-    }
-
-    public String getPrice() {
-        return mPrice;
-    }
-
-    public void setPrice(String price) {
-        mPrice = price;
-    }
     public static final String nameTable="drugs";
     public static final String columnName ="nome";
     public static final String columnPrice="prezzo";
