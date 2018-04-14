@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listview1);
 
         List<Impegno> day = new LinkedList<Impegno>();
-        day.add(new Impegno("Malox", "7.00"));
-        day.add(new Impegno("Comadin", "9.00"));
-        day.add(new Impegno("Eparina", "21.00"));
 
         CustomAdapter customAdapter = new CustomAdapter(this, R.layout.note, day);
         listView.setAdapter(customAdapter);
