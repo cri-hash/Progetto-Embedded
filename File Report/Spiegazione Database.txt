@@ -1,0 +1,18 @@
+PER FAVORE CONTROLLATE LE CARDINALITA' DELLE ASSOCIAZIONI (SOPRATTUTO SULLA TERNARIA CHE HO DUBBI)
+
+Un farmaco è idntificato da un id, rappresentiamo nome e descrizione.
+I tipi sono predefiniti: Goccie, Grammi, Inalazione, Iniezione, Miligrammi, Millilitri, Pezzi, Pillole, Supposte, Unità.
+
+Terapia: uno tra DataFine e nGiorni deve essere NULL.
+	n° di assunzioni= (DataFine-DataInizio) oppure = nGiorni
+	
+Assunzione:
+	Assunto (True/False)
+	minNotifica (numero Integer) indica quanti minuti prima dell'assunzione avviene la notifica, se NULL vuol dire nessuna notifica.
+
+La lista delle notifiche corrisponde agli elementi dell'entità Assunzione.
+
+Ogni volta che si clicca su Assunto, "Scorte" viene diminuito di "Dosaggio"
+
+------------------------------------------
+Come gestire farmaci presi più di una volta al giorno? Magari che hanno scritto "ogni 4 ore"
