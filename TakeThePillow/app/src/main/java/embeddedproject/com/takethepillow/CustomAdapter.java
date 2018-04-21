@@ -29,7 +29,7 @@ import java.util.List;
             TextView drug = (TextView)convertView.findViewById(R.id.drug);
             TextView hour = (TextView)convertView.findViewById(R.id.hour);
             Impegno actual = getItem(position);
-            drug.setText(actual.getDrug());
+            drug.setText((CharSequence) actual.getDrug());
             hour.setText(actual.getHour());
             return convertView;
         }

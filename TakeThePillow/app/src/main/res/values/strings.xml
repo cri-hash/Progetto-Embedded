@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">TakeThePillow</string>
+    <string name="app_name">Oggi</string>
     <string name="hello">buongiorno caro!</string>
+    <string name="title_activity_terapia">TerapiaActivity</string>
+    <string name="drug">Farmaco</string>
+    <string name="hour">Orario</string>
+    <string name="open">Apri</string>
+    <string name="close">Chiudi</string>
+    <string name="add">+</string>
+    <string name="terapia">Terapia</string>
+
 </resources>

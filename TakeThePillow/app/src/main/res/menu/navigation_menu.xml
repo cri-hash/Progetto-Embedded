@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_oggi"
+        android:icon="@drawable/ic_today_black_24dp"
+        android:title="Oggi" />
+
+    <item android:id="@+id/nav_terapia"
+        android:icon="@drawable/ics_syringe_icon"
+        android:title="Terapia" />
+
+    <item android:id="@+id/nav_farmaci"
+        android:icon="@drawable/ic_drugs"
+        android:title="Farmaci" />
+    </group>
+
+</menu>
