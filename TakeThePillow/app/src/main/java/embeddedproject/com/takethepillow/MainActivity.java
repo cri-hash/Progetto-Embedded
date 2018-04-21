@@ -11,10 +11,15 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import java.util.LinkedList;
 import java.util.List;
 
+import database.DatabaseHelper;
+import database.Str;
+
 public class MainActivity extends AppCompatActivity {
+    private DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
         CustomAdapter customAdapter = new CustomAdapter(this, R.layout.note, day);
         listView.setAdapter(customAdapter);
+        Log.d("arrivato", "sopra");
+        db=new DatabaseHelper(this);
+        Log.d("arrivato", "sotto");
+
 
 
     }

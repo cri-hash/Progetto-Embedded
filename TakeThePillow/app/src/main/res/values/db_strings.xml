@@ -1,2 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="drugTable">FARMACO</string>
+    <string name="drugId">ID</string>
+    <string name="drugName">nome</string>
+    <string name="drugPrice">prezzo</string>
+    <string name="drugQuantities">scorte</string>
+    <string name="drugType">tipo</string>
+    <string name="drugDescription">descrizione</string>
+    <string name="typeTable">TIPO</string>
+    <string name="typeName">nome</string>
+    <string name="momentTable">MOMENTO</string>
+    <string name="momentTerapy">terapia</string>
+    <string name="momentHour">ora</string>
+    <string name="assumptionTable">ASSUNZIONE</string>
+    <string name="assumptionDate">data</string>
+    <string name="assumptionHour">ora</string>
+    <string name="assumptionTerapy">terapia</string>
+    <string name="assumptionState">stato</string>
+    <string name="hourTable">ORARIO</string>
+    <string name="hourHour">ora</string>
+    <string name="terapyTable">TERAPIA</string>
+    <string name="terapyID">ID</string>
+    <string name="terapyDateStart">dataInizio</string>
+    <string name="terapyDateEnd">dataFine</string>
+    <string name="terapyNotify">minNotifica</string>
+    <string name="terapyNumberDays">numeroGiorni</string>
+    <string name="terapyDrug">farmaco</string>
+    <string name="terapyMon">Lunedì</string>
+    <string name="terapyTue">Martedì</string>
+    <string name="terapyWed">Mercoledì</string>
+    <string name="terapyThu">Giovedì</string>
+    <string name="terapyFri">Venerdì</string>
+    <string name="terapySat">Sabato</string>
+    <string name="terapySun">Domenica</string>
+
+
+
+
+
+
+
+
+
+</resources>

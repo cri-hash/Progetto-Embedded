@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,20 +16,35 @@ import embeddedproject.com.takethepillow.drugEntity;
 
 /**
  * Created by Cristian on 13/04/2018.
+ * Class that avoid to create and use database
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
         private static final int DatabaseVersion=1;
-        private static final String DatabaseName="chemistrDb";
+        private static final String DatabaseName="chemistrDb6";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
 
+            Log.d("costruttore db","ok");
+            SQLiteDatabase db=getWritableDatabase();
         }
         //create Database
         @Override
         public void onCreate(SQLiteDatabase db)
             {
-                db.execSQL(Drug.CREATE_TABLE);
+                db.execSQL(Str.CREATE_TYPE_TABLE);
+                Log.d("tabella type ", "creata");
+                db.execSQL(Str.CREATE_DRUG_TABLE);
+                Log.d("tabella drug ", "creata");
+                db.execSQL(Str.CREATE_HOUR_TABLE);
+                Log.d("tabella hour ", "creata");
+                db.execSQL(Str.CREATE_THERAPY_TABLE);
+                Log.d("tabella terapy ", "creata");
+                db.execSQL(Str.CREATE_ASSUMPTION_TABLE);
+                Log.d("tabella assumption ", "creata");
+                db.execSQL(Str.CREATE_MOMENT_TABLE);
+                Log.d("tabella moment ", "creata");
+
             }
         @Override
         public void onUpgrade(SQLiteDatabase db, int newDb, int old){
@@ -45,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param farmaco drug we want to add on db.
      * @return raw's id of new object we've add on db
      */
+     /*
     public long insertDrug(drugEntity farmaco) {
         // get writable database as we want to write data
                 SQLiteDatabase db = this.getWritableDatabase();
@@ -68,6 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param name of drug we want to find
      * @return drugEntity object, if found, or null if not
      */
+     /*
     public drugEntity getDrug(String name)
         {
             drugEntity find=new drugEntity();
@@ -87,6 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param selection define the order of selection. 1=order by name; 2=order by price; 3=order by effect
      * @return list of all element on this table, order like specified on selection. If no elements are found, return Null
      */
+     /*
     public List<drugEntity> getAll(int selection)
         {
             String option;
@@ -134,6 +153,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @return number of drugs storaged on the db
      */
+     /*
  public int countElements()
     {
         int count=0;
@@ -151,6 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param drug object we want to update
      * @return  raw's id of new object we've update on db
      */
+     /*
  public long updateDrug(drugEntity drug)
  {
      // get writable database as we want to write data
@@ -176,6 +197,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
+*/
 
 }
