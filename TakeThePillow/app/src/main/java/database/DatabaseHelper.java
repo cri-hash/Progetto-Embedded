@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +16,36 @@ import embeddedproject.com.takethepillow.drugEntity;
 
 /**
  * Created by Cristian on 13/04/2018.
+ * Class that avoid to create and use database
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
         private static final int DatabaseVersion=1;
-        private static final String DatabaseName="chemistrDb";
+        private static final String DatabaseName="chemistrDb6";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
 
+            Log.d("costruttore db","ok");
+            SQLiteDatabase db=getWritableDatabase();
         }
         //create Database
         @Override
         public void onCreate(SQLiteDatabase db)
             {
-                /*db.execSQL(Drug.CREATE_TABLE);
-            */}
+                db.execSQL(Str.CREATE_TYPE_TABLE);
+                Log.d("tabella type ", "creata");
+                db.execSQL(Str.CREATE_DRUG_TABLE);
+                Log.d("tabella drug ", "creata");
+                db.execSQL(Str.CREATE_HOUR_TABLE);
+                Log.d("tabella hour ", "creata");
+                db.execSQL(Str.CREATE_THERAPY_TABLE);
+                Log.d("tabella terapy ", "creata");
+                db.execSQL(Str.CREATE_ASSUMPTION_TABLE);
+                Log.d("tabella assumption ", "creata");
+                db.execSQL(Str.CREATE_MOMENT_TABLE);
+                Log.d("tabella moment ", "creata");
+
+            }
         @Override
         public void onUpgrade(SQLiteDatabase db, int newDb, int old){
         //delete table

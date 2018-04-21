@@ -15,9 +15,11 @@ import android.widget.TextView;
 import java.util.LinkedList;
 import java.util.List;
 
+import database.DatabaseHelper;
 import database.Str;
 
 public class MainActivity extends AppCompatActivity {
+    private DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
         CustomAdapter customAdapter = new CustomAdapter(this, R.layout.note, day);
         listView.setAdapter(customAdapter);
-
-        Log.d("tabella drug ", Str.CREATE_DRUG_TABLE);
-        Log.d("tabella moment ", Str.CREATE_MOMENT_TABLE);
-        Log.d("tabella hour ", Str.CREATE_HOUR_TABLE);
-        Log.d("tabella terapy ", Str.CREATE_TERAPY_TABLE);
-        Log.d("tabella assumption ", Str.CREATE_ASSUMPTION_TABLE);
-        Log.d("tabella type ", Str.CREATE_TYPE_TABLE);
+        Log.d("arrivato", "sopra");
+        db=new DatabaseHelper(this);
+        Log.d("arrivato", "sotto");
 
 
 
