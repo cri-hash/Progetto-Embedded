@@ -26,11 +26,14 @@ import java.util.List;
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.note, null);
+
             TextView drug = (TextView)convertView.findViewById(R.id.drug);
             TextView hour = (TextView)convertView.findViewById(R.id.hour);
+
             Impegno actual = getItem(position);
             drug.setText((CharSequence) actual.getDrug());
             hour.setText(actual.getHour());
+
             return convertView;
         }
 

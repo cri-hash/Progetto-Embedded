@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         List<Impegno> day = new LinkedList<Impegno>();
 
         CustomAdapter customAdapter = new CustomAdapter(this, R.layout.note, day);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         listView.setAdapter(customAdapter);
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), TerapiaActivity.class));
+                startActivity(new Intent(getApplicationContext(), TerapyActivity.class));
             }
         });
     }
