@@ -9,10 +9,14 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import embeddedproject.com.takethepillow.drugEntity;
+import embeddedproject.com.takethepillow.therapyEntity;
 
 /**
  * Created by Cristian on 13/04/2018.
@@ -58,31 +62,57 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Lazzarin
-     * @param farmaco drug we want to add on db.
+     * @param terapia: terapy we want to add on db
      * @return raw's id of new object we've add on db
      */
-     /*
-    public long insertDrug(drugEntity farmaco) {
-        // get writable database as we want to write data
-                SQLiteDatabase db = this.getWritableDatabase();
 
-                ContentValues values = new ContentValues();
-
-                values.put(Drug.columnName, farmaco.getName());
-                values.put(Drug.columnPrice,farmaco.getPrice());
-                values.put(Drug.columnEffect,farmaco.getScope());
-                // insert row
-                long id = db.insert("drugs", null, values);
-
+    public long insertTerapy(therapyEntity terapia) {
+        //  write a new raw on database
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues toInsert=terapia.getAllValues();
+                long id = db.insert("drugs", null, toInsert);
                 // close db connection
                 db.close();
 
                 return id;
     }
 
+
+    public List<therapyEntity> getAllTherapy()
+    {
+        List<therapyEntity> list=new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor= db.rawQuery(Str.getAllTerapy,null);
+        if(!cursor.moveToFirst())
+            Log.d("getAllTherapy","No therapy found");
+        do {
+            therapyEntity current=new therapyEntity();
+            current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(Str.therapyDateEnd))));
+            current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(Str.therapyDateStart))));
+            current.setDays(cursor.getInt(cursor.getColumnIndex(Str.therapyNumberDays)));
+            current.setID(cursor.getString(cursor.getColumnIndex(Str.therapyID)));
+            current.setNotify(cursor.getShort(cursor.getColumnIndex(Str.therapyNotify)));
+            current.setMon(cursor.getInt(cursor.getColumnIndex(Str.therapyMon)));
+            current.setTue(cursor.getInt(cursor.getColumnIndex(Str.therapyTue)));
+            current.setThu(cursor.getInt(cursor.getColumnIndex(Str.therapyThu)));
+            current.setWed(cursor.getInt(cursor.getColumnIndex(Str.therapyWed)));
+            current.setFri(cursor.getInt(cursor.getColumnIndex(Str.therapyFri)));
+            current.setSat(cursor.getInt(cursor.getColumnIndex(Str.therapySat)));
+            current.setSun(cursor.getInt(cursor.getColumnIndex(Str.therapySun)));
+            list.add(current);
+
+        }
+        while(cursor.moveToNext());
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+
+
     /**
      *
-     * @param name of drug we want to find
+
      * @return drugEntity object, if found, or null if not
      */
      /*
@@ -198,5 +228,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 */
+private Date stringToDate(String toDate)
+    {
+        Date data=null;
+        DateFormat dt= new SimpleDateFormat("dd/mm/yyyy");
+        try{
+         data=dt.parse(toDate);}
+         catch(ParseException e)
+         {Log.d("parsing Data", "fallito");}
+         return data;
 
+
+    }
 }

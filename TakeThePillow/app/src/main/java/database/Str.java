@@ -69,4 +69,6 @@ public class Str {
            +therapyDrug+" VARCHAR(15), FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugId +") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
 
+
+ public static final String getAllTerapy = "SELECT * FROM "+ therapyTable + " ;";
 }
