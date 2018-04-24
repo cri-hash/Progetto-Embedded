@@ -127,8 +127,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setFri(cursor.getInt(cursor.getColumnIndex(therapyFri)));
             current.setSat(cursor.getInt(cursor.getColumnIndex(therapySat)));
             current.setSun(cursor.getInt(cursor.getColumnIndex(therapySun)));
+            current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
             return current;
         }
+
+
+
+
+
+    public long updateTherapy(therapyEntity toUpdate)
+    {
+        // get writable database as we want to write data
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(therapyID,toUpdate.getID());
+        values.put(therapyDrug, toUpdate.getDrug());
+        values.put(therapyDateStart, (toUpdate.getDateStart().toString()));
+        values.put(therapyDateEnd, (toUpdate.getDateEnd().toString()));
+        values.put(therapyNumberDays,toUpdate.getDays());
+        values.put(therapyNotify,toUpdate.getNotify());
+        values.put(therapyMon,toUpdate.isMon());
+        values.put(therapyTue,toUpdate.isTue());
+        values.put(therapyWed, toUpdate.isWed());
+        values.put(therapyThu, toUpdate.isThu());
+        values.put(therapyFri, toUpdate.isFri());
+        values.put(therapySat, toUpdate.isSat());
+        values.put(therapySun, toUpdate.isSun());
+        // update row
+        long id = db.update("drugs",values,therapyID+"=?",new String[]{toUpdate.getID()});
+
+        // close db connection
+        db.close();
+
+        return id;
+    }
+
+
+
+
+
+
+
+
+
+
 
     /**
      *

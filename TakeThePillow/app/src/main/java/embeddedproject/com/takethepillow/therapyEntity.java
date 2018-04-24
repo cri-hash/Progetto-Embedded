@@ -40,6 +40,8 @@ public class therapyEntity {
     public String getID() {
         return mID;
     }
+    public String getDrug(){return mDrug;}
+    public void setDrug(String drug){mDrug=drug;}
 
     public void setID(String ID) {
         mID = ID;

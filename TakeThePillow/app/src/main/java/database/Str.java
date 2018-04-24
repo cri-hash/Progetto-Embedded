@@ -64,7 +64,7 @@ public class Str {
 
 
    public static final String CREATE_THERAPY_TABLE =  "CREATE TABLE " + therapyTable + " (" + therapyID + " VARCHAR(15) PRIMARY KEY,"
-           + therapyDateStart + " DATE," + therapyDateEnd + " DATE," + therapyNotify +" SMALLINT,"+ therapyNumberDays + " INTEGER,"
+           + therapyDateStart + " VARCHAR(10)," + therapyDateEnd + " VARCHAR(10)," + therapyNotify +" SMALLINT,"+ therapyNumberDays + " INTEGER,"
            +therapyMon +" INT, "+therapyTue +" INT, "+therapyWed +" INT, "+therapyThu +" INT, "+therapyFri +" INT, "+therapySat +" INT, "+therapySun +" INT, "
            +therapyDrug+" VARCHAR(15), FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugId +") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
