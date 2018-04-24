@@ -1,42 +1,34 @@
-package embeddedproject.com.takethepillow;
+package embeddedproject.takethepill;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListView;
+
 import java.util.ArrayList;
 
-public class TerapyActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class DrugsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    ArrayList<TherapyEntity> listaTerapie;
+    ArrayList<DrugEntity> listaFarmaci;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terapy);
+        setContentView(R.layout.activity_drugs);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -47,17 +39,15 @@ public class TerapyActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-    // LISTA DELLE  TERAPIE
-        ListView listView = (ListView) findViewById(R.id.listTherapies);
+        // LISTA DELLE  TERAPIE
+        ListView listView = (ListView) findViewById(R.id.listDrugs);
 
-        listaTerapie = new ArrayList<TherapyEntity>();
+        listaFarmaci = new ArrayList<DrugEntity>();
         for(int i=0; i<20;i++) {
-            listaTerapie.add(new TherapyEntity(null, 5, 5,
-                    true, false, true, false, false, false, true,
-                    1, 3, "08.00", "Tach"));
+            listaFarmaci.add(new DrugEntity(0,"Tachipirina", "Per la febbre","Pillole",10.5, 30 ));
         }
 
-        CustomAdapterTherapy customAdapter = new CustomAdapterTherapy(listaTerapie, this);
+        CustomAdapterDrug customAdapter = new CustomAdapterDrug(listaFarmaci, this);
         listView.setAdapter(customAdapter);
 
         // Quando si clicca su un elemento
@@ -65,9 +55,9 @@ public class TerapyActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TherapyEntity terapia= listaTerapie.get(position);
+                DrugEntity farmaco= listaFarmaci.get(position);
 
-                Integer idTerapia=terapia.getId();
+                Integer idFarmaco=farmaco.getId();
 
                 Snackbar.make(view, "elemeto cliccato", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -93,7 +83,7 @@ public class TerapyActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.terapy, menu);
+        getMenuInflater().inflate(R.menu.therapy, menu);
         return true;
     }
 
@@ -121,10 +111,10 @@ public class TerapyActivity extends AppCompatActivity
         if (id == R.id.nav_today) {
             // Handle the camera action
             startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.nav_terapy) {
-
+        } else if (id == R.id.nav_therapy) {
+            startActivity(new Intent(this, TherapyActivity.class));
         } else if (id == R.id.nav_drugs) {
-            //startActivity(new Intent(this, DrugsActivity.class));
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

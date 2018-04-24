@@ -126,7 +126,7 @@ public class TherapyActivity extends AppCompatActivity
         } else if (id == R.id.nav_therapy) {
 
         } else if (id == R.id.nav_drugs) {
-            //startActivity(new Intent(this, DrugsActivity.class));
+            startActivity(new Intent(this, DrugsActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
