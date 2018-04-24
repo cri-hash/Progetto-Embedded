@@ -12,12 +12,13 @@
     android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/title"
+        <Button
+            android:clickable="true"
+            android:id="@+id/db"
             android:layout_width="245dp"
             android:layout_height="58dp"
             android:gravity="center_vertical|center_horizontal"
-            android:text="TextView" />
+            android:text="db" />
 
 
     <ListView
@@ -29,6 +30,12 @@
         android:layout_alignParentTop="true"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="92dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 
 
 </LinearLayout>

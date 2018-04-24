@@ -1,12 +1,15 @@
 package embeddedproject.com.takethepillow;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText(R.string.hello);
+
 
         ListView listView = (ListView) findViewById(R.id.listview1);
 
@@ -37,8 +39,16 @@ public class MainActivity extends AppCompatActivity {
         Log.d("arrivato", "sopra");
         db=new DatabaseHelper(this);
         Log.d("arrivato", "sotto");
+        Button btn= findViewById(R.id.db);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,testActivity.class);
+                startActivity(intent);
 
 
+            }
+        });
 
     }
 

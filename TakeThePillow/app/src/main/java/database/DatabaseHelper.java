@@ -18,6 +18,8 @@ import java.util.List;
 
 import embeddedproject.com.takethepillow.therapyEntity;
 
+import static database.Str.*;
+
 /**
  * Created by Cristian on 13/04/2018.
  * Class that avoid to create and use database
@@ -36,17 +38,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         @Override
         public void onCreate(SQLiteDatabase db)
             {
-                db.execSQL(Str.CREATE_TYPE_TABLE);
+                db.execSQL(CREATE_TYPE_TABLE);
                 Log.d("tabella type ", "creata");
-                db.execSQL(Str.CREATE_DRUG_TABLE);
+                db.execSQL(CREATE_DRUG_TABLE);
                 Log.d("tabella drug ", "creata");
-                db.execSQL(Str.CREATE_HOUR_TABLE);
+                db.execSQL(CREATE_HOUR_TABLE);
                 Log.d("tabella hour ", "creata");
-                db.execSQL(Str.CREATE_THERAPY_TABLE);
+                db.execSQL(CREATE_THERAPY_TABLE);
                 Log.d("tabella terapy ", "creata");
-                db.execSQL(Str.CREATE_ASSUMPTION_TABLE);
+                db.execSQL(CREATE_ASSUMPTION_TABLE);
                 Log.d("tabella assumption ", "creata");
-                db.execSQL(Str.CREATE_MOMENT_TABLE);
+                db.execSQL(CREATE_MOMENT_TABLE);
                 Log.d("tabella moment ", "creata");
 
             }
@@ -70,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //  write a new raw on database
                 SQLiteDatabase db = getWritableDatabase();
                 ContentValues toInsert=terapia.getAllValues();
-                long id = db.insert("drugs", null, toInsert);
+                long id = db.insert(Str.therapyTable, null, toInsert);
                 // close db connection
                 db.close();
 
@@ -82,23 +84,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         List<therapyEntity> list=new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor= db.rawQuery(Str.getAllTerapy,null);
+        Cursor cursor= db.rawQuery(getAllTerapy,null);
         if(!cursor.moveToFirst())
             Log.d("getAllTherapy","No therapy found");
         do {
             therapyEntity current=new therapyEntity();
-            current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(Str.therapyDateEnd))));
-            current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(Str.therapyDateStart))));
-            current.setDays(cursor.getInt(cursor.getColumnIndex(Str.therapyNumberDays)));
-            current.setID(cursor.getString(cursor.getColumnIndex(Str.therapyID)));
-            current.setNotify(cursor.getShort(cursor.getColumnIndex(Str.therapyNotify)));
-            current.setMon(cursor.getInt(cursor.getColumnIndex(Str.therapyMon)));
-            current.setTue(cursor.getInt(cursor.getColumnIndex(Str.therapyTue)));
-            current.setThu(cursor.getInt(cursor.getColumnIndex(Str.therapyThu)));
-            current.setWed(cursor.getInt(cursor.getColumnIndex(Str.therapyWed)));
-            current.setFri(cursor.getInt(cursor.getColumnIndex(Str.therapyFri)));
-            current.setSat(cursor.getInt(cursor.getColumnIndex(Str.therapySat)));
-            current.setSun(cursor.getInt(cursor.getColumnIndex(Str.therapySun)));
+            current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
+            current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
+            current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
+            current.setID(cursor.getString(cursor.getColumnIndex(therapyID)));
+            current.setNotify(cursor.getShort(cursor.getColumnIndex(therapyNotify)));
+            current.setMon(cursor.getInt(cursor.getColumnIndex(therapyMon)));
+            current.setTue(cursor.getInt(cursor.getColumnIndex(therapyTue)));
+            current.setThu(cursor.getInt(cursor.getColumnIndex(therapyThu)));
+            current.setWed(cursor.getInt(cursor.getColumnIndex(therapyWed)));
+            current.setFri(cursor.getInt(cursor.getColumnIndex(therapyFri)));
+            current.setSat(cursor.getInt(cursor.getColumnIndex(therapySat)));
+            current.setSun(cursor.getInt(cursor.getColumnIndex(therapySun)));
             list.add(current);
 
         }
@@ -108,7 +110,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-
+    public therapyEntity getTerapy(String ID)
+        {
+            SQLiteDatabase db=getReadableDatabase();
+            Cursor cursor=db.rawQuery("SELECT * FROM" + therapyTable +" WHERE "+therapyID + "=" + ID +";",null);
+            therapyEntity current=new therapyEntity();
+            current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
+            current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
+            current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
+            current.setID(cursor.getString(cursor.getColumnIndex(therapyID)));
+            current.setNotify(cursor.getShort(cursor.getColumnIndex(therapyNotify)));
+            current.setMon(cursor.getInt(cursor.getColumnIndex(therapyMon)));
+            current.setTue(cursor.getInt(cursor.getColumnIndex(therapyTue)));
+            current.setThu(cursor.getInt(cursor.getColumnIndex(therapyThu)));
+            current.setWed(cursor.getInt(cursor.getColumnIndex(therapyWed)));
+            current.setFri(cursor.getInt(cursor.getColumnIndex(therapyFri)));
+            current.setSat(cursor.getInt(cursor.getColumnIndex(therapySat)));
+            current.setSun(cursor.getInt(cursor.getColumnIndex(therapySun)));
+            return current;
+        }
 
     /**
      *
