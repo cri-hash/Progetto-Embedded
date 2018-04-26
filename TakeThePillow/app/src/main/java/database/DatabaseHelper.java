@@ -26,8 +26,8 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=1;
-        private static final String DatabaseName="chemistrDb6";
+        private static final int DatabaseVersion=4;
+        private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
 
@@ -55,7 +55,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         @Override
         public void onUpgrade(SQLiteDatabase db, int newDb, int old){
         //delete table
-            db.execSQL("DROP TABLE IF EXISTS drugs");
+            db.execSQL("DROP TABLE IF EXISTS "+Str.therapyTable);
+            db.execSQL("DROP TABLE IF EXISTS "+Str.momentTable);
+            db.execSQL("DROP TABLE IF EXISTS "+Str.hourTable);
+            db.execSQL("DROP TABLE IF EXISTS "+Str.assumptionTable);
+            db.execSQL("DROP TABLE IF EXISTS "+Str.drugTable);
+            db.execSQL("DROP TABLE IF EXISTS "+Str.typeTable);
+
 
             // Create tables again
             onCreate(db);
@@ -65,12 +71,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Lazzarin
      * @param terapia: terapy we want to add on db
-     * @return raw's id of new object we've add on db
+     * @return raw's id of new object we've add on db, -1 if it was inserted yet
      */
 
     public long insertTherapy(therapyEntity terapia) {
         //  write a new raw on database
                 SQLiteDatabase db = getWritableDatabase();
+                if(getTherapy(terapia.getID())!=null)
+                    {
+                        Log.d("inserimento","tentato ma fallito");
+                        return -1;
+                    }
                 ContentValues toInsert=terapia.getAllValues();
                 long id = db.insert(Str.therapyTable, null, toInsert);
                 Log.d("avvenuto:","inserimento terapia");
@@ -114,8 +125,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public therapyEntity getTherapy(String ID)
         {
             SQLiteDatabase db=getReadableDatabase();
-            Cursor cursor=db.rawQuery("SELECT * FROM" + therapyTable +" WHERE "+therapyID + "=" + ID +";",null);
+            String query="SELECT * FROM "+ therapyTable +" WHERE "+therapyID + "=?";
+            Cursor cursor=db.rawQuery(query,new String[] {ID});
+            if((cursor.getCount()==0)||(cursor.getCount()==-1))
+            {
+                Log.d("therapy ",ID+" not found");
+                return null;
+            }
+            int count=cursor.getCount();
+            Log.d("sto marso de count",count+"");
             therapyEntity current=new therapyEntity();
+            cursor.moveToFirst(); //N.B!!!! sennò dà errore
+            Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
             current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
             current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
             current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
@@ -129,6 +150,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setSat(cursor.getInt(cursor.getColumnIndex(therapySat)));
             current.setSun(cursor.getInt(cursor.getColumnIndex(therapySun)));
             current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
+            db.close();
+            cursor.close();
             return current;
         }
 
@@ -140,12 +163,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
-
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
         ContentValues values = new ContentValues();
         values.put(therapyID,toUpdate.getID());
         values.put(therapyDrug, toUpdate.getDrug());
-        values.put(therapyDateStart, (toUpdate.getDateStart().toString()));
-        values.put(therapyDateEnd, (toUpdate.getDateEnd().toString()));
+        values.put(therapyDateStart, myFormat.format(toUpdate.getDateStart()));
+        values.put(therapyDateEnd, myFormat.format(toUpdate.getDateEnd()));
         values.put(therapyNumberDays,toUpdate.getDays());
         values.put(therapyNotify,toUpdate.getNotify());
         values.put(therapyMon,toUpdate.isMon());
@@ -164,7 +187,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    /**
+     *
+     * @param ID Therapy we want to delete
+     * @return number of raws deleted(1 if found, 0 in other wise)
+     */
+    public int removeTherapyBYId(String ID)
+    {
+        SQLiteDatabase db=getReadableDatabase();
+        int deleteStatus =db.delete(therapyTable,therapyID +"=?",new String[]{ID});
+        db.close();
+        return deleteStatus;
 
+    }
 
 
 

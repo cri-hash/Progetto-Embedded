@@ -60,7 +60,7 @@ public class Str {
 
    public static final String CREATE_MOMENT_TABLE = "CREATE TABLE "+ momentTable +"(" + momenttherapy +" VARCHAR(15), "+ momentHour  +" INT, PRIMARY KEY("
            +momenttherapy +","+momentHour +"), FOREIGN KEY ("+ momenttherapy +") REFERENCES "+ therapyTable+"("+therapyID+") ON UPDATE CASCADE ON DELETE NO ACTION, FOREIGN KEY ("
-           + momentHour+ ") REFERENCES "+ hourTable+"("+hourHour+") ON UPDATE CASCADE ON DELETE NO ACTION);" ;
+           + momentHour+ ") REFERENCES "+ hourTable+"("+hourHour+") ON UPDATE CASCADE ON DELETE CASCADE);" ;
 
 
    public static final String CREATE_THERAPY_TABLE =  "CREATE TABLE " + therapyTable + " (" + therapyID + " VARCHAR(15) PRIMARY KEY,"

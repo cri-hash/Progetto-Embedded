@@ -3,6 +3,7 @@ package embeddedproject.com.takethepillow;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,7 +28,7 @@ public class testActivity extends Activity {
         {
         therapyEntity example=new therapyEntity();
         example.setNotify((short)10);
-        example.setID("esempio_"+i+"_bis");
+        example.setID(i+"");
         example.setDays(5);
         DateFormat format=new SimpleDateFormat("dd/mm/yyyy");
         Date start=null;
@@ -49,8 +50,17 @@ public class testActivity extends Activity {
         db.insertTherapy(example);
         example.setSun(0);
         db.updateTherapy(example);
-        i++;}
 
+        therapyEntity read=db.getTherapy(i+"");
+        Log.d("esempio_"+i, "letto");
+            i++;
+        }
+        i--;
+        int c =db.removeTherapyBYId(i+"");
+        if(c==1)
+            Log.d("elemento","rimosso");
+        else
+            Log.d("elemento","NON rimosso");
 
 
 

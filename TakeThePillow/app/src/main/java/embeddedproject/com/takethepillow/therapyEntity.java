@@ -1,7 +1,9 @@
 package embeddedproject.com.takethepillow;
 
 import android.content.ContentValues;
+import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import database.Str;
@@ -138,8 +140,10 @@ public class therapyEntity {
     public ContentValues getAllValues()
     {ContentValues current= new ContentValues();
         current.put(Str.therapyDrug,mDrug);
-        current.put(Str.therapyDateEnd,mDateEnd.toString());
-        current.put(Str.therapyDateStart,mDateStart.toString());
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+        Log.d("data letta da therapy",myFormat.format(mDateEnd));
+        current.put(Str.therapyDateEnd,myFormat.format(mDateEnd));
+        current.put(Str.therapyDateStart,myFormat.format(mDateStart));
         current.put(Str.therapyNotify,mNotify);
         current.put(Str.therapyNumberDays,mDays);
         current.put(Str.therapyID,mID);
