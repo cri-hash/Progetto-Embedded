@@ -12,7 +12,7 @@ import database.Str;
  * Created by Cristian on 13/04/2018.
  */
 
-public class therapyEntity {
+public class therapyEntityDB {
     private String mID,mDrug;
     private Date mDateStart;
     private Date mDateEnd;
@@ -21,7 +21,7 @@ public class therapyEntity {
     private int mMon, mTue, mWed, mThu, mFri, mSat, mSun;
 
 
-    public therapyEntity()
+    public therapyEntityDB()
     {
         mID=null;
         mDrug=null;

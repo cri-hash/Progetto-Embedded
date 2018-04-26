@@ -26,7 +26,7 @@ public class testActivity extends Activity {
         int i=0;
         while(i<10)
         {
-        therapyEntity example=new therapyEntity();
+        therapyEntityDB example=new therapyEntityDB();
         example.setNotify((short)10);
         example.setID(i+"");
         example.setDays(5);
@@ -51,7 +51,7 @@ public class testActivity extends Activity {
         example.setSun(0);
         db.updateTherapy(example);
 
-        therapyEntity read=db.getTherapy(i+"");
+        therapyEntityDB read=db.getTherapy(i+"");
         Log.d("esempio_"+i, "letto");
             i++;
         }

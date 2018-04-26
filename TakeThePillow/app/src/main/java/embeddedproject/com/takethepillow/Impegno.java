@@ -6,8 +6,9 @@ package embeddedproject.com.takethepillow;
 
 public class Impegno {
     private String mHour;
-    private therapyEntity mDrug;
-    public Impegno(therapyEntity drug, String hour)
+
+    private therapyEntityDB mDrug;
+    public Impegno(therapyEntityDB drug, String hour)
     {
         mHour=hour;
         mDrug=drug;
@@ -21,11 +22,11 @@ public class Impegno {
         mHour = hour;
     }
 
-    public therapyEntity getDrug() {
+    public therapyEntityDB getDrug() {
         return mDrug;
     }
 
-    public void setDrug(therapyEntity drug) {
+    public void setDrug(therapyEntityDB drug) {
         mDrug = drug;
     }
 

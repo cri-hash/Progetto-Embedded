@@ -16,7 +16,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import embeddedproject.com.takethepillow.therapyEntity;
+import embeddedproject.com.takethepillow.therapyEntityDB;
 
 import static database.Str.*;
 
@@ -74,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return raw's id of new object we've add on db, -1 if it was inserted yet
      */
 
-    public long insertTherapy(therapyEntity terapia) {
+    public long insertTherapy(therapyEntityDB terapia) {
         //  write a new raw on database
                 SQLiteDatabase db = getWritableDatabase();
                 if(getTherapy(terapia.getID())!=null)
@@ -92,15 +92,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<therapyEntity> getAllTherapy()
+    public List<therapyEntityDB> getAllTherapy()
     {
-        List<therapyEntity> list=new ArrayList<>();
+        List<therapyEntityDB> list=new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor= db.rawQuery(getAllTerapy,null);
         if(!cursor.moveToFirst())
             Log.d("getAllTherapy","No therapy found");
         do {
-            therapyEntity current=new therapyEntity();
+            therapyEntityDB current=new therapyEntityDB();
             current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
             current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
             current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
@@ -122,7 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public therapyEntity getTherapy(String ID)
+    public therapyEntityDB getTherapy(String ID)
         {
             SQLiteDatabase db=getReadableDatabase();
             String query="SELECT * FROM "+ therapyTable +" WHERE "+therapyID + "=?";
@@ -134,7 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             int count=cursor.getCount();
             Log.d("sto marso de count",count+"");
-            therapyEntity current=new therapyEntity();
+            therapyEntityDB current=new therapyEntityDB();
             cursor.moveToFirst(); //N.B!!!! sennò dà errore
             Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
             current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
@@ -159,7 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    public long updateTherapy(therapyEntity toUpdate)
+    public long updateTherapy(therapyEntityDB toUpdate)
     {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
