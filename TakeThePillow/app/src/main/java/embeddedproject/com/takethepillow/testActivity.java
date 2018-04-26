@@ -22,10 +22,12 @@ public class testActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.testactivity);
-
+        int i=0;
+        while(i<10)
+        {
         therapyEntity example=new therapyEntity();
         example.setNotify((short)10);
-        example.setID("esempio");
+        example.setID("esempio_"+i+"_bis");
         example.setDays(5);
         DateFormat format=new SimpleDateFormat("dd/mm/yyyy");
         Date start=null;
@@ -44,7 +46,11 @@ public class testActivity extends Activity {
         example.setFri(1);
         example.setSat(0);
         example.setSun(1);
-        db.insertTerapy(example);
+        db.insertTherapy(example);
+        example.setSun(0);
+        db.updateTherapy(example);
+        i++;}
+
 
 
 

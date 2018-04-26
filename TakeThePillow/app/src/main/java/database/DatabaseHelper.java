@@ -68,11 +68,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return raw's id of new object we've add on db
      */
 
-    public long insertTerapy(therapyEntity terapia) {
+    public long insertTherapy(therapyEntity terapia) {
         //  write a new raw on database
                 SQLiteDatabase db = getWritableDatabase();
                 ContentValues toInsert=terapia.getAllValues();
                 long id = db.insert(Str.therapyTable, null, toInsert);
+                Log.d("avvenuto:","inserimento terapia");
                 // close db connection
                 db.close();
 
@@ -110,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public therapyEntity getTerapy(String ID)
+    public therapyEntity getTherapy(String ID)
         {
             SQLiteDatabase db=getReadableDatabase();
             Cursor cursor=db.rawQuery("SELECT * FROM" + therapyTable +" WHERE "+therapyID + "=" + ID +";",null);
@@ -155,8 +156,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(therapySat, toUpdate.isSat());
         values.put(therapySun, toUpdate.isSun());
         // update row
-        long id = db.update("drugs",values,therapyID+"=?",new String[]{toUpdate.getID()});
-
+        long id = db.update(therapyTable,values,therapyID+"=?",new String[]{toUpdate.getID()});
+        Log.d("avvenuto","aggiornamento terapia");
         // close db connection
         db.close();
 
