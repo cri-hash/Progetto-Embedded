@@ -19,6 +19,17 @@ public class DrugEntity {
         this.prezzo=prezzo;
         this.scorte=scorte;
     }
+    //costruttore di default
+
+    public DrugEntity()
+    {
+        this.id=0;
+        this.nome=null;
+        this.descrizione=null;
+        this.tipo=null;
+        this.prezzo=0.0;
+        this.scorte=0;
+    }
 
 //METODI GET e SET
 
