@@ -1,4 +1,4 @@
-package embeddedproject.com.takethepillow;
+package embeddedproject.takethepill;
 
 import android.content.ContentValues;
 import android.util.Log;
