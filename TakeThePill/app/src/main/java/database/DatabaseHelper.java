@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import embeddedproject.takethepill.DrugEntity;
 import embeddedproject.takethepill.therapyEntityDB;
 
 import static database.Str.*;
@@ -121,6 +123,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * search a therapy using ID
+     * @param ID
+     * @return therapy if fund, null in otherwise
+     */
     public therapyEntityDB getTherapy(String ID)
         {
             SQLiteDatabase db=getReadableDatabase();
@@ -197,6 +204,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int deleteStatus =db.delete(therapyTable,therapyID +"=?",new String[]{ID});
         db.close();
         return deleteStatus;
+
+    }
+
+
+
+
+
+    /**
+     * * Lazzarin
+     * @param drug: drug we want to add on db
+     * @return raw's id of new object we've add on db, -1 if it was inserted yet
+     */
+    public long insertDrug(DrugEntity drug) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (getDrugById(drug.getId()) != null) {
+            Log.d("inserimento fallito", "farmaco già presente");
+            return -1;
+        }
+        ContentValues toInsert = drug.getAllValues();
+        long id = db.insert(Str.drugTable, null, toInsert);
+        Log.d("avvenuto:", "inserimento farmaco");
+        // close db connection
+        db.close();
+
+        return id;
+    }
+
+    /**
+     *
+     * @param ID of drug we want
+     * @return drug if found, else null.
+     */
+
+    public DrugEntity getDrugById(int ID)
+    {
+
+        SQLiteDatabase db=getReadableDatabase();
+        String query="SELECT * FROM "+ drugTable +" WHERE "+ drugID+ "=?";
+        Cursor cursor=db.rawQuery(query,new String[] {ID+""});
+        if((cursor.getCount()==0)||(cursor.getCount()==-1))
+        {
+            Log.d("drug ",ID+" not found");
+            return null;
+        }
+        DrugEntity  current=new DrugEntity();
+        cursor.moveToFirst();
+        current.setId(cursor.getInt(cursor.getColumnIndex(drugID)));
+        current.setNome(cursor.getString(cursor.getColumnIndex(drugName)));
+        current.setDescrizione(cursor.getString(cursor.getColumnIndex(drugDescription)));
+        current.setPrezzo(cursor.getDouble(cursor.getColumnIndex(drugPrice)));
+        current.setScorte(cursor.getInt(cursor.getColumnIndex(drugQuantities)));
+        current.setTipo(cursor.getString(cursor.getColumnIndex(drugType)));
+        cursor.close();
+        db.close();
+        return current;
 
     }
 

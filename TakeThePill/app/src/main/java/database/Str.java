@@ -10,7 +10,7 @@ package database;
 @SuppressWarnings("WeakerAccess")
 public class Str {
    public static final String drugTable="FARMACO";
-   public static final String drugId="ID";
+   public static final String drugID="ID";
    public static final String drugName="nome";
    public static final String drugPrice="prezzo";
    public static final String drugQuantities="scorte";
@@ -46,7 +46,7 @@ public class Str {
 
 
    //QUERY
-   public static final String CREATE_DRUG_TABLE = "CREATE TABLE " + drugTable + " (" + drugId + " VARCHAR(15) PRIMARY KEY,"
+   public static final String CREATE_DRUG_TABLE = "CREATE TABLE " + drugTable + " (" + drugID + " VARCHAR(15) PRIMARY KEY,"
            + drugName + " VARCHAR(50)," + drugDescription + " VARCHAR(150)," + drugPrice +" REAL,"+ drugQuantities + " INTEGER,"+ drugType
            +" VARCHAR(30), FOREIGN KEY("+ drugType +") REFERENCES "+ typeTable +" ("+ typeName +") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
@@ -66,7 +66,7 @@ public class Str {
    public static final String CREATE_THERAPY_TABLE =  "CREATE TABLE " + therapyTable + " (" + therapyID + " VARCHAR(15) PRIMARY KEY,"
            + therapyDateStart + " VARCHAR(10)," + therapyDateEnd + " VARCHAR(10)," + therapyNotify +" SMALLINT,"+ therapyNumberDays + " INTEGER,"
            +therapyMon +" INT, "+therapyTue +" INT, "+therapyWed +" INT, "+therapyThu +" INT, "+therapyFri +" INT, "+therapySat +" INT, "+therapySun +" INT, "
-           +therapyDrug+" VARCHAR(15), FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugId +") ON UPDATE CASCADE ON DELETE NO ACTION);";
+           +therapyDrug+" VARCHAR(15), FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugID+") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
 
 
