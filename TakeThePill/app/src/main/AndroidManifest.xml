@@ -22,7 +22,10 @@
         <activity
             android:name=".TherapyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DrugsActivity"></activity>
+        <activity android:name=".DrugsActivity" />
+        <activity
+            android:name=".AddEditTerapyActivity"
+            android:label="@string/title_activity_add_edit_terapy"></activity>
     </application>
 
 </manifest>
