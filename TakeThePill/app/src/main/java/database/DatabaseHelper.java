@@ -93,11 +93,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<therapyEntityDB> getAllTherapy()
+    public List<therapyEntityDB> getAllTherapies()
     {
         List<therapyEntityDB> list=new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor= db.rawQuery(getAllTerapy,null);
+        Cursor cursor= db.rawQuery(getAllTerapies,null);
         if(!cursor.moveToFirst())
             Log.d("getAllTherapy","No therapy found");
         do {
@@ -219,7 +219,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insertDrug(DrugEntity drug) {
         SQLiteDatabase db = getWritableDatabase();
 
-        if (getDrugById(drug.getId()) != null) {
+        if (getDrugById(drug.getID()) != null) {
             Log.d("inserimento fallito", "farmaco già presente");
             return -1;
         }
@@ -251,7 +251,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         DrugEntity  current=new DrugEntity();
         cursor.moveToFirst();
-        current.setId(cursor.getInt(cursor.getColumnIndex(drugID)));
+        current.setID(cursor.getInt(cursor.getColumnIndex(drugID)));
         current.setNome(cursor.getString(cursor.getColumnIndex(drugName)));
         current.setDescrizione(cursor.getString(cursor.getColumnIndex(drugDescription)));
         current.setPrezzo(cursor.getDouble(cursor.getColumnIndex(drugPrice)));
@@ -265,8 +265,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+    /**
+     *
+     * @param ID drug we want to delete
+     * @return number of raw deleted(1 if found, 0 in other wise)
+     */
+    public int removeDrugBYId(int ID)
+    {
+        SQLiteDatabase db=getReadableDatabase();
+        int deleteStatus =db.delete(drugTable,drugID +"=?",new String[]{ID+""});
+        db.close();
+        return deleteStatus;
 
+    }
 
+    public List<DrugEntity> getAllDrugs()
+    {
+        List<DrugEntity> list=new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor= db.rawQuery(getAllDrugs,null);
+        if(!cursor.moveToFirst())
+            Log.d("getAllTherapy","No therapy found");
+        do {
+            DrugEntity  current=new DrugEntity();
+            current.setID(cursor.getInt(cursor.getColumnIndex(drugID)));
+            current.setNome(cursor.getString(cursor.getColumnIndex(drugName)));
+            current.setDescrizione(cursor.getString(cursor.getColumnIndex(drugDescription)));
+            current.setPrezzo(cursor.getDouble(cursor.getColumnIndex(drugPrice)));
+            current.setScorte(cursor.getInt(cursor.getColumnIndex(drugQuantities)));
+            current.setTipo(cursor.getString(cursor.getColumnIndex(drugType)));
+            list.add(current);
+
+        }
+        while(cursor.moveToNext());
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public long updateDrug(DrugEntity toUpdate)
+    {
+        // get writable database as we want to write data
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(drugID,toUpdate.getID());
+        values.put(drugName,toUpdate.getNome());
+        values.put(drugPrice,toUpdate.getPrezzo());
+        values.put(drugDescription,toUpdate.getDescrizione());
+        values.put(drugQuantities,toUpdate.getScorte());
+        values.put(drugType,toUpdate.getTipo());
+        // update row
+        long id = db.update(drugTable,values,drugID+"=?",new String[]{toUpdate.getID()+""});
+        Log.d("avvenuto","aggiornamento farmaco");
+        // close db connection
+        db.close();
+
+        return id;
+    }
 
 
 

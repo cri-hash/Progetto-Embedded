@@ -70,5 +70,6 @@ public class Str {
 
 
 
-   public static final String getAllTerapy = "SELECT * FROM "+ therapyTable + " ;";
+   public static final String getAllTerapies = "SELECT * FROM "+ therapyTable + " ;";
+   public static final String getAllDrugs="SELECT * FROM "+ drugTable + " ;";
 }
