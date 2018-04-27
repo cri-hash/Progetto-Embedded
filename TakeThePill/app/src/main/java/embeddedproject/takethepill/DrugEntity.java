@@ -1,5 +1,9 @@
 package embeddedproject.takethepill;
 
+import android.content.ContentValues;
+
+import database.Str;
+
 public class DrugEntity {
 
 // VARIABILI
@@ -79,5 +83,17 @@ public class DrugEntity {
 
     public void setScorte(int scorte) {
         this.scorte = scorte;
+    }
+
+    public ContentValues getAllValues()
+    {
+        ContentValues values =new ContentValues();
+        values.put(Str.drugID,id);
+        values.put(Str.drugName,nome);
+        values.put(Str.drugPrice,prezzo);
+        values.put(Str.drugDescription,descrizione);
+        values.put(Str.drugQuantities,scorte);
+        values.put(Str.drugType,tipo);
+        return values;
     }
 }
