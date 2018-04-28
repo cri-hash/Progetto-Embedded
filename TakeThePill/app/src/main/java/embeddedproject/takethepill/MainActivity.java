@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,14 +32,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_main);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -48,8 +50,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //Select Home by default
+        navigationView.setCheckedItem(R.id.nav_today);
+        Fragment fragment = new TodayFragment();
+        displaySelectedFragment(fragment);
 
-    // LISTA ASSUNZIONI
+
+
+   /* // LISTA ASSUNZIONI
         ListView listView = (ListView) findViewById(R.id.listAssumptions);
 
         listAssunzioni = new ArrayList<AssumptionEntity>();
@@ -75,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                 //...............
 
             }
-        });
+        });*/
 
     }
 
@@ -117,17 +125,38 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        Fragment fragment = null;
+
         if (id == R.id.nav_today) {
-            // Handle the camera action
+            getSupportActionBar().setTitle("OGGI");
+
+            fragment=new TodayFragment();
+            displaySelectedFragment(fragment);
 
         } else if (id == R.id.nav_therapy) {
-            startActivity(new Intent(this, TherapyActivity.class));
+            getSupportActionBar().setTitle("TERAPIA");
+            fragment=new TherapyFragment();
+            displaySelectedFragment(fragment);
+
         } else if (id == R.id.nav_drugs) {
-            startActivity(new Intent(this, DrugsActivity.class));
+            getSupportActionBar().setTitle("FARMACI");
+            fragment=new DrugsFragment();
+            displaySelectedFragment(fragment);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+    // Metodo per visualizzare i fragment
+    private void displaySelectedFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment);
+        fragmentTransaction.commit();
+    }
+
+
 }

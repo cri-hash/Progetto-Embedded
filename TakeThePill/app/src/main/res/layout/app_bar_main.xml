@@ -23,7 +23,7 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
+    <!--<android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_main"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
@@ -32,6 +32,6 @@
         android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_plus"
         app:backgroundTint="@color/colorPrimary"
-        tools:layout_editor_absoluteX="330dp" />
+        tools:layout_editor_absoluteX="330dp" />-->
 
 </android.support.design.widget.CoordinatorLayout>
