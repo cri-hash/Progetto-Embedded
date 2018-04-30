@@ -52,12 +52,12 @@ public class Str {
    public static final String CREATE_TYPE_TABLE = "CREATE TABLE "+ typeTable +" (" + typeName +" VARCHAR(30) PRIMARY KEY );";
 
    public static final String CREATE_ASSUMPTION_TABLE = "CREATE TABLE " + assumptionTable + " (" + assumptionDate+ " VARCHAR(20),"
-           + assumptionHour + " INT," + assumptiontherapy + " VARCHAR(15)," + assumptionState +" INT ," +"PRIMARY KEY ("+assumptionDate +", "+ assumptionHour +", "
+           + assumptionHour + " INT," + assumptiontherapy + " INTEGER," + assumptionState +" INT ," +"PRIMARY KEY ("+assumptionDate +", "+ assumptionHour +", "
            +assumptiontherapy+"),  FOREIGN KEY("+ assumptiontherapy +") REFERENCES "+ therapyTable +" ("+ therapyID +") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
    public static final String CREATE_HOUR_TABLE=  "CREATE TABLE "+ hourTable +" (" + hourHour +" TIME(6) PRIMARY KEY );";
 
-   public static final String CREATE_MOMENT_TABLE = "CREATE TABLE "+ momentTable +"(" + momenttherapy +" VARCHAR(15), "+ momentHour  +" INT, PRIMARY KEY("
+   public static final String CREATE_MOMENT_TABLE = "CREATE TABLE "+ momentTable +"(" + momenttherapy +" INTEGER, "+ momentHour  +" INT, PRIMARY KEY("
            +momenttherapy +","+momentHour +"), FOREIGN KEY ("+ momenttherapy +") REFERENCES "+ therapyTable+"("+therapyID+") ON UPDATE CASCADE ON DELETE NO ACTION, FOREIGN KEY ("
            + momentHour+ ") REFERENCES "+ hourTable+"("+hourHour+") ON UPDATE CASCADE ON DELETE CASCADE);" ;
 
