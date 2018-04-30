@@ -85,7 +85,7 @@ public class DrugsFragment extends Fragment {
 
         listaFarmaci = new ArrayList<DrugEntity>();
         for(int i=0; i<20;i++) {
-            listaFarmaci.add(new DrugEntity(0,"Tachipirina", "Per la febbre","Pillole",10.5, 30 ));
+            listaFarmaci.add(new DrugEntity("Tachipirina", "Per la febbre","Pillole",10.5, 30 ));
         }
 
         CustomAdapterDrug customAdapter = new CustomAdapterDrug(listaFarmaci, getContext());
@@ -98,12 +98,12 @@ public class DrugsFragment extends Fragment {
 
                 DrugEntity farmaco= listaFarmaci.get(position);
 
-                Integer idFarmaco=farmaco.getID();
+                String nomeFarmaco=farmaco.getNome();
 
                 Snackbar.make(view, "elemeto cliccato", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                // Richiamare tramite Intent la classe AddEditTherapy, passandogli id della trapia
+                // Richiamare tramite Intent la classe AddEditTherapy, passandogli il nome della terapia
                 //...............
 
             }

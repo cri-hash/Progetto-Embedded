@@ -72,6 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Lazzarin
      * @param terapia: terapy we want to add on db
+     *               LASCIARE ID NULL( DOVREBBE INCREMENTARSI DA SOLO)
      * @return raw's id of new object we've add on db, -1 if it was inserted yet
      */
 
@@ -105,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
             current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
             current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
-            current.setID(cursor.getString(cursor.getColumnIndex(therapyID)));
+            current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
             current.setNotify(cursor.getShort(cursor.getColumnIndex(therapyNotify)));
             current.setMon(cursor.getInt(cursor.getColumnIndex(therapyMon)));
             current.setTue(cursor.getInt(cursor.getColumnIndex(therapyTue)));
@@ -128,11 +129,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param ID
      * @return therapy if fund, null in otherwise
      */
-    public therapyEntityDB getTherapy(String ID)
+    public therapyEntityDB getTherapy(Integer ID)
         {
             SQLiteDatabase db=getReadableDatabase();
             String query="SELECT * FROM "+ therapyTable +" WHERE "+therapyID + "=?";
-            Cursor cursor=db.rawQuery(query,new String[] {ID});
+            Cursor cursor=db.rawQuery(query,new String[] {ID+""});
             if((cursor.getCount()==0)||(cursor.getCount()==-1))
             {
                 Log.d("therapy ",ID+" not found");
@@ -146,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
             current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
             current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
-            current.setID(cursor.getString(cursor.getColumnIndex(therapyID)));
+            current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
             current.setNotify(cursor.getShort(cursor.getColumnIndex(therapyNotify)));
             current.setMon(cursor.getInt(cursor.getColumnIndex(therapyMon)));
             current.setTue(cursor.getInt(cursor.getColumnIndex(therapyTue)));
@@ -185,7 +186,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(therapySat, toUpdate.isSat());
         values.put(therapySun, toUpdate.isSun());
         // update row
-        long id = db.update(therapyTable,values,therapyID+"=?",new String[]{toUpdate.getID()});
+        long id = db.update(therapyTable,values,therapyID+"=?",new String[]{toUpdate.getID()+""});
         Log.d("avvenuto","aggiornamento terapia");
         // close db connection
         db.close();
@@ -219,7 +220,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insertDrug(DrugEntity drug) {
         SQLiteDatabase db = getWritableDatabase();
 
-        if (getDrugById(drug.getID()) != null) {
+        if (getDrugByName(drug.getNome()) != null) {
             Log.d("inserimento fallito", "farmaco già presente");
             return -1;
         }
@@ -234,24 +235,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      *
-     * @param ID of drug we want
+     * @param name of drug we want
      * @return drug if found, else null.
      */
 
-    public DrugEntity getDrugById(int ID)
+    public DrugEntity getDrugByName(String name)
     {
 
         SQLiteDatabase db=getReadableDatabase();
-        String query="SELECT * FROM "+ drugTable +" WHERE "+ drugID+ "=?";
-        Cursor cursor=db.rawQuery(query,new String[] {ID+""});
+        String query="SELECT * FROM "+ drugTable +" WHERE "+ drugName+ "=?";
+        Cursor cursor=db.rawQuery(query,new String[] {name+""});
         if((cursor.getCount()==0)||(cursor.getCount()==-1))
         {
-            Log.d("drug ",ID+" not found");
+            Log.d("drug ",name+" not found");
             return null;
         }
         DrugEntity  current=new DrugEntity();
         cursor.moveToFirst();
-        current.setID(cursor.getInt(cursor.getColumnIndex(drugID)));
         current.setNome(cursor.getString(cursor.getColumnIndex(drugName)));
         current.setDescrizione(cursor.getString(cursor.getColumnIndex(drugDescription)));
         current.setPrezzo(cursor.getDouble(cursor.getColumnIndex(drugPrice)));
@@ -267,13 +267,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      *
-     * @param ID drug we want to delete
+     * @param nome drug we want to delete
      * @return number of raw deleted(1 if found, 0 in other wise)
      */
-    public int removeDrugBYId(int ID)
+    public int removeDrugBYName(String nome)
     {
         SQLiteDatabase db=getReadableDatabase();
-        int deleteStatus =db.delete(drugTable,drugID +"=?",new String[]{ID+""});
+        int deleteStatus =db.delete(drugTable,drugName +"=?",new String[]{nome+""});
         db.close();
         return deleteStatus;
 
@@ -288,7 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d("getAllTherapy","No therapy found");
         do {
             DrugEntity  current=new DrugEntity();
-            current.setID(cursor.getInt(cursor.getColumnIndex(drugID)));
+
             current.setNome(cursor.getString(cursor.getColumnIndex(drugName)));
             current.setDescrizione(cursor.getString(cursor.getColumnIndex(drugDescription)));
             current.setPrezzo(cursor.getDouble(cursor.getColumnIndex(drugPrice)));
@@ -309,14 +309,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(drugID,toUpdate.getID());
+
         values.put(drugName,toUpdate.getNome());
         values.put(drugPrice,toUpdate.getPrezzo());
         values.put(drugDescription,toUpdate.getDescrizione());
         values.put(drugQuantities,toUpdate.getScorte());
         values.put(drugType,toUpdate.getTipo());
         // update row
-        long id = db.update(drugTable,values,drugID+"=?",new String[]{toUpdate.getID()+""});
+        long id = db.update(drugTable,values,drugName+"=?",new String[]{toUpdate.getNome()+""});
         Log.d("avvenuto","aggiornamento farmaco");
         // close db connection
         db.close();

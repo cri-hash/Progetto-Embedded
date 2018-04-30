@@ -46,8 +46,7 @@ public class Str {
 
 
    //QUERY
-   public static final String CREATE_DRUG_TABLE = "CREATE TABLE " + drugTable + " (" + drugID + " VARCHAR(15) PRIMARY KEY,"
-           + drugName + " VARCHAR(50)," + drugDescription + " VARCHAR(150)," + drugPrice +" REAL,"+ drugQuantities + " INTEGER,"+ drugType
+   public static final String CREATE_DRUG_TABLE = "CREATE TABLE " + drugTable + " (" + drugName + " VARCHAR(50) PRIMARY KEY," + drugDescription + " VARCHAR(150)," + drugPrice +" REAL,"+ drugQuantities + " INTEGER,"+ drugType
            +" VARCHAR(30), FOREIGN KEY("+ drugType +") REFERENCES "+ typeTable +" ("+ typeName +") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
    public static final String CREATE_TYPE_TABLE = "CREATE TABLE "+ typeTable +" (" + typeName +" VARCHAR(30) PRIMARY KEY );";
@@ -63,10 +62,10 @@ public class Str {
            + momentHour+ ") REFERENCES "+ hourTable+"("+hourHour+") ON UPDATE CASCADE ON DELETE CASCADE);" ;
 
 
-   public static final String CREATE_THERAPY_TABLE =  "CREATE TABLE " + therapyTable + " (" + therapyID + " VARCHAR(15) PRIMARY KEY,"
+   public static final String CREATE_THERAPY_TABLE =  "CREATE TABLE " + therapyTable + " (" + therapyID + " INTEGER PRIMARY KEY,"
            + therapyDateStart + " VARCHAR(10)," + therapyDateEnd + " VARCHAR(10)," + therapyNotify +" SMALLINT,"+ therapyNumberDays + " INTEGER,"
            +therapyMon +" INT, "+therapyTue +" INT, "+therapyWed +" INT, "+therapyThu +" INT, "+therapyFri +" INT, "+therapySat +" INT, "+therapySun +" INT, "
-           +therapyDrug+" VARCHAR(15), FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugID+") ON UPDATE CASCADE ON DELETE NO ACTION);";
+           +therapyDrug+" VARCHAR(50), FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugName+") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
 
 

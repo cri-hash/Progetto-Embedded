@@ -13,7 +13,8 @@ import database.Str;
  */
 
 public class therapyEntityDB {
-    private String mID,mDrug;
+    private Integer mID;
+    private String mDrug;
     private Date mDateStart;
     private Date mDateEnd;
     private short mNotify;
@@ -39,13 +40,13 @@ public class therapyEntityDB {
 
     }
 
-    public String getID() {
+    public Integer getID() {
         return mID;
     }
     public String getDrug(){return mDrug;}
     public void setDrug(String drug){mDrug=drug;}
 
-    public void setID(String ID) {
+    public void setID(Integer ID) {
         mID = ID;
     }
 

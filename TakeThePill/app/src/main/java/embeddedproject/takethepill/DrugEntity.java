@@ -7,7 +7,7 @@ import database.Str;
 public class DrugEntity {
 
 // VARIABILI
-    private int ID;
+
     private String nome;
     private String descrizione;
     private String tipo;
@@ -15,8 +15,8 @@ public class DrugEntity {
     private int scorte;
 
 //COSTRUTTORE
-    public DrugEntity(int ID, String nome, String descrizione, String tipo, double prezzo, int scorte){
-        this.ID=ID;
+    public DrugEntity( String nome, String descrizione, String tipo, double prezzo, int scorte){
+
         this.nome=nome;
         this.descrizione=descrizione;
         this.tipo=tipo;
@@ -27,7 +27,7 @@ public class DrugEntity {
 
     public DrugEntity()
     {
-        this.ID=0;
+
         this.nome=null;
         this.descrizione=null;
         this.tipo=null;
@@ -36,14 +36,6 @@ public class DrugEntity {
     }
 
 //METODI GET e SET
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int id) {
-        this.ID = ID;
-    }
 
     public String getNome() {
         return nome;
@@ -88,7 +80,7 @@ public class DrugEntity {
     public ContentValues getAllValues()
     {
         ContentValues values =new ContentValues();
-        values.put(Str.drugID,ID);
+
         values.put(Str.drugName,nome);
         values.put(Str.drugPrice,prezzo);
         values.put(Str.drugDescription,descrizione);
