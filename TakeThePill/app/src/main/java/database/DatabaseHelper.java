@@ -27,7 +27,7 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=4;
+        private static final int DatabaseVersion=6;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -51,7 +51,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Log.d("tabella assumption ", "creata");
                 db.execSQL(CREATE_MOMENT_TABLE);
                 Log.d("tabella moment ", "creata");
-
+                setType(db);
+                Log.d("tipi inseriti","ok");
             }
         @Override
         public void onUpgrade(SQLiteDatabase db, int newDb, int old){
@@ -324,77 +325,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-
-
-
     /**
-     *
-
-     * @return drugEntity object, if found, or null if not
+     * launched when db is created, set available types of drugs
      */
-     /*
-    public drugEntity getDrug(String name)
-        {
-            drugEntity find=new drugEntity();
-            // get only readable database
-            SQLiteDatabase db=getReadableDatabase();
+    private void setType(SQLiteDatabase db)
+    {
 
-            //do the query and save the result using a Cursor
-            Cursor current=db.query(Drug.nameTable,new String[] {Drug.columnName, Drug.columnEffect, Drug.columnPrice},Drug.columnName
-            +"=?",new String[]{name},null,null,null);
-            return find;
-        }
+        ContentValues[] values=new ContentValues[7];
+        for(int i=0;i<7;i++)
+            values[i]=new ContentValues();
+        ContentValues prova=new ContentValues();
+        prova.put("prova","riuscita");
+        values[0].put(typeName,"pastiglia");
+        values[1].put(typeName,"pillola");
+        values[2].put(typeName,"iniezione");
+        values[3].put(typeName,"supposta");
+        values[4].put(typeName,"bustina");
+        values[5].put(typeName, "gocce");
+        values[6].put(typeName,"altro");
+        for(int i=0;i<7;i++)
+            db.insert(typeTable,null,values[i]);
+
+    }
 
 
 
-    /**
-     *
-     * @param selection define the order of selection. 1=order by name; 2=order by price; 3=order by effect
-     * @return list of all element on this table, order like specified on selection. If no elements are found, return Null
-     */
-     /*
-    public List<drugEntity> getAll(int selection)
-        {
-            String option;
-            switch(selection) {
-                case 1: {
-                    option=Drug.columnName;
 
-                break;}
-                case 2: {
-                    option=Drug.columnPrice;
 
-                    break;}
-                case 3:
-                {
-                    option=Drug.columnEffect;
-                    break;
-                }
-                default:
-                {option=Drug.columnName;
-                break;}
-
-            }
-            String queryRequest= "SELECT * FROM "+ Drug.nameTable +"ORDER BY "+ option;
-            SQLiteDatabase db=getReadableDatabase();   //try to use getReadable...
-            Cursor current=db.rawQuery(queryRequest, null);
-            if(!current.moveToFirst())
-            {  Log.d("current tag","current is empty, no value found!");
-                return null;}
-            List<drugEntity> list =new ArrayList<>();
-            do {
-                drugEntity dr=new drugEntity();
-                dr.setName(current.getString(current.getColumnIndex(Drug.columnName)));
-                dr.setPrice(current.getFloat(current.getColumnIndex(Drug.columnPrice)));
-                dr.setScope(current.getString(current.getColumnIndex(Drug.columnEffect)));
-                list.add(dr);
-            }
-            while(current.moveToNext());// moveToNext return false if there aren't other object to read
-            db.close();
-            current.close();     // not sure if this line is request
-
-            return list;
-        }
 
     /**
      *

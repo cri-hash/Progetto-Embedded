@@ -20,6 +20,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import database.DatabaseHelper;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        DatabaseHelper db=new DatabaseHelper(this); //per testare il db in fase di creazione
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
