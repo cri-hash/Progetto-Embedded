@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import embeddedproject.takethepill.AssumptionEntity;
 import embeddedproject.takethepill.DrugEntity;
 import embeddedproject.takethepill.therapyEntityDB;
 
@@ -364,9 +365,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;}
 
 
+    public long insertAssumption(AssumptionEntity assumption)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues toInsert = new ContentValues();
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+
+        String data=myFormat.format(assumption.getData());
+        toInsert.put(assumptionDate,data);
+        toInsert.put(assumptionHour,assumption.getOra().toString()); //formato di default hh:mm:ss. Per riconvertire:valueOf(String)
+        toInsert.put(assumptiontherapy,assumption.getTerapia());
+        if(assumption.getStato())
+            toInsert.put(assumptionState,1); //medicina presa
+        else
+            toInsert.put(assumptionState,0); //medicina non presa
+
+        long id = db.insert(assumptionTable, null, toInsert);
+        Log.d("avvenuto:", "inserimento assunzione");
+        // close db connection
+        db.close();
+
+        return id;
 
 
+    }
 
+
+    public int removeAssumption(AssumptionEntity assumption)
+    {
+        SQLiteDatabase db=getReadableDatabase();
+
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+        String data=myFormat.format(assumption.getData());
+
+        String ora=assumption.getOra().toString();
+        int deleteStatus =db.delete(drugTable,new String[]{assumptionDate,assumptionHour,assumptiontherapy}
+        +"=?",new String[]{data,ora,assumption.getTerapia()+""});
+        db.close();
+        return deleteStatus;
+    }
+     public long setAssumption(AssumptionEntity assumption, boolean state)
+     {
+
+         SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+
+         String data=myFormat.format(assumption.getData());
+         SQLiteDatabase db=getWritableDatabase();
+         ContentValues values=new ContentValues();
+         values.put(assumptionState,state);
+
+         long id = db.update(assumptionTable,values,new String[]{assumptionDate,assumptionHour,assumptiontherapy}
+         +"=?",new String[]{data,assumption.getOra().toString(),assumption.getTerapia()+""});
+         return id;
+     }
 
     /**
      *

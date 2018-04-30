@@ -12,6 +12,7 @@ public class AssumptionEntity {
     private Boolean stato;
     private Integer dosaggio;
     private String tipoFarmaco;
+    private Integer terapia;
 
     // COSTRUTTORI
     public AssumptionEntity(Date data, Time ora, String nomeFarmaco, Boolean stato, Integer dosaggio,String tipoFarmaco){
@@ -21,6 +22,14 @@ public class AssumptionEntity {
         this.stato=stato;
         this.dosaggio=dosaggio;
         this.tipoFarmaco=tipoFarmaco;
+    }
+    //costruttore per database
+    public AssumptionEntity(Date data, Time ora, Integer terapia, boolean stato)
+    {
+        this.data=data;
+        this.ora=ora;
+        this.terapia=terapia;
+        this.stato=stato;
     }
 
     //METODI GET e SET
@@ -32,7 +41,8 @@ public class AssumptionEntity {
     public void setData(Date data) {
         this.data = data;
     }
-
+    public int getTerapia(){return terapia;}
+    public void setTerapia(Integer terapia){this.terapia=terapia;}
     public Time getOra() {
         return ora;
     }
