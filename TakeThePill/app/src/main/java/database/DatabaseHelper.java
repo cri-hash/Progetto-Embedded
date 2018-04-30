@@ -27,7 +27,7 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=6;
+        private static final int DatabaseVersion=1;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -51,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Log.d("tabella assumption ", "creata");
                 db.execSQL(CREATE_MOMENT_TABLE);
                 Log.d("tabella moment ", "creata");
-                setType(db);
+                setTypeList(db);
                 Log.d("tipi inseriti","ok");
             }
         @Override
@@ -163,10 +163,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return current;
         }
 
-
-
-
-
     public long updateTherapy(therapyEntityDB toUpdate)
     {
         // get writable database as we want to write data
@@ -208,9 +204,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return deleteStatus;
 
     }
-
-
-
 
 
     /**
@@ -328,7 +321,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * launched when db is created, set available types of drugs
      */
-    private void setType(SQLiteDatabase db)
+    private void setTypeList(SQLiteDatabase db)
     {
 
         ContentValues[] values=new ContentValues[7];
@@ -345,8 +338,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values[6].put(typeName,"altro");
         for(int i=0;i<7;i++)
             db.insert(typeTable,null,values[i]);
+      //db non viene chiuso perchè lo fa già il metodo onCreate, dopo aver chiamato questo metodo
 
     }
+
+    /**
+     *
+      * @return a String array with all type of drug available
+     */
+    public String[] getTypeList()
+    { SQLiteDatabase db=getReadableDatabase();
+        String query="SELECT * FROM "+ typeTable+" ORDER BY "+ typeName;
+        Cursor cursor=  db.rawQuery(query,null);
+        cursor.moveToFirst();
+        //create an array using size of query's result
+        String[] list=new String[cursor.getCount()];
+        int i=0;
+        do {
+            list[i]=cursor.getString(cursor.getColumnIndex(typeName));
+            Log.d("inserito nella lista:",cursor.getString(cursor.getColumnIndex(typeName)));
+            }
+        while(cursor.moveToNext());
+        cursor.close();
+        db.close();
+        return list;}
 
 
 
@@ -368,40 +383,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         current.close();
         return 0;
-    }
+    }*/
 
-    /**
-     *
-     * @param drug object we want to update
-     * @return  raw's id of new object we've update on db
-     */
-     /*
- public long updateDrug(drugEntity drug)
- {
-     // get writable database as we want to write data
-     SQLiteDatabase db = this.getWritableDatabase();
 
-     ContentValues values = new ContentValues();
-
-     values.put(Drug.columnName, drug.getName());
-     values.put(Drug.columnPrice,drug.getPrice());
-     values.put(Drug.columnEffect,drug.getScope());
-     // update row
-     long id = db.update("drugs",values,Drug.columnName+"=?",new String[]{drug.getName()});
-
-     // close db connection
-     db.close();
-
-     return id;
- }
-    public void deleteDrug(drugEntity drug) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Drug.nameTable, Drug.columnName+ " = ?",
-                new String[]{drug.getName()});
-        db.close();
-    }
-
-*/
 private Date stringToDate(String toDate)
     {
         Date data=null;
