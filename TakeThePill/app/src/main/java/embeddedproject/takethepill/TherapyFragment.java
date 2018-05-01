@@ -1,6 +1,7 @@
 package embeddedproject.takethepill;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -116,12 +117,11 @@ public class TherapyFragment extends Fragment {
 
                 Integer idTerapia=terapia.getId();
 
-                Snackbar.make(view, "elemeto cliccato", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "elemeto cliccato", Snackbar.LENGTH_LONG)
+                        //.setAction("Action", null).show();
 
-                // Richiamare tramite Intent la classe AddEditTherapy, passandogli id della trapia
-                //...............
-
+                Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
+                startActivity(intent);
             }
         });
 
