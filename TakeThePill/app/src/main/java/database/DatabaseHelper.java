@@ -110,13 +110,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
             current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
             current.setNotify(cursor.getShort(cursor.getColumnIndex(therapyNotify)));
-            current.setMon(cursor.getInt(cursor.getColumnIndex(therapyMon)));
-            current.setTue(cursor.getInt(cursor.getColumnIndex(therapyTue)));
-            current.setThu(cursor.getInt(cursor.getColumnIndex(therapyThu)));
-            current.setWed(cursor.getInt(cursor.getColumnIndex(therapyWed)));
-            current.setFri(cursor.getInt(cursor.getColumnIndex(therapyFri)));
-            current.setSat(cursor.getInt(cursor.getColumnIndex(therapySat)));
-            current.setSun(cursor.getInt(cursor.getColumnIndex(therapySun)));
+            current.setMon(checkInt(cursor.getInt(cursor.getColumnIndex(therapyMon))));
+            current.setTue(checkInt(cursor.getInt(cursor.getColumnIndex(therapyTue))));
+            current.setThu(checkInt(cursor.getInt(cursor.getColumnIndex(therapyThu))));
+            current.setWed(checkInt(cursor.getInt(cursor.getColumnIndex(therapyWed))));
+            current.setFri(checkInt(cursor.getInt(cursor.getColumnIndex(therapyFri))));
+            current.setSat(checkInt(cursor.getInt(cursor.getColumnIndex(therapySat))));
+            current.setSun(checkInt(cursor.getInt(cursor.getColumnIndex(therapySun))));
+            current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
             list.add(current);
 
         }
@@ -151,13 +152,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
             current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
             current.setNotify(cursor.getShort(cursor.getColumnIndex(therapyNotify)));
-            current.setMon(cursor.getInt(cursor.getColumnIndex(therapyMon)));
-            current.setTue(cursor.getInt(cursor.getColumnIndex(therapyTue)));
-            current.setThu(cursor.getInt(cursor.getColumnIndex(therapyThu)));
-            current.setWed(cursor.getInt(cursor.getColumnIndex(therapyWed)));
-            current.setFri(cursor.getInt(cursor.getColumnIndex(therapyFri)));
-            current.setSat(cursor.getInt(cursor.getColumnIndex(therapySat)));
-            current.setSun(cursor.getInt(cursor.getColumnIndex(therapySun)));
+            current.setMon(checkInt(cursor.getInt(cursor.getColumnIndex(therapyMon))));
+            current.setTue(checkInt(cursor.getInt(cursor.getColumnIndex(therapyTue))));
+            current.setThu(checkInt(cursor.getInt(cursor.getColumnIndex(therapyThu))));
+            current.setWed(checkInt(cursor.getInt(cursor.getColumnIndex(therapyWed))));
+            current.setFri(checkInt(cursor.getInt(cursor.getColumnIndex(therapyFri))));
+            current.setSat(checkInt(cursor.getInt(cursor.getColumnIndex(therapySat))));
+            current.setSun(checkInt(cursor.getInt(cursor.getColumnIndex(therapySun))));
             current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
             db.close();
             cursor.close();
@@ -176,13 +177,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(therapyDateEnd, myFormat.format(toUpdate.getDateEnd()));
         values.put(therapyNumberDays,toUpdate.getDays());
         values.put(therapyNotify,toUpdate.getNotify());
-        values.put(therapyMon,toUpdate.isMon());
-        values.put(therapyTue,toUpdate.isTue());
-        values.put(therapyWed, toUpdate.isWed());
-        values.put(therapyThu, toUpdate.isThu());
-        values.put(therapyFri, toUpdate.isFri());
-        values.put(therapySat, toUpdate.isSat());
-        values.put(therapySun, toUpdate.isSun());
+        values.put(therapyMon, checkBool(toUpdate.isMon()));
+        values.put(therapyTue, checkBool(toUpdate.isTue()));
+        values.put(therapyWed, checkBool(toUpdate.isWed()));
+        values.put(therapyThu, checkBool(toUpdate.isThu()));
+        values.put(therapyFri, checkBool(toUpdate.isFri()));
+        values.put(therapySat, checkBool(toUpdate.isSat()));
+        values.put(therapySun, checkBool(toUpdate.isSun()));
         // update row
         long id = db.update(therapyTable,values,therapyID+"=?",new String[]{toUpdate.getID()+""});
         Log.d("avvenuto","aggiornamento terapia");
@@ -197,10 +198,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param ID Therapy we want to delete
      * @return number of raws deleted(1 if found, 0 in other wise)
      */
-    public int removeTherapyBYId(String ID)
+    public int removeTherapyBYId(int ID)
     {
         SQLiteDatabase db=getReadableDatabase();
-        int deleteStatus =db.delete(therapyTable,therapyID +"=?",new String[]{ID});
+        int deleteStatus =db.delete(therapyTable,therapyID +"=?",new String[]{ID+""});
         db.close();
         return deleteStatus;
 
@@ -317,6 +318,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    /**
+     * simple conversion method
+     * @param i 1 or 0
+     * @return true or false
+     */
+    private boolean checkInt(int i)
+    {
+        if(i==1)
+            return true;
+        else
+            return false;
+
+    }
+    /**
+     * simple conversion method
+     * @param value true or false
+     * @return 1 or 0
+     */
+    private int checkBool(boolean value)
+    {
+        if(value) return 1;
+        else return 0;
     }
 
     /**

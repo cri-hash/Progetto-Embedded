@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import database.Str;
@@ -17,10 +18,11 @@ public class therapyEntityDB {
     private String mDrug;
     private Date mDateStart;
     private Date mDateEnd;
-    private short mNotify;
+    private int mNotify;
     private int mDays;
-    private int mMon, mTue, mWed, mThu, mFri, mSat, mSun;
-
+    private boolean mMon, mTue, mWed, mThu, mFri, mSat, mSun;
+    private Integer dosaggio;
+    private String ore;
 
     public therapyEntityDB()
     {
@@ -30,15 +32,89 @@ public class therapyEntityDB {
         mDateEnd =null;
         mNotify=20;
         mDays=1;
-        mMon=0;
-        mTue=0;
-        mWed=0;
-        mThu=0;
-        mFri=0;
-        mSat=0;
-        mSun=0;
+        mMon=false;
+        mTue=false;
+        mWed=false;
+        mThu=false;
+        mFri=false;
+        mSat=false;
+        mSun=false;
 
     }
+
+    public therapyEntityDB(java.sql.Date dataFine, Integer nGiorni, int minNotifica,
+                         Boolean lun, Boolean mar, Boolean mer, Boolean gio,
+                         Boolean ven, Boolean sab, Boolean dom,
+                         Integer dosaggio,
+                         String ore, String nomeFarmaco){
+
+        mID = null; //?????
+
+        Calendar c = Calendar.getInstance();    // Data di oggi
+        mDateStart= new java.sql.Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH);
+
+        // Uno tra dataFine e nGiorni deve essere NULL
+        this.mDateEnd=dataFine;
+        this.mDays=nGiorni;
+
+        this.mNotify=minNotifica;
+        this.mMon=lun;
+        this.mTue=mar;
+        this.mWed=mer;
+        this.mThu=gio;
+        this.mFri=ven;
+        this.mSat=sab;
+        this.mSun=dom;
+        this.dosaggio=dosaggio;
+
+        this.ore=ore;
+        this.mDrug=nomeFarmaco;
+    }
+
+    // Metodo per ottere la lista dei giorni della settimana in stringa
+    public String getGiorni(){
+        String s="";
+        Integer count=0;
+        if(mMon){
+            s="Lun";
+            count++;
+        }
+        if(mTue){
+            if(count>0) s+=", ";
+            s+="Mar";
+            count++;
+        }
+        if(mWed){
+            if(count>0) s+=", ";
+            s+="Mer";
+            count++;
+        }
+        if(mThu){
+            if(count>0) s+=", ";
+            s+="Gio";
+            count++;
+        }
+        if(mFri){
+            if(count>0) s+=", ";
+            s+="Ven";
+            count++;
+        }
+        if(mSat){
+            if(count>0) s+=", ";
+            s+="Sab";
+            count++;
+        }
+        if(mSun){
+            if(count>0) s+=", ";
+            s+="Dom";
+            count++;
+        }
+        return s;
+    }
+
+
+
+
 
     public Integer getID() {
         return mID;
@@ -66,7 +142,7 @@ public class therapyEntityDB {
         mDateEnd = dateEnd;
     }
 
-    public short getNotify() {
+    public int getNotify() {
         return mNotify;
     }
 
@@ -82,59 +158,59 @@ public class therapyEntityDB {
         mDays = days;
     }
 
-    public int isMon() {
+    public boolean isMon() {
         return mMon;
     }
 
-    public void setMon(int lun) {
+    public void setMon(boolean lun) {
         mMon = lun;
     }
 
-    public int isTue() {
+    public boolean isTue() {
         return mTue;
     }
 
-    public void setTue(int tue) {
+    public void setTue(boolean tue) {
         mTue = tue;
     }
 
-    public int isWed() {
+    public boolean isWed() {
         return mWed;
     }
 
-    public void setWed(int wed) {
+    public void setWed(boolean wed) {
         mWed = wed;
     }
 
-    public int isThu() {
+    public boolean isThu() {
         return mThu;
     }
 
-    public void setThu(int thu) {
+    public void setThu(boolean thu) {
         mThu = thu;
     }
 
-    public int isFri() {
+    public boolean isFri() {
         return mFri;
     }
 
-    public void setFri(int fri) {
+    public void setFri(boolean fri) {
         mFri = fri;
     }
 
-    public int isSat() {
+    public boolean isSat() {
         return mSat;
     }
 
-    public void setSat(int sat) {
+    public void setSat(boolean sat) {
         mSat = sat;
     }
 
-    public int isSun() {
+    public boolean isSun() {
         return mSun;
     }
 
-    public void setSun(int sun) {
+    public void setSun(boolean sun) {
         mSun = sun;
     }
 
@@ -148,16 +224,27 @@ public class therapyEntityDB {
         current.put(Str.therapyNotify,mNotify);
         current.put(Str.therapyNumberDays,mDays);
         current.put(Str.therapyID,mID);
-        current.put(Str.therapyMon,mMon);
-        current.put(Str.therapyThu,mThu);
-        current.put(Str.therapyTue,mTue);
-        current.put(Str.therapyWed,mWed);
-        current.put(Str.therapyFri,mFri);
-        current.put(Str.therapySat,mSat);
-        current.put(Str.therapySun,mSun);
+        current.put(Str.therapyMon,checkBool(mMon));
+        current.put(Str.therapyTue,checkBool(mTue));
+        current.put(Str.therapyWed,checkBool(mWed));
+        current.put(Str.therapyThu,checkBool(mThu));
+        current.put(Str.therapyFri,checkBool(mFri));
+        current.put(Str.therapySat,checkBool(mSat));
+        current.put(Str.therapySun,checkBool(mSun));
+
         return current;
     }
 
+    /**
+     * simple conversion method
+     * @param value true or false
+     * @return 1 or 0
+     */
+    private int checkBool(boolean value)
+    {
+        if(value) return 1;
+        else return 0;
+    }
 
 
 

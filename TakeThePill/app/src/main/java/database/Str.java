@@ -10,7 +10,6 @@ package database;
 @SuppressWarnings("WeakerAccess")
 public class Str {
    public static final String drugTable="FARMACO";
-   public static final String drugID="ID";
    public static final String drugName="nome";
    public static final String drugPrice="prezzo";
    public static final String drugQuantities="scorte";

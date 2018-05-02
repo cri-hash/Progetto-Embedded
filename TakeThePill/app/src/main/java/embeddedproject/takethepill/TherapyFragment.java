@@ -36,7 +36,7 @@ public class TherapyFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    ArrayList<TherapyEntity> listaTerapie;
+    ArrayList<therapyEntityDB> listaTerapie;
 
     public TherapyFragment() {
         // Required empty public constructor
@@ -98,11 +98,11 @@ public class TherapyFragment extends Fragment {
         // LISTA DELLE  TERAPIE
         ListView listView = (ListView) view.findViewById(R.id.listTherapies);
 
-        listaTerapie = new ArrayList<TherapyEntity>();
+        listaTerapie = new ArrayList<therapyEntityDB>();
         for(int i=0; i<20;i++) {
-            listaTerapie.add(new TherapyEntity(null, 5, 5,
+            listaTerapie.add(new therapyEntityDB(null, 5, 5,
                     true, false, true, false, false, false, true,
-                    1, 3, "08.00", "Tach"));
+                    1,  "08.00", "Tach"));
         }
 
         CustomAdapterTherapy customAdapter = new CustomAdapterTherapy(listaTerapie, getContext());
@@ -113,9 +113,9 @@ public class TherapyFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TherapyEntity terapia= listaTerapie.get(position);
+                therapyEntityDB terapia= listaTerapie.get(position);
 
-                Integer idTerapia=terapia.getId();
+                Integer idTerapia=terapia.getID();
 
                 //Snackbar.make(view, "elemeto cliccato", Snackbar.LENGTH_LONG)
                         //.setAction("Action", null).show();
