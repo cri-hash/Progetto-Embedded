@@ -20,9 +20,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddEditTerapyActivity"
-            android:label="@string/title_activity_add_edit_terapy" />
-        <activity
             android:name=".AddEditTherapyActivity"
             android:label="@string/title_activity_add_edit_therapy"
             android:theme="@style/AppTheme.NoActionBar" />

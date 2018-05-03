@@ -109,6 +109,7 @@ public class TodayFragment extends Fragment {
             listAssunzioni.add(new AssumptionEntity(null, null, "NomeFarmaco",
                     true, 5, "Pillole"));
         }
+
         CustomAdapterMain customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
         listView.setAdapter(customAdapter);
 
