@@ -3,6 +3,7 @@ package embeddedproject.takethepill;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -87,13 +88,14 @@ public class TodayFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_today, container, false);
 
-        // BOTTONE AGGIUNGI TERAPIA
+        // BOTTONE AGGIUNGI-TERAPIA
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Richiama AddEditTherapyActivity
+                Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -101,6 +103,8 @@ public class TodayFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.listAssumptions);
 
         listAssunzioni = new ArrayList<AssumptionEntity>();
+
+        // Mettere query che restituisce la lista della ssunzioni con :data, ora, nomeFarmaco, stato, dosaggio, tipoFarmaco
         for(int i=0; i<20;i++) {
             listAssunzioni.add(new AssumptionEntity(null, null, "NomeFarmaco",
                     true, 5, "Pillole"));

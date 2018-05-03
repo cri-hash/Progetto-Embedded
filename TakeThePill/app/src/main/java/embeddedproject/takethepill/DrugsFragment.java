@@ -1,8 +1,10 @@
 package embeddedproject.takethepill;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -80,7 +82,18 @@ public class DrugsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_drugs, container, false);
 
-        // LISTA DELLE  TERAPIE
+        // BOTTONE AGGIUNGI-FARMACO
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_drug);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Richiama AddEditDrugActivity
+                Intent intent = new Intent(view.getContext(), AddEditDrugActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // LISTA DEI FARMACI
         ListView listView = (ListView) view.findViewById(R.id.listDrugs);
 
         listaFarmaci = new ArrayList<DrugEntity>();
@@ -91,7 +104,7 @@ public class DrugsFragment extends Fragment {
         CustomAdapterDrug customAdapter = new CustomAdapterDrug(listaFarmaci, getContext());
         listView.setAdapter(customAdapter);
 
-        // Quando si clicca su un elemento
+        // QUANDO SI CLICCA SU UN ELEMENTO
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
