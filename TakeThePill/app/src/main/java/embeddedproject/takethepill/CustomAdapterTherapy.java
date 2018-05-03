@@ -34,7 +34,7 @@ public class CustomAdapterTherapy extends ArrayAdapter<therapyEntityDB> {
         therapyEntityDB actual = getItem(position);
 
         drug.setText(actual.getDrug());
-        week.setText(actual.getDays());
+        week.setText(Integer.toString(actual.getDays()));
         //hours.setText(actual.getOre()); ??
 
         //???? Gestire immagine Pillola

@@ -86,6 +86,7 @@ public class TherapyFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_therapy, container, false);
 
+        // BOTTONE AGGIUNGI TERAPIA
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_therapy);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

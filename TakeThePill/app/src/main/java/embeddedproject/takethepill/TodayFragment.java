@@ -1,6 +1,8 @@
 package embeddedproject.takethepill;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -85,6 +87,7 @@ public class TodayFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_today, container, false);
 
+        // BOTTONE AGGIUNGI TERAPIA
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +97,7 @@ public class TodayFragment extends Fragment {
             }
         });
 
-        // LISTA ASSUNZIONI
+    // LISTA ASSUNZIONI
         ListView listView = (ListView) view.findViewById(R.id.listAssumptions);
 
         listAssunzioni = new ArrayList<AssumptionEntity>();
@@ -105,19 +108,30 @@ public class TodayFragment extends Fragment {
         CustomAdapterMain customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
         listView.setAdapter(customAdapter);
 
-        // Quando si clicca su un elemento
+    // QUANDO SI CLICCA SU UN ELEMENTO
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                AssumptionEntity assunziome= listAssunzioni.get(position);
+                AssumptionEntity assunzione= listAssunzioni.get(position);
 
-
-                Snackbar.make(view, "elemeto cliccato", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                // Richiamare messaggio PRESO/NON PRESO
-                //...............
+                // Messaggio Preso/non preso
+                final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setMessage("Hai assunto "+assunzione.getNomeFarmaco()+"?");
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ////AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ///AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+                    }
+                });
+                builder.setCancelable(false);
+                builder.show();
 
             }
         });
