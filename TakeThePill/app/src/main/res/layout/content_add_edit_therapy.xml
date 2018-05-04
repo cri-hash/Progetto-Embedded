@@ -31,7 +31,7 @@
             android:background="@drawable/border"/>
 
         <Button
-            android:id="@+id/edit_drug"
+            android:id="@+id/name_drug"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
@@ -60,7 +60,7 @@
             android:id="@+id/edit_quantity"
             android:layout_width="80dp"
             android:layout_height="40dp"
-            android:layout_alignEnd="@+id/edit_drug"
+            android:layout_alignEnd="@+id/name_drug"
             android:layout_alignTop="@+id/drug_quantity"
             android:textColor="@color/black"
             android:backgroundTint="@color/black"

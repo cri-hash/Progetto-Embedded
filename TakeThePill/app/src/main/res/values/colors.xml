@@ -14,4 +14,6 @@
 
     <color name="verde">#a3cf62</color>
     <color name="rosso">#ec154d</color>
+
+    <color name="white">#FFFF</color>
 </resources>

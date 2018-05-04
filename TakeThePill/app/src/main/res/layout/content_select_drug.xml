@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.ContentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/select_drug"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:gravity="center"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/yellow"
+        />
+
+    <ListView
+        android:id="@+id/select_drug"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="55dp">
+    </ListView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/new_drug"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/verde"
+        android:src="@drawable/ic_plus"
+        android:layout_marginTop="450dp"
+        android:background="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"/>
+
+</android.support.v7.widget.ContentFrameLayout>

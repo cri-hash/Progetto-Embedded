@@ -1,5 +1,6 @@
 package embeddedproject.takethepill;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class AddEditTherapyActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,17 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 finish();   // Chiude l'aactivity e riapre la precedente
             }
         });
+
+        //Azione pressione pulsante "Nome farmaco"
+        Button drugName = findViewById(R.id.name_drug);
+        drugName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddEditTherapyActivity.this, activity_select_drug.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
