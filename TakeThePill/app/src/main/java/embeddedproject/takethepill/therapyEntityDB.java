@@ -21,8 +21,7 @@ public class therapyEntityDB {
     private int mNotify;
     private int mDays;
     private boolean mMon, mTue, mWed, mThu, mFri, mSat, mSun;
-    private Integer dosaggio;
-    private String ore;
+    private int mDosaggio;
 
     public therapyEntityDB()
     {
@@ -39,14 +38,13 @@ public class therapyEntityDB {
         mFri=false;
         mSat=false;
         mSun=false;
-
+        mDosaggio=0;
     }
 
     public therapyEntityDB(java.sql.Date dataFine, Integer nGiorni, int minNotifica,
                          Boolean lun, Boolean mar, Boolean mer, Boolean gio,
                          Boolean ven, Boolean sab, Boolean dom,
-                         Integer dosaggio,
-                         String ore, String nomeFarmaco){
+                         Integer dosaggio, String nomeFarmaco){
 
         mID = null; //?????
 
@@ -65,9 +63,9 @@ public class therapyEntityDB {
         this.mFri=ven;
         this.mSat=sab;
         this.mSun=dom;
-        this.dosaggio=dosaggio;
+        this.mDosaggio=dosaggio;
 
-        this.ore=ore;
+
         this.mDrug=nomeFarmaco;
     }
 
@@ -213,6 +211,8 @@ public class therapyEntityDB {
     public void setSun(boolean sun) {
         mSun = sun;
     }
+    public void  setDosage(int dosaggio){mDosaggio=dosaggio;}
+    public int getDosaggio(){return mDosaggio;}
 
     public ContentValues getAllValues()
     {ContentValues current= new ContentValues();
@@ -224,6 +224,7 @@ public class therapyEntityDB {
         current.put(Str.therapyNotify,mNotify);
         current.put(Str.therapyNumberDays,mDays);
         current.put(Str.therapyID,mID);
+        current.put(Str.therapyDosage,mDosaggio);
         current.put(Str.therapyMon,checkBool(mMon));
         current.put(Str.therapyTue,checkBool(mTue));
         current.put(Str.therapyWed,checkBool(mWed));

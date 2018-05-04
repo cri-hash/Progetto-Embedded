@@ -103,7 +103,7 @@ public class TherapyFragment extends Fragment {
         for(int i=0; i<20;i++) {
             listaTerapie.add(new therapyEntityDB(null, 5, 5,
                     true, false, true, false, false, false, true,
-                    1,  "08.00", "Tach"));
+                    1,"Tach"));
         }
 
         CustomAdapterTherapy customAdapter = new CustomAdapterTherapy(listaTerapie, getContext());

@@ -105,6 +105,7 @@ public class TodayFragment extends Fragment {
         listAssunzioni = new ArrayList<AssumptionEntity>();
 
         // Mettere query che restituisce la lista della ssunzioni con :data, ora, nomeFarmaco, stato, dosaggio, tipoFarmaco
+        // usare metodo della classe database Helper getAssumptionByDate(Date dataDiOggi)
         for(int i=0; i<20;i++) {
             listAssunzioni.add(new AssumptionEntity(null, null, "NomeFarmaco",
                     true, 5, "Pillole"));
