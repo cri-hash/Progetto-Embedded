@@ -1,7 +1,8 @@
 package embeddedproject.takethepill;
 
-import java.sql.Date;
+
 import java.sql.Time;
+import java.util.Date;
 
 public class AssumptionEntity {
 
@@ -14,7 +15,7 @@ public class AssumptionEntity {
     private String tipoFarmaco;
     private Integer terapia;
 
-    // COSTRUTTORI
+    // costruttore per assunzioni DI SOLA LETTURA
     public AssumptionEntity(Date data, Time ora, String nomeFarmaco, Boolean stato, Integer dosaggio,String tipoFarmaco){
         this.data=data;
         this.ora=ora;

@@ -9,6 +9,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,14 +45,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Log.d("tabella type ", "creata");
                 db.execSQL(CREATE_DRUG_TABLE);
                 Log.d("tabella drug ", "creata");
-                db.execSQL(CREATE_HOUR_TABLE);
-                Log.d("tabella hour ", "creata");
+                //db.execSQL(CREATE_HOUR_TABLE);
+                //Log.d("tabella hour ", "creata");
                 db.execSQL(CREATE_THERAPY_TABLE);
                 Log.d("tabella terapy ", "creata");
                 db.execSQL(CREATE_ASSUMPTION_TABLE);
                 Log.d("tabella assumption ", "creata");
-                db.execSQL(CREATE_MOMENT_TABLE);
-                Log.d("tabella moment ", "creata");
+                // db.execSQL(CREATE_MOMENT_TABLE);
+                //Log.d("tabella moment ", "creata");
                 setTypeList(db);
                 Log.d("tipi inseriti","ok");
             }
@@ -100,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         List<therapyEntityDB> list=new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor= db.rawQuery(getAllTerapies,null);
+        Cursor cursor= db.rawQuery(getAllTherapies,null);
         if(!cursor.moveToFirst())
             Log.d("getAllTherapy","No therapy found");
         do {
@@ -118,6 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setSat(checkInt(cursor.getInt(cursor.getColumnIndex(therapySat))));
             current.setSun(checkInt(cursor.getInt(cursor.getColumnIndex(therapySun))));
             current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
+            current.setDosage(cursor.getInt(cursor.getColumnIndex(therapyDosage)));
             list.add(current);
 
         }
@@ -160,6 +162,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setSat(checkInt(cursor.getInt(cursor.getColumnIndex(therapySat))));
             current.setSun(checkInt(cursor.getInt(cursor.getColumnIndex(therapySun))));
             current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
+            current.setDosage(cursor.getInt(cursor.getColumnIndex(therapyDosage)));
             db.close();
             cursor.close();
             return current;
@@ -184,6 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(therapyFri, checkBool(toUpdate.isFri()));
         values.put(therapySat, checkBool(toUpdate.isSat()));
         values.put(therapySun, checkBool(toUpdate.isSun()));
+        values.put(therapyDosage,toUpdate.getDosaggio());
         // update row
         long id = db.update(therapyTable,values,therapyID+"=?",new String[]{toUpdate.getID()+""});
         Log.d("avvenuto","aggiornamento terapia");
@@ -444,6 +448,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          +"=?",new String[]{data,assumption.getOra().toString(),assumption.getTerapia()+""});
          return id;
      }
+
+
+    /**
+     *
+     * @param data of Assupmtions we want
+     * @return list of assumptions with this date
+     */
+    public List<AssumptionEntity> getAssumptionByDate(Date data)
+    {
+        SQLiteDatabase db=getReadableDatabase();
+
+        //Query di ricerca
+        Cursor current=db.rawQuery("SELECT "+assumptionDate+","+assumptionHour+","+assumptionState+","+therapyDrug+","+therapyDosage
+          +" FROM "+assumptionTable+" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
+                +"WHERE "+assumptionDate+ "="+ data.toString() , null);
+
+        if(current.getCount()==0) //nessuna assunzione con quella data
+        { Log.d("nessuna assunzione in data",data.toString());
+            return null;}
+
+
+        List<AssumptionEntity> list=new ArrayList<>();
+        current.moveToFirst();
+        do{
+            //inserisco nella lista tutte le assunzioni trovate
+
+            String farmaco=current.getString(current.getColumnIndex(therapyDrug));
+            //query per leggere il tipo(uso un cursore temporaneo)
+                Cursor temp=db.rawQuery("SELECT "+typeName
+                    +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
+                    +"WHERE "+drugName+ "="+ farmaco, null);
+                String tipo=temp.getString(temp.getColumnIndex(typeTable));
+                temp.close();
+            Time ora=Time.valueOf(current.getString(current.getColumnIndex(assumptionHour)));
+            Boolean stato=checkInt(current.getInt(current.getColumnIndex(assumptionState)));
+            int dosaggio=current.getInt(current.getColumnIndex(therapyDosage));
+            AssumptionEntity assunzione=new AssumptionEntity(data,ora,farmaco,stato,dosaggio,tipo);
+            list.add(assunzione);
+
+
+        }
+        while(current.moveToNext());
+
+        db.close();
+        current.close();
+
+        Log.d("lista assunzioni","creata");
+        return list;
+
+    }
+
+
+
+
+
 
     /**
      *

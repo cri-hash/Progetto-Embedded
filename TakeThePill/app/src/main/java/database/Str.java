@@ -10,20 +10,20 @@ package database;
 @SuppressWarnings("WeakerAccess")
 public class Str {
    public static final String drugTable="FARMACO";
-   public static final String drugName="nome";
+   public static final String drugName="nomeFarmaco";
    public static final String drugPrice="prezzo";
    public static final String drugQuantities="scorte";
    public static final String drugType="tipo";
    public static final String drugDescription="descrizione";
    public static final String typeTable="TIPO";
-   public static final String typeName="nome";
+   public static final String typeName="nomeTipo";
    public static final String momentTable="MOMENTO";
    public static final String momenttherapy="terapia";
    public static final String momentHour="ora";
    public static final String assumptionTable="ASSUNZIONE";
    public static final String assumptionDate="data";
    public static final String assumptionHour="ora";
-   public static final String assumptiontherapy="terapia";
+   public static final String assumptiontherapy="terapiaAssunzione";
    public static final String assumptionState="stato";
    public static final String hourTable="ORARIO";
    public static final String hourHour="ora";
@@ -41,6 +41,7 @@ public class Str {
    public static final String therapySat="Sabato";
    public static final String therapySun="Domenica";
    public static final String therapyDrug="farmaco";
+   public static final String therapyDosage="dosaggio";
 
 
 
@@ -54,20 +55,20 @@ public class Str {
            + assumptionHour + " INT," + assumptiontherapy + " INTEGER," + assumptionState +" INT ," +"PRIMARY KEY ("+assumptionDate +", "+ assumptionHour +", "
            +assumptiontherapy+"),  FOREIGN KEY("+ assumptiontherapy +") REFERENCES "+ therapyTable +" ("+ therapyID +") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
-   public static final String CREATE_HOUR_TABLE=  "CREATE TABLE "+ hourTable +" (" + hourHour +" TIME(6) PRIMARY KEY );";
+  // public static final String CREATE_HOUR_TABLE=  "CREATE TABLE "+ hourTable +" (" + hourHour +" TIME(6) PRIMARY KEY );";
 
-   public static final String CREATE_MOMENT_TABLE = "CREATE TABLE "+ momentTable +"(" + momenttherapy +" INTEGER, "+ momentHour  +" INT, PRIMARY KEY("
-           +momenttherapy +","+momentHour +"), FOREIGN KEY ("+ momenttherapy +") REFERENCES "+ therapyTable+"("+therapyID+") ON UPDATE CASCADE ON DELETE NO ACTION, FOREIGN KEY ("
-           + momentHour+ ") REFERENCES "+ hourTable+"("+hourHour+") ON UPDATE CASCADE ON DELETE CASCADE);" ;
+ //  public static final String CREATE_MOMENT_TABLE = "CREATE TABLE "+ momentTable +"(" + momenttherapy +" INTEGER, "+ momentHour  +" INT, PRIMARY KEY("
+ //          +momenttherapy +","+momentHour +"), FOREIGN KEY ("+ momenttherapy +") REFERENCES "+ therapyTable+"("+therapyID+") ON UPDATE CASCADE ON DELETE NO ACTION, FOREIGN KEY ("
+ //          + momentHour+ ") REFERENCES "+ hourTable+"("+hourHour+") ON UPDATE CASCADE ON DELETE CASCADE);" ;
 
 
    public static final String CREATE_THERAPY_TABLE =  "CREATE TABLE " + therapyTable + " (" + therapyID + " INTEGER PRIMARY KEY,"
            + therapyDateStart + " VARCHAR(10)," + therapyDateEnd + " VARCHAR(10)," + therapyNotify +" SMALLINT,"+ therapyNumberDays + " INTEGER,"
-           +therapyMon +" INT, "+therapyTue +" INT, "+therapyWed +" INT, "+therapyThu +" INT, "+therapyFri +" INT, "+therapySat +" INT, "+therapySun +" INT, "
+          +therapyDosage +" INT, " +therapyMon +" INT, "+therapyTue +" INT, "+therapyWed +" INT, "+therapyThu +" INT, "+therapyFri +" INT, "+therapySat +" INT, "+therapySun +" INT, "
            +therapyDrug+" VARCHAR(50), FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugName+") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
 
 
-   public static final String getAllTerapies = "SELECT * FROM "+ therapyTable + " ;";
+   public static final String getAllTherapies = "SELECT * FROM "+ therapyTable + " ;";
    public static final String getAllDrugs="SELECT * FROM "+ drugTable + " ;";
 }
