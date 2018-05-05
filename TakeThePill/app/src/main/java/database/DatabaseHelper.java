@@ -462,7 +462,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Query di ricerca
         Cursor current=db.rawQuery("SELECT "+assumptionDate+","+assumptionHour+","+assumptionState+","+therapyDrug+","+therapyDosage
           +" FROM "+assumptionTable+" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
-                +"WHERE "+assumptionDate+ "="+ data.toString() , null);
+                +" WHERE "+assumptionDate+ "="+ data.toString() , null);
 
         if(current.getCount()==0) //nessuna assunzione con quella data
         { Log.d("nessuna assunzione in data",data.toString());

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DatabaseHelper db=new DatabaseHelper(this); //per testare il db in fase di creazione
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_today);
         Fragment fragment = new TodayFragment();
         displaySelectedFragment(fragment);
+
+
+        DatabaseHelper db=new DatabaseHelper(this); //per testare il db in fase di creazione
 
 
     }
