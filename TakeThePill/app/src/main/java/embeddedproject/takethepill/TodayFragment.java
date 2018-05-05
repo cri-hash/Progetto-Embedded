@@ -121,7 +121,7 @@ public class TodayFragment extends Fragment {
        // }
 
         CustomAdapterMain customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
-        listView.setAdapter(customAdapter);
+//        listView.setAdapter(customAdapter);
 
 // QUANDO SI CLICCA SU UN ELEMENTO
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
