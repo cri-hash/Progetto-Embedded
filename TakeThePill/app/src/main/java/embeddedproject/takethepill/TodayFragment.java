@@ -111,44 +111,44 @@ public class TodayFragment extends Fragment {
         // Mettere query che restituisce la lista della ssunzioni con :data, ora, nomeFarmaco, stato, dosaggio, tipoFarmaco
         // usare metodo della classe database Helper getAssumptionByDate(Date dataDiOggi)
         DatabaseHelper db=new DatabaseHelper(getContext());
-        listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
+        //listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
 
-        //for(int i=0; i<20;i++) {
-           // listAssunzioni.add(new AssumptionEntity(null, null, "NomeFarmaco",
-             //       true, 5, "Pillole"));
+        for(int i=0; i<20;i++) {
+            listAssunzioni.add(new AssumptionEntity(null, null, "NomeFarmaco",
+                   true, 5, "Pillole"));
 
 
-       // }
+        }
 
         CustomAdapterMain customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
-//        listView.setAdapter(customAdapter);
+        listView.setAdapter(customAdapter);
 
-// QUANDO SI CLICCA SU UN ELEMENTO
+    // QUANDO SI CLICCA SU UN ELEMENTO
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-@Override
-public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         AssumptionEntity assunzione= listAssunzioni.get(position);
 
-// Messaggio Preso/non preso
-final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+    // Messaggio Preso/non preso
+        final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setMessage("Hai assunto "+assunzione.getNomeFarmaco()+"?");
         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-@Override
-public void onClick(DialogInterface dialog, int which) {
-        ////AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
-        }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ////AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+            }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-@Override
-public void onClick(DialogInterface dialog, int which) {
-        ///AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
-        }
-        });
-        builder.setCancelable(false);
-        builder.show();
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ///AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+                }
+                });
+                builder.setCancelable(false);
+                builder.show();
 
-        }
+            }
         });
 
         return view;

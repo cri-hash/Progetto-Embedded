@@ -21,6 +21,7 @@ public class AddEditDrugActivity extends AppCompatActivity {
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // BOTTONI TOOLBAR SALVA E ANNULLA
         TextView tvSave = (TextView) findViewById(R.id.toolbar_save);
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,14 +40,48 @@ public class AddEditDrugActivity extends AppCompatActivity {
             }
         });
 
+        // TextView Tipo farmaco
+        final TextView tvTipo = (TextView) findViewById(R.id.tvDrugType);
+        tvTipo.setText("Tipo: seleziona ...");
+
+        // Bottone seleziona Tipo di farmaco
         ImageButton btnTipo = (ImageButton) findViewById(R.id.ibEditType);
         btnTipo.setOnClickListener(new View.OnClickListener() {
+
+            private String chooseItem;
             @Override
             public void onClick(View v) {
                 Snackbar.make(v, "Hai cliccato su modifica tipo", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                // AGGIUNGERE ALERTDIALOG
-                // AGGIUNGI CODICE DATABASE
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Tipo di Farmaco");
+
+                final String listItemArr[] = {"Applicazione/i", "Capsula/e", "Fiala/e", "Goccia/e",
+                        "Grammo/i", "Inalazione/i","Iniezione/i","Milligrammo/i","Millilitro/i",
+                        "Pezzo/i","Pillola/e","Supposta/e","Unità"};
+                builder.setSingleChoiceItems(listItemArr, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int itemIndex) {
+                        chooseItem = listItemArr[itemIndex];
+                    }
+                });
+
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        tvTipo.setText("Tipo: "+chooseItem);
+                    }
+                });
+
+                builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Niente
+                    }
+                });
+
+                builder.show();
 
             }
         });
