@@ -111,14 +111,14 @@ public class TodayFragment extends Fragment {
         // Mettere query che restituisce la lista della ssunzioni con :data, ora, nomeFarmaco, stato, dosaggio, tipoFarmaco
         // usare metodo della classe database Helper getAssumptionByDate(Date dataDiOggi)
         DatabaseHelper db=new DatabaseHelper(getContext());
-        //listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
+        listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
 
-        for(int i=0; i<20;i++) {
-            listAssunzioni.add(new AssumptionEntity(null, null, "NomeFarmaco",
-                    true, 5, "Pillole"));
+        //for(int i=0; i<20;i++) {
+           // listAssunzioni.add(new AssumptionEntity(null, null, "NomeFarmaco",
+             //       true, 5, "Pillole"));
 
 
-        }
+       // }
 
         CustomAdapterMain customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
         listView.setAdapter(customAdapter);

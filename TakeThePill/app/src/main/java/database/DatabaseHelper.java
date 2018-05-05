@@ -458,14 +458,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<AssumptionEntity> getAssumptionByDate(Date data)
     {
         SQLiteDatabase db=getReadableDatabase();
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
 
+        String dataToRead=myFormat.format(data);
         //Query di ricerca
         Cursor current=db.rawQuery("SELECT "+assumptionDate+","+assumptionHour+","+assumptionState+","+therapyDrug+","+therapyDosage
           +" FROM "+assumptionTable+" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
-                +" WHERE "+assumptionDate+ "="+ data.toString() , null);
+                +" WHERE "+assumptionDate+ "="+ dataToRead , null);
 
         if(current.getCount()==0) //nessuna assunzione con quella data
-        { Log.d("nessuna assunzione in data",data.toString());
+        { Log.d("nessuna assunzione in data",dataToRead);
             return null;}
 
 
