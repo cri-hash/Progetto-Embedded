@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
 public class AddEditDrugActivity extends AppCompatActivity {
+
+    int elemSelez,prev;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,6 @@ public class AddEditDrugActivity extends AppCompatActivity {
                 // AGGIUNGI CODICE DATABASE
             }
         });
-
         TextView tvAnnulla = (TextView) findViewById(R.id.toolbar_annulla);
         tvAnnulla.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,15 +46,17 @@ public class AddEditDrugActivity extends AppCompatActivity {
         final TextView tvTipo = (TextView) findViewById(R.id.tvDrugType);
         tvTipo.setText("Tipo: seleziona ...");
 
+
+        elemSelez=prev=3;   // elemento selezionato TIPO farmaco
+
+
         // Bottone seleziona Tipo di farmaco
         ImageButton btnTipo = (ImageButton) findViewById(R.id.ibEditType);
         btnTipo.setOnClickListener(new View.OnClickListener() {
 
-            private String chooseItem;
+            //private String chooseItem;
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Hai cliccato su modifica tipo", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Tipo di Farmaco");
@@ -60,17 +64,18 @@ public class AddEditDrugActivity extends AppCompatActivity {
                 final String listItemArr[] = {"Applicazione/i", "Capsula/e", "Fiala/e", "Goccia/e",
                         "Grammo/i", "Inalazione/i","Iniezione/i","Milligrammo/i","Millilitro/i",
                         "Pezzo/i","Pillola/e","Supposta/e","Unità"};
-                builder.setSingleChoiceItems(listItemArr, 0, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(listItemArr, elemSelez, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int itemIndex) {
-                        chooseItem = listItemArr[itemIndex];
+                        elemSelez=itemIndex;
                     }
                 });
 
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        tvTipo.setText("Tipo: "+chooseItem);
+                        prev=elemSelez;
+                        tvTipo.setText("Tipo: "+listItemArr[elemSelez]);
                     }
                 });
 
@@ -78,6 +83,8 @@ public class AddEditDrugActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Niente
+                        elemSelez=prev;
+                        tvTipo.setText("Tipo: "+listItemArr[elemSelez]);
                     }
                 });
 

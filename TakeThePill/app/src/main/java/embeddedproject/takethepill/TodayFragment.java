@@ -152,7 +152,7 @@ public class TodayFragment extends Fragment {
         });
 
         return view;
-        }
+    }
 
 
 

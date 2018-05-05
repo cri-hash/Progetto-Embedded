@@ -118,9 +118,6 @@ public class TherapyFragment extends Fragment {
 
                 Integer idTerapia=terapia.getID();
 
-                //Snackbar.make(view, "elemeto cliccato", Snackbar.LENGTH_LONG)
-                        //.setAction("Action", null).show();
-
                 Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
                 startActivity(intent);
             }

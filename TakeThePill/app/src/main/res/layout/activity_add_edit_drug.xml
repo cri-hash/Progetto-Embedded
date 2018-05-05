@@ -73,7 +73,7 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <!-- CONTENUTO -->
+<!-- CONTENUTO -->
 
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -106,7 +106,6 @@
                     android:id="@+id/etDrugName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -167,7 +166,6 @@
                     android:id="@+id/etDrugPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:ems="10"
                     android:inputType="numberSigned"
