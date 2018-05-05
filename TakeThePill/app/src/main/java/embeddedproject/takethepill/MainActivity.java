@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
 
 
         DatabaseHelper db=new DatabaseHelper(this); //per testare il db in fase di creazione
-
+        db.popolaDB();
 
     }
 

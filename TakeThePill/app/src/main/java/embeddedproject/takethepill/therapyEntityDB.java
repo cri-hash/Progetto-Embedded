@@ -41,7 +41,7 @@ public class therapyEntityDB {
         mDosaggio=0;
     }
 
-    public therapyEntityDB(java.sql.Date dataFine, Integer nGiorni, int minNotifica,
+    public therapyEntityDB(Date dataFine, Integer nGiorni, int minNotifica,
                          Boolean lun, Boolean mar, Boolean mer, Boolean gio,
                          Boolean ven, Boolean sab, Boolean dom,
                          Integer dosaggio, String nomeFarmaco){
@@ -49,7 +49,7 @@ public class therapyEntityDB {
         mID = null; //?????
 
         Calendar c = Calendar.getInstance();    // Data di oggi
-        mDateStart= new java.sql.Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH);
+        mDateStart= new java.util.Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH);
 
         // Uno tra dataFine e nGiorni deve essere NULL
         this.mDateEnd=dataFine;

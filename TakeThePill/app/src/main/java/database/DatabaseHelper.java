@@ -29,7 +29,7 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=1;
+        private static final int DatabaseVersion=3;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -55,6 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 //Log.d("tabella moment ", "creata");
                 setTypeList(db);
                 Log.d("tipi inseriti","ok");
+
             }
         @Override
         public void onUpgrade(SQLiteDatabase db, int newDb, int old){
@@ -536,4 +537,48 @@ private Date stringToDate(String toDate)
 
 
     }
+
+    /**metodo per popolare il db con alcuni elementi
+      *
+      * @return true se tutto va bene, falso se qualcosa non va
+     */
+    public boolean popolaDB()
+{
+     //inserimento farmaci
+
+    DrugEntity farmaco1=new DrugEntity("Maaolox","digestivo","bustina",12.50,12);
+    DrugEntity farmaco2=new DrugEntity("Arnica","pomata per ematoma","pomata",8.50,10);
+    DrugEntity farmaco3=new DrugEntity("tachipirina","analgesico","pastiglia",7.5,32);
+
+    insertDrug(farmaco1);
+    insertDrug(farmaco2);
+    insertDrug(farmaco3);
+
+    //inserimento terapia public therapyEntityDB(Date dataFine, Integer nGiorni, int minNotifica,
+   // Boolean lun, Boolean mar, Boolean mer, Boolean gio,
+     //   Boolean ven, Boolean sab, Boolean dom,
+       // Integer dosaggio, String nomeFarmaco)
+    String data="13/05/2018";
+    Date dateEnd=stringToDate(data);
+    therapyEntityDB therapy1=new therapyEntityDB(dateEnd,3,5,true,true,false,true,false,false,false,1,"Arnica");
+    therapyEntityDB therapy2=new therapyEntityDB(dateEnd,15,15,true,true,false,true,true,false,false,1,"Tachipirina");
+    insertTherapy(therapy1);
+    insertTherapy(therapy2);
+    List<therapyEntityDB> list=getAllTherapies();
+    therapy1=list.get(0);
+    therapy2=list.get(1);
+
+    AssumptionEntity assumption1=new AssumptionEntity(dateEnd,Time.valueOf("13:45:00"),therapy1.getID(),false);
+    AssumptionEntity assumption2=new AssumptionEntity(dateEnd,Time.valueOf("12:15:00"),therapy2.getID(),false);
+    insertAssumption(assumption1);
+    insertAssumption(assumption2);
+
+    return true;
+}
+
+
+
+
+
+
 }
