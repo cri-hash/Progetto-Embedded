@@ -54,7 +54,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         duration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddEditTherapyActivity.this, fragment_duration.class);
+                Intent intent = new Intent(AddEditTherapyActivity.this, activity_duration.class);
                 startActivity(intent);
             }
         });
