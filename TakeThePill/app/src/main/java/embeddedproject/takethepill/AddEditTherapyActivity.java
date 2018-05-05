@@ -1,9 +1,11 @@
 package embeddedproject.takethepill;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,7 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class AddEditTherapyActivity extends AppCompatActivity {
+
+    String titleSelectDrug =  "Seleziona farmaco";
+    ArrayList<DrugEntity> lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +51,24 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         drugName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddEditTherapyActivity.this, activity_select_drug.class);
-                startActivity(intent);
+                //Intent intent = new Intent(AddEditTherapyActivity.this, activity_select_drug.class);
+                //startActivity(intent);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddEditTherapyActivity.this);
+                builder.setTitle(titleSelectDrug);
+
+                String[] lista = {"Farmaco 1", "Farmaco 2", "Farmaco 3"};
+
+                builder.setItems(lista, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Fai qualcosa
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
             }
         });
 
@@ -54,8 +77,12 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         duration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddEditTherapyActivity.this, activity_duration.class);
-                startActivity(intent);
+                //Intent intent = new Intent(AddEditTherapyActivity.this, activity_duration.class);
+                //startActivity(intent);
+
+                
+
+
             }
         });
 

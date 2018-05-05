@@ -421,7 +421,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-
     public int removeAssumption(AssumptionEntity assumption)
     {
         SQLiteDatabase db=getReadableDatabase();
