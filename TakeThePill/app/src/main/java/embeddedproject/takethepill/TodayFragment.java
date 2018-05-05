@@ -123,72 +123,72 @@ public class TodayFragment extends Fragment {
         CustomAdapterMain customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
         listView.setAdapter(customAdapter);
 
-    // QUANDO SI CLICCA SU UN ELEMENTO
+// QUANDO SI CLICCA SU UN ELEMENTO
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+@Override
+public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                AssumptionEntity assunzione= listAssunzioni.get(position);
+        AssumptionEntity assunzione= listAssunzioni.get(position);
 
-                // Messaggio Preso/non preso
-                final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setMessage("Hai assunto "+assunzione.getNomeFarmaco()+"?");
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ////AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ///AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
-                    }
-                });
-                builder.setCancelable(false);
-                builder.show();
+// Messaggio Preso/non preso
+final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setMessage("Hai assunto "+assunzione.getNomeFarmaco()+"?");
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+@Override
+public void onClick(DialogInterface dialog, int which) {
+        ////AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+        }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+@Override
+public void onClick(DialogInterface dialog, int which) {
+        ///AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+        }
+        });
+        builder.setCancelable(false);
+        builder.show();
 
-            }
+        }
         });
 
         return view;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
         }
-    }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// TODO: Rename method, update argument and hook method into UI event
+public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+        mListener.onFragmentInteraction(uri);
+        }
+        }
+
+
+/**
+ * This interface must be implemented by activities that contain this
+ * fragment to allow an interaction in this fragment to be communicated
+ * to the activity and potentially other fragments contained in that
+ * activity.
+ * <p>
+ * See the Android Training lesson <a href=
+ * "http://developer.android.com/training/basics/fragments/communicating.html"
+ * >Communicating with Other Fragments</a> for more information.
+ */
+public interface OnFragmentInteractionListener {
+    // TODO: Update argument type and name
+    void onFragmentInteraction(Uri uri);
+}
 }
