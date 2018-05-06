@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -102,7 +103,60 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
         // BOTTONE DURATA
-        //....
+        ImageButton btnDuration = (ImageButton) findViewById(R.id.ibEditDuration);
+        btnDuration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddEditTherapyActivity.this);
+
+                final View durationView = getLayoutInflater().inflate(R.layout.activity_duration, null);
+                builder.setView(durationView);
+
+                final EditText etUntil = (EditText) findViewById(R.id.etUntil);
+                final EditText etDaysNumb = (EditText) findViewById(R.id.etDaysNumber);
+
+                RadioButton rdbtNoLimits = (RadioButton) durationView.findViewById(R.id.noLimits);
+                rdbtNoLimits.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Fai qualcosa quando viene spuntato "Senza limiti"
+                    }
+                });
+
+                final RadioButton rdbtUntil= (RadioButton) durationView.findViewById(R.id.untilRdBtn);
+                rdbtUntil.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Fai qualcosa quando viene spuntato "Fino a"
+                    }
+                });
+
+                RadioButton rdbtNumbDays= (RadioButton) durationView.findViewById(R.id.number_days_RdBtn);
+                rdbtNumbDays.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Fai qualcosa quando viene spuntato "Numero giorni"
+                    }
+                });
+
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Fai qualcosa quando si preme il pulsante "ok"
+                    }
+                });
+
+                builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Bottone annulla, nessuna azione
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
 
 

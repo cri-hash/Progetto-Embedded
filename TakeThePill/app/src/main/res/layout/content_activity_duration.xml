@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="235dp"
+    android:layout_height="180dp"
     android:layout_gravity="center">
 
     <LinearLayout
@@ -67,36 +67,35 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+   <!-- <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_marginTop="180dp"
-        android:layout_gravity="center_horizontal">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/ok"
             style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="150.0dp"
+            android:layout_height="40dp"
             android:background="@color/colorPrimary"
-            android:gravity="center"
-            android:text="Ok"
+            android:text="@string/ok"
             android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:layout_marginHorizontal="27dp"/>
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/cancelling"
             style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="150.0dp"
+            android:layout_height="40dp"
             android:background="@color/colorPrimary"
-            android:gravity="center"
-            android:text="Annulla "
+            android:text="@string/cancelling"
             android:textAllCaps="true"
-            android:textColor="@color/white"/>
-    </LinearLayout>
-
+            android:layout_marginEnd="45dp"
+            android:textColor="@color/white"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>-->
 
 
 </android.widget.RelativeLayout>
