@@ -156,8 +156,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                app:srcCompat="@drawable/ic_create_black_40dp"
-                android:background="@color/yellow"/>
+                android:background="@color/yellow"
+                app:srcCompat="@drawable/ic_create_black_40dp" />
 
         </RelativeLayout>
 

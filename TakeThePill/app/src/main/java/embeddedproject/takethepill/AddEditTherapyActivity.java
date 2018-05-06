@@ -158,8 +158,6 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             }
         });
 
-
-
         // BOTTONE GIORNI
         ImageButton btnDays = (ImageButton) findViewById(R.id.ibEditDays);
         btnDays.setOnClickListener(new View.OnClickListener() {
@@ -218,9 +216,32 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
         // BOTTONE NOTIFICHE
-        //......
+        ImageButton btnNotify = (ImageButton) findViewById(R.id.ibEditNotify);
+        btnNotify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddEditTherapyActivity.this);
 
+                final View notifyView = getLayoutInflater().inflate(R.layout.activity_notify, null);
+                builder.setView(notifyView);
 
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Fai qualcosa quando premi il pulsante "ok"
+                    }
+                });
+
+                builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Nessuna azione quando si preme il pulsante "annulla"
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
         // Bottone ELIMINA
         Button btnElimina = (Button) findViewById(R.id.btnDeleteTherapy);
@@ -248,9 +269,5 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
-
-
 }

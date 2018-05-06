@@ -20,8 +20,8 @@
     <string name="no_limits">Senza limiti</string>
     <string name="until">Fino a:</string>
     <string name="number_days">Numero giorni:</string>
-    <string name="ok">Ok</string>
-    <string name="cancelling">Annulla</string>
+    <string name="no_notify">Nessuna notifica</string>
+    <string name="minutes_before">Minuti prima</string>
 
     <!-- Strings related to Settings -->
 
