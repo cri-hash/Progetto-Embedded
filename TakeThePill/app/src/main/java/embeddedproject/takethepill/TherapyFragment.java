@@ -91,7 +91,8 @@ public class TherapyFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddEditTherapyActivity.class);
+                Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
+                intent.putExtra("id","nuova");
                 startActivity(intent);
             }
         });
@@ -115,10 +116,12 @@ public class TherapyFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 therapyEntityDB terapia= listaTerapie.get(position);
-
                 Integer idTerapia=terapia.getID();
 
+                idTerapia=1;//Da commentare quando il database è pronto
+
                 Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
+                intent.putExtra("id",idTerapia.toString());
                 startActivity(intent);
             }
         });

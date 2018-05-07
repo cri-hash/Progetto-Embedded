@@ -1,9 +1,7 @@
 package embeddedproject.takethepill;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,19 +13,18 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 public class AddEditTherapyActivity extends AppCompatActivity {
 
     String titleSelectDrug =  "Seleziona farmaco";
     ArrayList<DrugEntity> lista;
     String selectedDrug;
+    double quantity;
     boolean[] giorniSelezionati;
+    Integer minNotifica;
+    Integer nGiorni;
+    String dataFine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +55,45 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         // Funzione DATABASE lista farmaci.....
         final String[] drugList = {"Farmaco 1", "Farmaco 2", "Farmaco 3",
                 "Farmaco 1", "Farmaco 2", "Farmaco 3","Farmaco 1", "Farmaco 2", "Farmaco 3","Farmaco 1", "Farmaco 2", "Farmaco 3"};
-        selectedDrug=null;
-        double quantity = 200;
-        giorniSelezionati=new boolean[]{true, false, false, false, false, false, false};
+
+
+
+        String id=getIntent().getStringExtra("id");
+
+        if(id.equals("nuova")) { // Se è una NUOVA terapia
+            selectedDrug = null;
+            quantity = 1;
+            giorniSelezionati = new boolean[]{true, false, false, false, false, false, false};
+            minNotifica = null;
+            nGiorni=-1;
+            dataFine="";
+        }
+        else{   // Se è MODIFICA terapia
+            // Funzione DATABASE informazioni sul farmaco di id=1234...
+            // Parametri da impostare...:
+            selectedDrug = null;
+            quantity = 1;
+            giorniSelezionati = new boolean[]{true, false, false, false, false, false, false};
+            minNotifica = null;
+            nGiorni=10;
+            dataFine="";
+        }
 
         final TextView tvDrugName=(TextView)findViewById(R.id.tvDrugName);
         tvDrugName.setText("Seleziona farmaco ...");
 
-        EditText etQuantity=(EditText)findViewById(R.id.etDrugQuantity2);
+        final EditText etQuantity=(EditText)findViewById(R.id.etDrugQuantity2);
         etQuantity.setText(String.valueOf(quantity));
 
+        final TextView tvDuration=(TextView)findViewById(R.id.tvDuration);
+        tvDuration.setText("Durata: ...");
+
         final TextView tvDays=(TextView)findViewById(R.id.tvDays);
-        tvDrugName.setText("Giorni: ...");
+        tvDays.setText("Giorni: ...");
+
+        final TextView tvNotify=(TextView)findViewById(R.id.tvNotify);
+        if(minNotifica==null) tvNotify.setText("Notifiche: nessuna");
+        else tvNotify.setText("Notifiche: "+minNotifica+" min prima");
 
 
 
@@ -110,33 +134,55 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddEditTherapyActivity.this);
 
-                final View durationView = getLayoutInflater().inflate(R.layout.activity_duration, null);
+                final View durationView = getLayoutInflater().inflate(R.layout.alert_duration, null);
                 builder.setView(durationView);
 
-                final EditText etUntil = (EditText) findViewById(R.id.etUntil);
-                final EditText etDaysNumb = (EditText) findViewById(R.id.etDaysNumber);
+                final RadioButton rdbtNoLimits = (RadioButton) durationView.findViewById(R.id.noLimits);
+                final RadioButton rdbtUntil= (RadioButton) durationView.findViewById(R.id.untilRdBtn);
+                final RadioButton rdbtNumbDays= (RadioButton) durationView.findViewById(R.id.number_days_RdBtn);
+                final EditText etUntil = (EditText) durationView.findViewById(R.id.etUntil);
+                final EditText etDaysNumb = (EditText) durationView.findViewById(R.id.etDaysNumber);
 
-                RadioButton rdbtNoLimits = (RadioButton) durationView.findViewById(R.id.noLimits);
+                if(nGiorni==null){    // DataFine
+                    rdbtNoLimits.setChecked(false);
+                    rdbtUntil.setChecked(true);
+                    rdbtNumbDays.setChecked(false);
+                    etUntil.setText(dataFine);
+                    etDaysNumb.setText("");
+                }else if(nGiorni==-1){ //Senza Limiti
+                    rdbtNoLimits.setChecked(true);
+                    rdbtUntil.setChecked(false);
+                    rdbtNumbDays.setChecked(false);
+                    etUntil.setText("");
+                    etDaysNumb.setText("");
+                }
+                else{   // n giorni
+                    rdbtNoLimits.setChecked(false);
+                    rdbtUntil.setChecked(false);
+                    rdbtNumbDays.setChecked(true);
+                    etUntil.setText("");
+                    etDaysNumb.setText(nGiorni.toString());
+                }
+
                 rdbtNoLimits.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        //Fai qualcosa quando viene spuntato "Senza limiti"
+                    public void onClick(View v) {
+                        etUntil.setEnabled(false);
+                        etDaysNumb.setEnabled(false);
                     }
                 });
-
-                final RadioButton rdbtUntil= (RadioButton) durationView.findViewById(R.id.untilRdBtn);
                 rdbtUntil.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        //Fai qualcosa quando viene spuntato "Fino a"
+                    public void onClick(View v) {
+                        etUntil.setEnabled(true);
+                        etDaysNumb.setEnabled(false);
                     }
                 });
-
-                RadioButton rdbtNumbDays= (RadioButton) durationView.findViewById(R.id.number_days_RdBtn);
                 rdbtNumbDays.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        //Fai qualcosa quando viene spuntato "Numero giorni"
+                    public void onClick(View v) {
+                        etUntil.setEnabled(false);
+                        etDaysNumb.setEnabled(true);
                     }
                 });
 
@@ -144,6 +190,22 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Fai qualcosa quando si preme il pulsante "ok"
+                        if(rdbtNoLimits.isChecked()){
+                            nGiorni=-1;
+                            dataFine=null;
+                            tvDuration.setText("Durata: Senza Limiti");
+                        }
+                        else if(rdbtNumbDays.isChecked()) {
+                            nGiorni = Integer.valueOf(etDaysNumb.getText().toString());
+                            dataFine=null;
+                            tvDuration.setText("Durata: per "+nGiorni.toString()+ " giorni");
+                        }else {
+                            nGiorni = null;
+                            dataFine=etUntil.getText().toString();
+                            tvDuration.setText("Durata: fino al "+dataFine);
+                        }
+
+
                     }
                 });
 
@@ -157,6 +219,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+
+
 
         // BOTTONE GIORNI
         ImageButton btnDays = (ImageButton) findViewById(R.id.ibEditDays);
@@ -215,6 +279,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         //.....
 
 
+
         // BOTTONE NOTIFICHE
         ImageButton btnNotify = (ImageButton) findViewById(R.id.ibEditNotify);
         btnNotify.setOnClickListener(new View.OnClickListener() {
@@ -222,13 +287,37 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddEditTherapyActivity.this);
 
-                final View notifyView = getLayoutInflater().inflate(R.layout.activity_notify, null);
+                final View notifyView = getLayoutInflater().inflate(R.layout.alert_notify, null);
                 builder.setView(notifyView);
+
+                final RadioButton rbNotNotify=(RadioButton)notifyView.findViewById(R.id.notNotify);
+                final RadioButton rbNotify=(RadioButton)notifyView.findViewById(R.id.minBefore);
+                final EditText etNotify=(EditText)notifyView.findViewById(R.id.etNotify);
+
+                if(minNotifica==null){
+                    rbNotNotify.setChecked(true);
+                    rbNotify.setChecked(false);
+                    etNotify.setText("");
+                }
+                else {
+                    rbNotNotify.setChecked(false);
+                    rbNotify.setChecked(true);
+                    etNotify.setText(minNotifica.toString());
+                }
 
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Fai qualcosa quando premi il pulsante "ok"
+                        if(rbNotify.isChecked()){
+                            if(etNotify.getText().toString().equals(""))minNotifica=0;
+                            else minNotifica=Integer.valueOf(etNotify.getText().toString());
+                            tvNotify.setText("Notifiche: "+minNotifica + " min prima");
+                        } else {
+                            minNotifica=null;
+                            tvNotify.setText("Notifiche: nessuna");
+                        }
+
                     }
                 });
 
@@ -242,6 +331,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+
+
 
         // Bottone ELIMINA
         Button btnElimina = (Button) findViewById(R.id.btnDeleteTherapy);
