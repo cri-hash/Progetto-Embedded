@@ -73,7 +73,7 @@
     </android.support.design.widget.AppBarLayout>
 
 
-<!-- CONTENUTO -->
+<!-- ///////////////////////////// CONTENUTO ////////////////////////////// -->
 
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

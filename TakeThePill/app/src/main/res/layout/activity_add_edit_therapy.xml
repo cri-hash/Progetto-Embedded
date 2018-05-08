@@ -72,4 +72,8 @@
     <include layout="@layout/content_add_edit_therapy" />
 
 
+
+
+
+
 </android.support.design.widget.CoordinatorLayout>

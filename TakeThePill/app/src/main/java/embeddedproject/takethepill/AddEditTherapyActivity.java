@@ -1,6 +1,7 @@
 package embeddedproject.takethepill;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -58,7 +59,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
 
-        String id=getIntent().getStringExtra("id");
+        final String id=getIntent().getStringExtra("id");
 
         if(id.equals("nuova")) { // Se è una NUOVA terapia
             selectedDrug = null;
@@ -276,7 +277,15 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
         // BOTTONE ORA
-        //.....
+        ImageButton btnHour = (ImageButton) findViewById(R.id.ibEditHour);
+        btnHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AddHourActivity.class);
+                intent.putExtra("id",id);   // Passo l'id della terapia (se è nuova id="nuova")
+                startActivity(intent);
+            }
+        });
 
 
 
