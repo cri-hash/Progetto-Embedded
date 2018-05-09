@@ -105,6 +105,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="time"
+                    android:textAlignment="center"
                     android:enabled="false"/>
 
                 <Button
@@ -123,7 +124,12 @@
                 android:text="+ AGGIUNGI"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-
+            <ListView
+                android:id="@+id/listHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                />
 
         </LinearLayout>
 

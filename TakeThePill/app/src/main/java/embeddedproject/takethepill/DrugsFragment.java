@@ -82,20 +82,10 @@ public class DrugsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_drugs, container, false);
 
-        // BOTTONE AGGIUNGI-FARMACO
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_drug);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Richiama AddEditDrugActivity
-                Intent intent = new Intent(view.getContext(), AddEditDrugActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // LISTA DEI FARMACI
         ListView listView = (ListView) view.findViewById(R.id.listDrugs);
 
+        // Operazione DATABASE: lista farmaci (nome,
         listaFarmaci = new ArrayList<DrugEntity>();
         for(int i=0; i<20;i++) {
             listaFarmaci.add(new DrugEntity("Tachipirina", "Per la febbre","Pillole",10.5, 30 ));
@@ -103,6 +93,18 @@ public class DrugsFragment extends Fragment {
 
         CustomAdapterDrug customAdapter = new CustomAdapterDrug(listaFarmaci, getContext());
         listView.setAdapter(customAdapter);
+
+        // BOTTONE AGGIUNGI-FARMACO
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_drug);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Richiama AddEditDrugActivity
+                Intent intent = new Intent(view.getContext(), AddEditDrugActivity.class);
+                intent.putExtra("name","nuovo");
+                startActivity(intent);
+            }
+        });
 
         // QUANDO SI CLICCA SU UN ELEMENTO
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -113,11 +115,10 @@ public class DrugsFragment extends Fragment {
 
                 String nomeFarmaco=farmaco.getNome();
 
-                Snackbar.make(view, "elemeto cliccato", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                // Richiamare tramite Intent la classe AddEditTherapy, passandogli il nome della terapia
-                //...............
+                // Richiama AddEditDrugActivity
+                Intent intent = new Intent(view.getContext(), AddEditDrugActivity.class);
+                intent.putExtra("name",nomeFarmaco);
+                startActivity(intent);
 
             }
         });
