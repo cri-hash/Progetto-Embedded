@@ -265,7 +265,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
     /**
      *
      * @param nome drug we want to delete
@@ -287,18 +286,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor= db.rawQuery(getAllDrugs,null);
         if(!cursor.moveToFirst())
             Log.d("getAllTherapy","No therapy found");
-        do {
-            DrugEntity  current=new DrugEntity();
+        else{
+            do {
+                DrugEntity  current=new DrugEntity();
 
-            current.setNome(cursor.getString(cursor.getColumnIndex(drugName)));
-            current.setDescrizione(cursor.getString(cursor.getColumnIndex(drugDescription)));
-            current.setPrezzo(cursor.getDouble(cursor.getColumnIndex(drugPrice)));
-            current.setScorte(cursor.getInt(cursor.getColumnIndex(drugQuantities)));
-            current.setTipo(cursor.getString(cursor.getColumnIndex(drugType)));
-            list.add(current);
-
+                current.setNome(cursor.getString(cursor.getColumnIndex(drugName)));
+                current.setDescrizione(cursor.getString(cursor.getColumnIndex(drugDescription)));
+                current.setPrezzo(cursor.getDouble(cursor.getColumnIndex(drugPrice)));
+                current.setScorte(cursor.getInt(cursor.getColumnIndex(drugQuantities)));
+                current.setTipo(cursor.getString(cursor.getColumnIndex(drugType)));
+                list.add(current);
+            }
+            while(cursor.moveToNext());
         }
-        while(cursor.moveToNext());
+
         cursor.close();
         db.close();
         return list;
@@ -355,19 +356,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void setTypeList(SQLiteDatabase db)
     {
 
-        ContentValues[] values=new ContentValues[7];
-        for(int i=0;i<7;i++)
+        ContentValues[] values=new ContentValues[13];
+        for(int i=0;i<13;i++)
             values[i]=new ContentValues();
         ContentValues prova=new ContentValues();
         prova.put("prova","riuscita");
-        values[0].put(typeName,"pastiglia");
-        values[1].put(typeName,"pillola");
-        values[2].put(typeName,"iniezione");
-        values[3].put(typeName,"supposta");
-        values[4].put(typeName,"bustina");
-        values[5].put(typeName, "gocce");
-        values[6].put(typeName,"altro");
-        for(int i=0;i<7;i++)
+        values[0].put(typeName,"Applicazione/i");
+        values[1].put(typeName,"Capsula/e");
+        values[2].put(typeName,"Fiala/e");
+        values[3].put(typeName,"Goccia/e");
+        values[4].put(typeName,"Grammo/i");
+        values[5].put(typeName, "Inalazione/i");
+        values[6].put(typeName,"Iniezione/i");
+        values[7].put(typeName,"Milligrammo/i");
+        values[8].put(typeName,"Millilitro/i");
+        values[9].put(typeName, "Pezzo/i");
+        values[10].put(typeName,"Pillola/e");
+        values[11].put(typeName,"Supposta/e");
+        values[12].put(typeName,"Unità");
+
+        for(int i=0;i<13;i++)
             db.insert(typeTable,null,values[i]);
       //db non viene chiuso perchè lo fa già il metodo onCreate, dopo aver chiamato questo metodo
 
@@ -387,12 +395,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int i=0;
         do {
             list[i]=cursor.getString(cursor.getColumnIndex(typeName));
+            i++;
             Log.d("inserito nella lista:",cursor.getString(cursor.getColumnIndex(typeName)));
             }
         while(cursor.moveToNext());
         cursor.close();
         db.close();
-        return list;}
+        return list;
+    }
 
 
     public long insertAssumption(AssumptionEntity assumption)
@@ -466,32 +476,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
           +" FROM "+assumptionTable+" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
                 +" WHERE "+assumptionDate+ "="+ dataToRead , null);
 
+        List<AssumptionEntity> list=new ArrayList<>();
+
         if(current.getCount()==0) //nessuna assunzione con quella data
         { Log.d("nessuna assunzione in data",dataToRead);
-            return null;}
+            //return null;
+        }
+        else{
+            current.moveToFirst();
+            do{
+                //inserisco nella lista tutte le assunzioni trovate
 
-
-        List<AssumptionEntity> list=new ArrayList<>();
-        current.moveToFirst();
-        do{
-            //inserisco nella lista tutte le assunzioni trovate
-
-            String farmaco=current.getString(current.getColumnIndex(therapyDrug));
-            //query per leggere il tipo(uso un cursore temporaneo)
+                String farmaco=current.getString(current.getColumnIndex(therapyDrug));
+                //query per leggere il tipo(uso un cursore temporaneo)
                 Cursor temp=db.rawQuery("SELECT "+typeName
-                    +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
-                    +"WHERE "+drugName+ "="+ farmaco, null);
+                        +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
+                        +"WHERE "+drugName+ "="+ farmaco, null);
                 String tipo=temp.getString(temp.getColumnIndex(typeTable));
                 temp.close();
-            Time ora=Time.valueOf(current.getString(current.getColumnIndex(assumptionHour)));
-            Boolean stato=checkInt(current.getInt(current.getColumnIndex(assumptionState)));
-            int dosaggio=current.getInt(current.getColumnIndex(therapyDosage));
-            AssumptionEntity assunzione=new AssumptionEntity(data,ora,farmaco,stato,dosaggio,tipo);
-            list.add(assunzione);
-
-
+                Time ora=Time.valueOf(current.getString(current.getColumnIndex(assumptionHour)));
+                Boolean stato=checkInt(current.getInt(current.getColumnIndex(assumptionState)));
+                int dosaggio=current.getInt(current.getColumnIndex(therapyDosage));
+                AssumptionEntity assunzione=new AssumptionEntity(data,ora,farmaco,stato,dosaggio,tipo);
+                list.add(assunzione);
+            }
+            while(current.moveToNext());
         }
-        while(current.moveToNext());
+
 
         db.close();
         current.close();
@@ -549,9 +560,9 @@ private Date stringToDate(String toDate)
     DrugEntity farmaco2=new DrugEntity("Arnica","pomata per ematoma","Applicazione/i",8.50,10);
     DrugEntity farmaco3=new DrugEntity("tachipirina","analgesico","Pillola/e",7.5,32);
 
-    insertDrug(farmaco1);
+    /*insertDrug(farmaco1);
     insertDrug(farmaco2);
-    insertDrug(farmaco3);
+    insertDrug(farmaco3);*/
 
     //inserimento terapia public therapyEntityDB(Date dataFine, Integer nGiorni, int minNotifica,
    // Boolean lun, Boolean mar, Boolean mer, Boolean gio,

@@ -18,14 +18,16 @@ import java.util.ArrayList;
 
 public class AddEditTherapyActivity extends AppCompatActivity {
 
-    String titleSelectDrug =  "Seleziona farmaco";
-    ArrayList<DrugEntity> lista;
-    String selectedDrug;
-    double quantity;
-    boolean[] giorniSelezionati;
-    Integer minNotifica;
-    Integer nGiorni;
-    String dataFine;
+    private String titleSelectDrug =  "Seleziona farmaco";
+    private ArrayList<DrugEntity> lista;
+    private String selectedDrug;
+    private double quantity;
+    private boolean[] giorniSelezionati;
+    private Integer minNotifica;
+    private Integer nGiorni;
+    private String dataFine;
+
+    private final String giorni[] = {"Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +36,23 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
 
-
-
-
         // Funzione DATABASE lista farmaci.....
         final String[] drugList = {"Farmaco 1", "Farmaco 2", "Farmaco 3",
                 "Farmaco 1", "Farmaco 2", "Farmaco 3","Farmaco 1", "Farmaco 2", "Farmaco 3","Farmaco 1", "Farmaco 2", "Farmaco 3"};
 
 
+        // Stiamo creando una nuova terapia?
         final boolean nuova=getIntent().getBooleanExtra("nuova",true);
         final String id=getIntent().getStringExtra("id");
 
+        // TextView ed EditText del layout
+        final TextView tvDrugName=(TextView)findViewById(R.id.tvDrugName);
+        final EditText etQuantity=(EditText)findViewById(R.id.etDrugQuantity2);
+        final TextView tvDuration=(TextView)findViewById(R.id.tvDuration);
+        final TextView tvDays=(TextView)findViewById(R.id.tvDays);
+        final TextView tvNotify=(TextView)findViewById(R.id.tvNotify);
+
+        // Impostare le variabili:
         if(nuova) { // Se è una NUOVA terapia
             selectedDrug = null;
             quantity = 1;
@@ -52,6 +60,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             minNotifica = null;
             nGiorni=-1;
             dataFine="";
+            tvDrugName.setText("Seleziona farmaco ...");
         }
         else{   // Se è MODIFICA terapia
             // Funzione DATABASE informazioni sul farmaco di id=1234...
@@ -62,21 +71,34 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             minNotifica = null;
             nGiorni=10;
             dataFine="";
+            //tvDrugName.setText(selectedDrug);
+            tvDrugName.setText("nome farmaco");
         }
 
-        final TextView tvDrugName=(TextView)findViewById(R.id.tvDrugName);
-        tvDrugName.setText("Seleziona farmaco ...");
-
-        final EditText etQuantity=(EditText)findViewById(R.id.etDrugQuantity2);
+        // TextView Quantità
         etQuantity.setText(String.valueOf(quantity));
 
-        final TextView tvDuration=(TextView)findViewById(R.id.tvDuration);
-        tvDuration.setText("Durata: ...");
+        // TextView Durata
+        if(nGiorni==-1)tvDuration.setText("Durata: Senza Limiti");
+        else if(nGiorni!=null)tvDuration.setText("Durata: per "+nGiorni.toString()+ " giorni");
+        else tvDuration.setText("Durata: fino al "+dataFine);
 
-        final TextView tvDays=(TextView)findViewById(R.id.tvDays);
-        tvDays.setText("Giorni: ...");
+        // TextView Giorni
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < giorniSelezionati.length; i++) {
+            if (giorniSelezionati[i]) {
+                if (s.length() > 0) s.append(", ");
+                s.append(giorni[i]);
+            }
+        }
+        if (s.toString().trim().equals("")) {
+            tvDays.setText("Giorni: nessuno");
+            s.setLength(0);
+        } else {
+            tvDays.setText("Giorni: " + s);
+        }
 
-        final TextView tvNotify=(TextView)findViewById(R.id.tvNotify);
+        // TextView Notifica
         if(minNotifica==null) tvNotify.setText("Notifiche: nessuna");
         else tvNotify.setText("Notifiche: "+minNotifica+" min prima");
 
@@ -194,7 +216,6 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //Fai qualcosa quando si preme il pulsante "ok"
                         if(rdbtNoLimits.isChecked()){
                             nGiorni=-1;
                             dataFine=null;
@@ -209,7 +230,6 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                             dataFine=etUntil.getText().toString();
                             tvDuration.setText("Durata: fino al "+dataFine);
                         }
-
 
                     }
                 });
@@ -237,7 +257,6 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddEditTherapyActivity.this);
                 builder.setTitle("Seleziona i giorni");
 
-                final String giorni[] = {"Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"};
                 builder.setMultiChoiceItems(giorni, giorniSelezionati, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int itemIndex, boolean checked) {

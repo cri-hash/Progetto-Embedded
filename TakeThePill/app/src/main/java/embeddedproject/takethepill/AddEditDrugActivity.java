@@ -9,19 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import database.DatabaseHelper;
 
 
 public class AddEditDrugActivity extends AppCompatActivity {
 
-    private String nome;    // Rappresenta il nome del farmaco
-    private String tipo;    // Rappresenta il tipo di farmaco
-    private String descrizione; // Rappresenta la descrizione del farmaco
-    private float prezzo;   // Rappresenta il prezzo del farmaco;
-    private float scorte;   // Rappresenta le scorte del farmaco;
-
     private int elemSelez,prev; //Gestiscono la selezione del tipo di farmaco
+
+    private String tipiFarmaci[];// Lista dei tipi di farmaci
+    private DrugEntity drug;    // Rappresenta il farmaco in considerazione
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +29,8 @@ public class AddEditDrugActivity extends AppCompatActivity {
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final String tipiFarmaci[] = {"Applicazione/i", "Capsula/e", "Fiala/e", "Goccia/e",
-                "Grammo/i", "Inalazione/i","Iniezione/i","Milligrammo/i","Millilitro/i",
-                "Pezzo/i","Pillola/e","Supposta/e","Unità"};
-        //final String tipiFarmaci[]=DATABASE.getTypeList()...
+        final DatabaseHelper db=new DatabaseHelper(this);
+        tipiFarmaci=db.getTypeList();
 
         // TextView e EditText del layout:
         final EditText etNome = (EditText) findViewById(R.id.etDrugName);
@@ -44,46 +40,50 @@ public class AddEditDrugActivity extends AppCompatActivity {
         final EditText etScorte = (EditText) findViewById(R.id.etDrugQuantity);
 
         final boolean nuovo=getIntent().getBooleanExtra("nuovo",true);
-        if(nuovo){
-            nome="";
-            tipo="Applicazione/i";
+        if(nuovo){  // Se stiamo creando un nuovo farmaco
+            drug=new DrugEntity("","","Applicazione/i",5,20);
             elemSelez=prev=0;   // elemento selezionato nella lista TIPO farmaco
-            descrizione="";
-            prezzo=6;
-            scorte=20;
             tvTipo.setText("Tipo: seleziona...");
-        }else {
-            // OPERAZIONE DATABASE restituisce i dati del farmaco di nome=...
-            // ...
-            nome="nomefarmaco";
-            tipo="Iniezione/i";
+        }else { // Se stiamo modificando un farmaco
+            drug= db.getDrugByName(getIntent().getStringExtra("name"));
             for(int i=0; i<tipiFarmaci.length;i++){
-                if(tipiFarmaci[i].equals(tipo))elemSelez=prev=i;   // elemento selezionato nella lista TIPO farmaco
+                if(tipiFarmaci[i].equals(drug.getTipo()))elemSelez=prev=i;   // elemento selezionato nella lista TIPO farmaco
             }
-            descrizione="descrizione blabla";
-            prezzo=3;
-            scorte=12;
             tvTipo.setText("Tipo: "+tipiFarmaci[elemSelez]);
         }
 
-        etNome.setText(nome);
-        etDescr.setText(descrizione);
-        etPrezzo.setText(String.valueOf(prezzo));
-        etScorte.setText(String.valueOf(scorte));
-
+        etNome.setText(drug.getNome());
+        etDescr.setText(drug.getDescrizione());
+        etPrezzo.setText(String.valueOf(drug.getPrezzo()));
+        etScorte.setText(String.valueOf(drug.getScorte()));
 
         // BOTTONI TOOLBAR SALVA E ANNULLA
         TextView tvSave = (TextView) findViewById(R.id.toolbar_save);
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(nuovo){
+                drug.setDescrizione(etDescr.getText().toString());
+                drug.setPrezzo(Double.parseDouble(etPrezzo.getText().toString()));
+                drug.setScorte(Integer.parseInt(etScorte.getText().toString()));
+                drug.setTipo(drug.getTipo());
+                if(nuovo){  // Se stiamo creando un nuovo farmaco
                     // OPERAZIONE DATABASE aggiungi farmaco
-                }else{
-                    // OPERAZIONE DATABASE modifica farmaco di nome=...
+                    drug.setNome(etNome.getText().toString());
+                    if(drug.getNome().equals("")){  //se il nome è vuoto
+                        Snackbar snackbar = Snackbar
+                                .make(v, "Devi inserire un nome!", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                    else{
+                        db.insertDrug(drug);
+                        finish();   // Chiude l'activity e riapre la precedente
+                    }
+                }else{  // Se stiamo modificando un farmaco
+                    db.updateDrug(drug);    // OPERAZIONE DATABASE modifica farmaco
+                    finish();   // Chiude l'activity e riapre la precedente
                 }
 
-                finish();   // Chiude l'activity e riapre la precedente
+
             }
         });
         TextView tvAnnulla = (TextView) findViewById(R.id.toolbar_annulla);
@@ -93,7 +93,6 @@ public class AddEditDrugActivity extends AppCompatActivity {
                 finish();   // Chiude l'activity e riapre la precedente
             }
         });
-
 
         // Bottone seleziona Tipo di farmaco
         ImageButton btnTipo = (ImageButton) findViewById(R.id.ibEditType);
@@ -111,6 +110,7 @@ public class AddEditDrugActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int itemIndex) {
                         elemSelez=itemIndex;
+                        drug.setTipo(tipiFarmaci[elemSelez]);
                     }
                 });
 
@@ -118,7 +118,8 @@ public class AddEditDrugActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         prev=elemSelez;
-                        tvTipo.setText("Tipo: "+tipiFarmaci[elemSelez]);
+                        drug.setTipo(tipiFarmaci[elemSelez]);
+                        tvTipo.setText("Tipo: "+drug.getTipo());
                     }
                 });
 
@@ -127,7 +128,8 @@ public class AddEditDrugActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // Niente
                         elemSelez=prev;
-                        tvTipo.setText("Tipo: "+tipiFarmaci[elemSelez]);
+                        drug.setTipo(tipiFarmaci[elemSelez]);
+                        tvTipo.setText("Tipo: "+drug.getTipo());
                     }
                 });
 
@@ -149,7 +151,9 @@ public class AddEditDrugActivity extends AppCompatActivity {
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Operazione DATABASE CHE CANCELLA IL FARMACO di nome=...
+                        // Operazione DATABASE CHE CANCELLA IL FARMACO
+                        db.removeDrugBYName(drug.getNome());
+                        finish();
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

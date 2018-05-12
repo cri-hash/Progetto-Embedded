@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+
+import database.DatabaseHelper;
 
 
 /**
@@ -74,7 +77,9 @@ public class DrugsFragment extends Fragment {
 
 
 
-
+    CustomAdapterDrug customAdapter;
+    ListView listView;
+    DatabaseHelper db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,15 +88,17 @@ public class DrugsFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_drugs, container, false);
 
         // LISTA DEI FARMACI
-        ListView listView = (ListView) view.findViewById(R.id.listDrugs);
+        listView = (ListView) view.findViewById(R.id.listDrugs);
 
         // Operazione DATABASE: lista farmaci (nome,
         listaFarmaci = new ArrayList<DrugEntity>();
         /*for(int i=0; i<20;i++) {
             listaFarmaci.add(new DrugEntity("Tachipirina", "Per la febbre","Pillole",10.5, 30 ));
         }*/
+        db=new DatabaseHelper(getContext());
+        listaFarmaci=(ArrayList<DrugEntity>) db.getAllDrugs();
 
-        CustomAdapterDrug customAdapter = new CustomAdapterDrug(listaFarmaci, getContext());
+        customAdapter = new CustomAdapterDrug(listaFarmaci, getContext());
         listView.setAdapter(customAdapter);
 
         // BOTTONE AGGIUNGI-FARMACO
@@ -127,17 +134,14 @@ public class DrugsFragment extends Fragment {
         return view;
     }
 
-
-
-
-
-
-
-
-
-
-
-
+    // Quando ritorna da AddEtidDrugActivity bisogna aggiornare la lista
+    @Override
+    public void onResume() {
+        super.onResume();
+        listaFarmaci.clear();
+        listaFarmaci.addAll((ArrayList<DrugEntity>) db.getAllDrugs());
+        customAdapter.notifyDataSetChanged();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
