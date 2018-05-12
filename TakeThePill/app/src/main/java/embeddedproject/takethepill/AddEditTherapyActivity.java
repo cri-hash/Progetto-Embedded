@@ -34,23 +34,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
 
-        // BOTTONI TOOLBAR SALVA E ANNULLA
-        TextView tvSave = (TextView) findViewById(R.id.toolbar_save2);
-        tvSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "Hai cliccato su salva", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                // AGGIUNGI CODICE DATABASE
-            }
-        });
-        TextView tvAnnulla = (TextView) findViewById(R.id.toolbar_annulla2);
-        tvAnnulla.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();   // Chiude l'aactivity e riapre la precedente
-            }
-        });
+
 
 
         // Funzione DATABASE lista farmaci.....
@@ -58,10 +42,10 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 "Farmaco 1", "Farmaco 2", "Farmaco 3","Farmaco 1", "Farmaco 2", "Farmaco 3","Farmaco 1", "Farmaco 2", "Farmaco 3"};
 
 
-
+        final boolean nuova=getIntent().getBooleanExtra("nuova",true);
         final String id=getIntent().getStringExtra("id");
 
-        if(id.equals("nuova")) { // Se è una NUOVA terapia
+        if(nuova) { // Se è una NUOVA terapia
             selectedDrug = null;
             quantity = 1;
             giorniSelezionati = new boolean[]{true, false, false, false, false, false, false};
@@ -97,6 +81,26 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         else tvNotify.setText("Notifiche: "+minNotifica+" min prima");
 
 
+        // BOTTONI TOOLBAR SALVA E ANNULLA
+        TextView tvSave = (TextView) findViewById(R.id.toolbar_save2);
+        tvSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(nuova){
+                    // Operazione database inserisci nuova terapia
+                }else{
+                    // Operazione database modifica terapia di id=...
+                }
+                finish();
+            }
+        });
+        TextView tvAnnulla = (TextView) findViewById(R.id.toolbar_annulla2);
+        tvAnnulla.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();   // Chiude l'aactivity e riapre la precedente
+            }
+        });
 
         // Bottone "Nome farmaco"
         ImageButton drugName = (ImageButton) findViewById(R.id.ibEditDrugName);
@@ -343,12 +347,12 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
 
-        // Bottone ELIMINA
+        // BOTTONE ELIMINA
         Button btnElimina = (Button) findViewById(R.id.btnDeleteTherapy);
+        if(nuova) btnElimina.setVisibility(View.GONE);  //Se si sta inserendo una nuova terapia il bottone non deve essere visibile
         btnElimina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Messaggio "SICURO? SI/NO"
                 final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(v.getContext());
                 builder.setTitle("Sei sicuro?");

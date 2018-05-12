@@ -545,9 +545,9 @@ private Date stringToDate(String toDate)
 {
      //inserimento farmaci
 
-    DrugEntity farmaco1=new DrugEntity("Maaolox","digestivo","bustina",12.50,12);
-    DrugEntity farmaco2=new DrugEntity("Arnica","pomata per ematoma","pomata",8.50,10);
-    DrugEntity farmaco3=new DrugEntity("tachipirina","analgesico","pastiglia",7.5,32);
+    DrugEntity farmaco1=new DrugEntity("Maaolox","digestivo","Capsula/e",12.50,12);
+    DrugEntity farmaco2=new DrugEntity("Arnica","pomata per ematoma","Applicazione/i",8.50,10);
+    DrugEntity farmaco3=new DrugEntity("tachipirina","analgesico","Pillola/e",7.5,32);
 
     insertDrug(farmaco1);
     insertDrug(farmaco2);

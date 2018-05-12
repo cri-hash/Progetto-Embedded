@@ -87,9 +87,9 @@ public class DrugsFragment extends Fragment {
 
         // Operazione DATABASE: lista farmaci (nome,
         listaFarmaci = new ArrayList<DrugEntity>();
-        for(int i=0; i<20;i++) {
+        /*for(int i=0; i<20;i++) {
             listaFarmaci.add(new DrugEntity("Tachipirina", "Per la febbre","Pillole",10.5, 30 ));
-        }
+        }*/
 
         CustomAdapterDrug customAdapter = new CustomAdapterDrug(listaFarmaci, getContext());
         listView.setAdapter(customAdapter);
@@ -101,7 +101,7 @@ public class DrugsFragment extends Fragment {
             public void onClick(View view) {
                 // Richiama AddEditDrugActivity
                 Intent intent = new Intent(view.getContext(), AddEditDrugActivity.class);
-                intent.putExtra("name","nuovo");
+                intent.putExtra("nuovo",true);
                 startActivity(intent);
             }
         });
@@ -117,6 +117,7 @@ public class DrugsFragment extends Fragment {
 
                 // Richiama AddEditDrugActivity
                 Intent intent = new Intent(view.getContext(), AddEditDrugActivity.class);
+                intent.putExtra("nuovo",false);
                 intent.putExtra("name",nomeFarmaco);
                 startActivity(intent);
 

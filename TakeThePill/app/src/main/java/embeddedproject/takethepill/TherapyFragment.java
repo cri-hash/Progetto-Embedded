@@ -92,7 +92,8 @@ public class TherapyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
-                intent.putExtra("id","nuova");
+                intent.putExtra("nuova",true);
+                intent.putExtra("id","");
                 startActivity(intent);
             }
         });
@@ -121,6 +122,7 @@ public class TherapyFragment extends Fragment {
                 idTerapia=1;//Da commentare quando il database è pronto
 
                 Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
+                intent.putExtra("nuova",false);
                 intent.putExtra("id",idTerapia.toString());
                 startActivity(intent);
             }

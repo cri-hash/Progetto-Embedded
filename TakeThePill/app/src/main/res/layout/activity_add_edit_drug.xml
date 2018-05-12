@@ -144,7 +144,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/etDescription"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:ems="10"
