@@ -147,7 +147,7 @@ public class AddEditDrugActivity extends AppCompatActivity {
 
                 // Messaggio "SICURO? SI/NO"
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setMessage("Sei sicuro?");
+                builder.setMessage("Sei sicuro di voler eliminare il farmaco?");
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

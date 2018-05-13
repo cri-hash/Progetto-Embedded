@@ -1,6 +1,9 @@
 package embeddedproject.takethepill;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class CustomAdapterHour extends ArrayAdapter<int[]> {
+
 
     private ArrayList<int[]> dataSet;
     Context mContext;
@@ -23,12 +27,12 @@ public class CustomAdapterHour extends ArrayAdapter<int[]> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) getContext()
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final LayoutInflater inflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.row_item_hour, null);
 
-        TextView hour = (TextView)convertView.findViewById(R.id.tvSingleHour);
+        final TextView hour = (TextView)convertView.findViewById(R.id.tvSingleHour);
         ImageButton ibDelete=(ImageButton)convertView.findViewById(R.id.ibDeleteHour);
 
         int[] actual = getItem(position);
@@ -38,7 +42,26 @@ public class CustomAdapterHour extends ArrayAdapter<int[]> {
         ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///????????????
+                // Messaggio "SICURO? SI/NO"
+                final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+                builder.setTitle("Sei sicuro di voler eliminare l'orario?");
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((AddHourActivity) getContext()).eliminaOrario(position);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Niente
+                    }
+                });
+                builder.setCancelable(false);
+                builder.show();
+
+
+
             }
         });
 

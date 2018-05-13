@@ -98,15 +98,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/etNewHour"
+                <TextView
+                    android:id="@+id/tvNewHour"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="time"
                     android:textAlignment="center"
-                    android:enabled="false"/>
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
                 <Button
                     android:id="@+id/btnSelectHour"

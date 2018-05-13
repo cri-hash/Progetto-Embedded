@@ -1,5 +1,6 @@
 package embeddedproject.takethepill;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,9 +30,11 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
     private therapyEntityDB terapia;    // Rappresenta la terapia in considerazione
     private String drugList[];  // Rappresenta la lista dei farmaci
+    private ArrayList<int[]> listaOre;  // Rappresenta la lista delle ore
     private boolean[] giorniSelezionati;    // Usata nella selezione dei giorni
     private final String giorni[] = {"Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"};
     DatabaseHelper db;
+    TextView tvHours;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         final TextView tvDuration=(TextView)findViewById(R.id.tvDuration);
         final TextView tvDays=(TextView)findViewById(R.id.tvDays);
         final TextView tvNotify=(TextView)findViewById(R.id.tvNotify);
+        tvHours=(TextView)findViewById(R.id.tvHour);
 
         // Stiamo creando una nuova terapia?
         final boolean nuova=getIntent().getBooleanExtra("nuova",true);
@@ -68,6 +72,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         else{   // Se è MODIFICA terapia
             terapia=db.getTherapy(id);
             tvDrugName.setText(terapia.getDrug());
+
+            // Operazione database Lista delle ore?????
         }
 
         // TextView Quantità
@@ -110,9 +116,9 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 Log.d("Terapia: ",terapia.getDateEnd()+" "+terapia.getDays()+" "+terapia.getNotify()+" ");
                 if(nuova){
 
-                    if(terapia.getDrug()==null){    //Se l'utente non ha inserito il farmaco
+                    if(terapia.getDrug()==null || listaOre==null){    //Se l'utente non ha inserito il farmaco o un orario
                         Snackbar snackbar = Snackbar
-                                .make(v, "Devi inserire un Farmaco!", Snackbar.LENGTH_LONG);
+                                .make(v, "Devi inserire tutti i dati", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     }else{
 
@@ -331,8 +337,9 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), AddHourActivity.class);
-                intent.putExtra("id",id);   // Passo l'id della terapia (se è nuova id="nuova")
-                startActivity(intent);
+                //intent.putExtra("id",id);
+                intent.putExtra("listaore",listaOre);
+                startActivityForResult(intent,1);
             }
         });
 
@@ -400,7 +407,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Messaggio "SICURO? SI/NO"
                 final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(v.getContext());
-                builder.setTitle("Sei sicuro?");
+                builder.setTitle("Sei sicuro di voler eliminare la Terapia?");
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -420,5 +427,29 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    // QUANDO SI RITORNA DA ADDHOURACTIVITY
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                listaOre=(ArrayList<int[]>)data.getSerializableExtra("result");
+
+                // Visualizzo le ore sul tvHour
+                tvHours.setText(listaOre.toString());
+                String s="Ora: ";
+                for (int i=0; i<listaOre.size();i++){
+                    s+=listaOre.get(i)[0]+":"+listaOre.get(i)[1];
+                    if(i!=listaOre.size()-1)s+=", ";
+                }
+                tvHours.setText(s);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 }

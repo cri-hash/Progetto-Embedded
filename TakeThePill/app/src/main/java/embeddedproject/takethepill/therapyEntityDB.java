@@ -218,8 +218,11 @@ public class therapyEntityDB {
     {ContentValues current= new ContentValues();
         current.put(Str.therapyDrug,mDrug);
         SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
-        Log.d("data letta da therapy",myFormat.format(mDateEnd));
-        current.put(Str.therapyDateEnd,myFormat.format(mDateEnd));
+        //Log.d("data letta da therapy",myFormat.format(mDateEnd));
+
+        if(mDateEnd==null)current.put(Str.therapyDateEnd,(String)null);
+        else current.put(Str.therapyDateEnd,myFormat.format(mDateEnd));
+
         current.put(Str.therapyDateStart,myFormat.format(mDateStart));
         current.put(Str.therapyNotify,mNotify);
         current.put(Str.therapyNumberDays,mDays);

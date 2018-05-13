@@ -1,10 +1,13 @@
 package embeddedproject.takethepill;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +24,7 @@ public class AddHourActivity extends AppCompatActivity {
 
     private ArrayList<int[]> listaOre;
     private int mHour, mMinute;
+    CustomAdapterHour customAdapter;
 
 
     @Override
@@ -33,16 +37,22 @@ public class AddHourActivity extends AppCompatActivity {
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Hai cliccato su salva", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(v, "Hai cliccato su salva", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
                 // PASSARE ad AddEtitTherapy la lista delle ore
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result",listaOre); // Passo la lista delle ore ad AddEdictTherapy
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();   // Chiude l'activity e riapre la precedente
             }
         });
         TextView tvAnnulla = (TextView) findViewById(R.id.toolbar_annulla3);
         tvAnnulla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();   // Chiude l'aactivity e riapre la precedente
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
+                finish();   // Chiude l'activity e riapre la precedente
             }
         });
 
@@ -51,18 +61,20 @@ public class AddHourActivity extends AppCompatActivity {
         mMinute = c.get(Calendar.MINUTE);
 
         // LISTA DELLE ORE
-        ListView listView = (ListView) findViewById(R.id.listHours);
+        final ListView listView = (ListView) findViewById(R.id.listHours);
 
-        // Operazione DATABASE: lista ore della terapia di ID=...
-        listaOre = new ArrayList<int[]>();
-        listaOre.add(new int[]{8,30});
-        listaOre.add(new int[]{12,50});
+        //Ricevo la lista delle ore da AddEditTherapyActivity
+        listaOre=(ArrayList<int[]>)getIntent().getSerializableExtra("listaore");
+        if(listaOre==null) listaOre = new ArrayList<int[]>();
 
-        final CustomAdapterHour customAdapter = new CustomAdapterHour(listaOre, this);
+        customAdapter = new CustomAdapterHour(listaOre, this);
         listView.setAdapter(customAdapter);
 
+        //TextView orario
+        final TextView tvTime=(TextView)findViewById(R.id.tvNewHour);
+        tvTime.setText(mHour + ":" + mMinute);
+
         // Bottone Seleziona Orario
-        final EditText etTime=(EditText)findViewById(R.id.etNewHour);
         Button btnTimePicker=(Button)findViewById(R.id.btnSelectHour);
         btnTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,25 +92,13 @@ public class AddHourActivity extends AppCompatActivity {
                                                   int minute) {
                                 mHour=hourOfDay;
                                 mMinute=minute;
-
-                                etTime.setText(hourOfDay + ":" + minute);
+                                tvTime.setText(hourOfDay + ":" + minute);
                             }
                         }, mHour, mMinute, true);
                 timePickerDialog.show();
             }
         });
 
-        // QUANDO SI CLICCA SU UN ELEMENTO
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                int[] ora= listaOre.get(position);
-
-                /////////////////
-
-            }
-        });
 
         // Bottone Aggiungi Orario
         Button btnAddHour = (Button)findViewById(R.id.btnAddHour);
@@ -111,7 +111,13 @@ public class AddHourActivity extends AppCompatActivity {
         });
 
 
-
-
     }
+
+    // Funzione richiamata quando si clicca sul bottone X di un elemento della lista
+    public void eliminaOrario(int i){
+        listaOre.remove(i);
+        customAdapter.notifyDataSetChanged();
+    }
+
+
 }
