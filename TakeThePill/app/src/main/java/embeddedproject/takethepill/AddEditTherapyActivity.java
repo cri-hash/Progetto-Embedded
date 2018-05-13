@@ -14,36 +14,39 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+
+import database.DatabaseHelper;
 
 public class AddEditTherapyActivity extends AppCompatActivity {
 
-    private String titleSelectDrug =  "Seleziona farmaco";
-    private ArrayList<DrugEntity> lista;
-    private String selectedDrug;
-    private double quantity;
-    private boolean[] giorniSelezionati;
-    private Integer minNotifica;
-    private Integer nGiorni;
-    private String dataFine;
-
+    private therapyEntityDB terapia;    // Rappresenta la terapia in considerazione
+    private String drugList[];  // Rappresenta la lista dei farmaci
+    private boolean[] giorniSelezionati;    // Usata nella selezione dei giorni
     private final String giorni[] = {"Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"};
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_therapy);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
 
-        // Funzione DATABASE lista farmaci.....
-        final String[] drugList = {"Farmaco 1", "Farmaco 2", "Farmaco 3",
-                "Farmaco 1", "Farmaco 2", "Farmaco 3","Farmaco 1", "Farmaco 2", "Farmaco 3","Farmaco 1", "Farmaco 2", "Farmaco 3"};
+        // Database
+        db=new DatabaseHelper(this);
 
-
-        // Stiamo creando una nuova terapia?
-        final boolean nuova=getIntent().getBooleanExtra("nuova",true);
-        final String id=getIntent().getStringExtra("id");
+        // Lista dei farmaci
+        List<DrugEntity> l=db.getAllDrugs();
+        drugList=new String[l.size()];
+        for(int i=0;i<l.size();i++) drugList[i]=l.get(i).getNome();
 
         // TextView ed EditText del layout
         final TextView tvDrugName=(TextView)findViewById(R.id.tvDrugName);
@@ -52,36 +55,30 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         final TextView tvDays=(TextView)findViewById(R.id.tvDays);
         final TextView tvNotify=(TextView)findViewById(R.id.tvNotify);
 
+        // Stiamo creando una nuova terapia?
+        final boolean nuova=getIntent().getBooleanExtra("nuova",true);
+        final int id=getIntent().getIntExtra("id",-1);
+
         // Impostare le variabili:
         if(nuova) { // Se è una NUOVA terapia
-            selectedDrug = null;
-            quantity = 1;
-            giorniSelezionati = new boolean[]{true, false, false, false, false, false, false};
-            minNotifica = null;
-            nGiorni=-1;
-            dataFine="";
+            terapia=new therapyEntityDB(null,-1,null,true,false,false,false,false,false,false,1,null);
             tvDrugName.setText("Seleziona farmaco ...");
         }
         else{   // Se è MODIFICA terapia
-            // Funzione DATABASE informazioni sul farmaco di id=1234...
-            // Parametri da impostare...:
-            selectedDrug = null;
-            quantity = 1;
-            giorniSelezionati = new boolean[]{true, false, false, false, false, false, false};
-            minNotifica = null;
-            nGiorni=10;
-            dataFine="";
-            //tvDrugName.setText(selectedDrug);
-            tvDrugName.setText("nome farmaco");
+            terapia=db.getTherapy(id);
+            tvDrugName.setText(terapia.getDrug()+" "+terapia.getID());
         }
 
         // TextView Quantità
-        etQuantity.setText(String.valueOf(quantity));
+        etQuantity.setText(String.valueOf(terapia.getDosaggio()));
 
         // TextView Durata
-        if(nGiorni==-1)tvDuration.setText("Durata: Senza Limiti");
-        else if(nGiorni!=null)tvDuration.setText("Durata: per "+nGiorni.toString()+ " giorni");
-        else tvDuration.setText("Durata: fino al "+dataFine);
+        final DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        if(terapia.getDays()==-1)tvDuration.setText("Durata: Senza Limiti");
+        else if(terapia.getDays()!=null)tvDuration.setText("Durata: per "+terapia.getDays().toString()+ " giorni");
+        else tvDuration.setText("Durata: fino al "+formatter.format(terapia.getDateEnd()));
+
+        giorniSelezionati = new boolean[]{terapia.isMon(), terapia.isTue(), terapia.isWed(), terapia.isThu(), terapia.isFri(), terapia.isSat(), terapia.isSun()};
 
         // TextView Giorni
         StringBuilder s = new StringBuilder();
@@ -99,8 +96,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         }
 
         // TextView Notifica
-        if(minNotifica==null) tvNotify.setText("Notifiche: nessuna");
-        else tvNotify.setText("Notifiche: "+minNotifica+" min prima");
+        if(terapia.getNotify()==null) tvNotify.setText("Notifiche: nessuna");
+        else tvNotify.setText("Notifiche: "+terapia.getNotify().toString()+" min prima");
 
 
         // BOTTONI TOOLBAR SALVA E ANNULLA
@@ -109,7 +106,16 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(nuova){
-                    // Operazione database inserisci nuova terapia
+
+                    if(terapia.getDrug()==null){    //Se l'utente non ha inserito il farmaco
+                        Snackbar snackbar = Snackbar
+                                .make(v, "Devi inserire un Farmaco!", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }else{
+                        // Operazione database inserisci nuova terapia
+                        // Operazione orari
+                    }
+
                 }else{
                     // Operazione database modifica terapia di id=...
                 }
@@ -124,7 +130,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             }
         });
 
-        // Bottone "Nome farmaco"
+        // BOTTONE "Nome farmaco"
         ImageButton drugName = (ImageButton) findViewById(R.id.ibEditDrugName);
         drugName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +143,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         tvDrugName.setText(drugList[i]);
-                        selectedDrug=drugList[i];
+                        terapia.setDrug(drugList[i]);
                     }
                 });
                 builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
@@ -170,13 +176,13 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 final EditText etUntil = (EditText) durationView.findViewById(R.id.etUntil);
                 final EditText etDaysNumb = (EditText) durationView.findViewById(R.id.etDaysNumber);
 
-                if(nGiorni==null){    // DataFine
+                if(terapia.getDays()==null){    // DataFine
                     rdbtNoLimits.setChecked(false);
                     rdbtUntil.setChecked(true);
                     rdbtNumbDays.setChecked(false);
-                    etUntil.setText(dataFine);
+                    etUntil.setText(terapia.getDateEnd().toString());
                     etDaysNumb.setText("");
-                }else if(nGiorni==-1){ //Senza Limiti
+                }else if(terapia.getDays()==-1){ //Senza Limiti
                     rdbtNoLimits.setChecked(true);
                     rdbtUntil.setChecked(false);
                     rdbtNumbDays.setChecked(false);
@@ -188,7 +194,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                     rdbtUntil.setChecked(false);
                     rdbtNumbDays.setChecked(true);
                     etUntil.setText("");
-                    etDaysNumb.setText(nGiorni.toString());
+                    etDaysNumb.setText(terapia.getDays().toString());
                 }
 
                 rdbtNoLimits.setOnClickListener(new View.OnClickListener() {
@@ -217,18 +223,24 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(rdbtNoLimits.isChecked()){
-                            nGiorni=-1;
-                            dataFine=null;
+                            terapia.setDays(-1);
+                            terapia.setDateEnd(null);
                             tvDuration.setText("Durata: Senza Limiti");
                         }
                         else if(rdbtNumbDays.isChecked()) {
-                            nGiorni = Integer.valueOf(etDaysNumb.getText().toString());
-                            dataFine=null;
-                            tvDuration.setText("Durata: per "+nGiorni.toString()+ " giorni");
+                            terapia.setDays(Integer.valueOf(etDaysNumb.getText().toString()));
+                            terapia.setDateEnd(null);
+                            tvDuration.setText("Durata: per "+terapia.getDays().toString()+ " giorni");
                         }else {
-                            nGiorni = null;
-                            dataFine=etUntil.getText().toString();
-                            tvDuration.setText("Durata: fino al "+dataFine);
+                            terapia.setDays(null);
+                            Date date = null;
+                            try {
+                                date = formatter.parse(etUntil.getText().toString());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            terapia.setDateEnd(date);
+                            tvDuration.setText("Durata: fino al "+formatter.format(terapia.getDateEnd()));
                         }
 
                     }
@@ -326,7 +338,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 final RadioButton rbNotify=(RadioButton)notifyView.findViewById(R.id.minBefore);
                 final EditText etNotify=(EditText)notifyView.findViewById(R.id.etNotify);
 
-                if(minNotifica==null){
+                if(terapia.getNotify()==null){
                     rbNotNotify.setChecked(true);
                     rbNotify.setChecked(false);
                     etNotify.setText("");
@@ -334,7 +346,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 else {
                     rbNotNotify.setChecked(false);
                     rbNotify.setChecked(true);
-                    etNotify.setText(minNotifica.toString());
+                    etNotify.setText(terapia.getNotify().toString());
                 }
 
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -342,11 +354,11 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Fai qualcosa quando premi il pulsante "ok"
                         if(rbNotify.isChecked()){
-                            if(etNotify.getText().toString().equals(""))minNotifica=0;
-                            else minNotifica=Integer.valueOf(etNotify.getText().toString());
-                            tvNotify.setText("Notifiche: "+minNotifica + " min prima");
+                            if(etNotify.getText().toString().equals(""))terapia.setNotify(0);
+                            else terapia.setNotify(Integer.valueOf(etNotify.getText().toString()));
+                            tvNotify.setText("Notifiche: "+terapia.getNotify().toString() + " min prima");
                         } else {
-                            minNotifica=null;
+                            terapia.setNotify(null);
                             tvNotify.setText("Notifiche: nessuna");
                         }
 
@@ -379,6 +391,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // AGGIUNGI CODICE DATABASE CHE CANCELLA LA TERAPIA
+                        db.removeTherapyBYId(terapia.getID());
+                        finish();
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -15,6 +15,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import database.DatabaseHelper;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +39,9 @@ public class TherapyFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     ArrayList<therapyEntityDB> listaTerapie;
+    CustomAdapterTherapy customAdapter;
+    ListView listView;
+    DatabaseHelper db;
 
     public TherapyFragment() {
         // Required empty public constructor
@@ -69,17 +74,6 @@ public class TherapyFragment extends Fragment {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -99,16 +93,18 @@ public class TherapyFragment extends Fragment {
         });
 
         // LISTA DELLE  TERAPIE
-        ListView listView = (ListView) view.findViewById(R.id.listTherapies);
+        listView = (ListView) view.findViewById(R.id.listTherapies);
 
         listaTerapie = new ArrayList<therapyEntityDB>();
-        for(int i=0; i<20;i++) {
+        /*for(int i=0; i<20;i++) {
             listaTerapie.add(new therapyEntityDB(null, 5, 5,
                     true, false, true, false, false, false, true,
                     1,"Tach"));
-        }
+        }*/
+        db=new DatabaseHelper(getContext());
+        listaTerapie=(ArrayList<therapyEntityDB>) db.getAllTherapies();
 
-        CustomAdapterTherapy customAdapter = new CustomAdapterTherapy(listaTerapie, getContext());
+        customAdapter = new CustomAdapterTherapy(listaTerapie, getContext());
         listView.setAdapter(customAdapter);
 
         // Quando si clicca su un elemento
@@ -119,11 +115,9 @@ public class TherapyFragment extends Fragment {
                 therapyEntityDB terapia= listaTerapie.get(position);
                 Integer idTerapia=terapia.getID();
 
-                idTerapia=1;//Da commentare quando il database è pronto
-
                 Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
                 intent.putExtra("nuova",false);
-                intent.putExtra("id",idTerapia.toString());
+                intent.putExtra("id",idTerapia);
                 startActivity(intent);
             }
         });
@@ -132,14 +126,13 @@ public class TherapyFragment extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        listaTerapie.clear();
+        listaTerapie.addAll((ArrayList<therapyEntityDB>) db.getAllTherapies());
+        customAdapter.notifyDataSetChanged();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

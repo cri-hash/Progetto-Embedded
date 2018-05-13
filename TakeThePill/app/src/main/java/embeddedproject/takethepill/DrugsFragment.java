@@ -40,6 +40,9 @@ public class DrugsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     ArrayList<DrugEntity> listaFarmaci;
+    CustomAdapterDrug customAdapter;
+    ListView listView;
+    DatabaseHelper db;
 
     public DrugsFragment() {
         // Required empty public constructor
@@ -72,14 +75,6 @@ public class DrugsFragment extends Fragment {
         }
     }
 
-
-
-
-
-
-    CustomAdapterDrug customAdapter;
-    ListView listView;
-    DatabaseHelper db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

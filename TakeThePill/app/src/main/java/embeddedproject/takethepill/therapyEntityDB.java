@@ -18,8 +18,8 @@ public class therapyEntityDB {
     private String mDrug;
     private Date mDateStart;
     private Date mDateEnd;
-    private int mNotify;
-    private int mDays;
+    private Integer mNotify;
+    private Integer mDays;
     private boolean mMon, mTue, mWed, mThu, mFri, mSat, mSun;
     private int mDosaggio;
 
@@ -41,7 +41,7 @@ public class therapyEntityDB {
         mDosaggio=0;
     }
 
-    public therapyEntityDB(Date dataFine, Integer nGiorni, int minNotifica,
+    public therapyEntityDB(Date dataFine, Integer nGiorni, Integer minNotifica,
                          Boolean lun, Boolean mar, Boolean mer, Boolean gio,
                          Boolean ven, Boolean sab, Boolean dom,
                          Integer dosaggio, String nomeFarmaco){
@@ -140,19 +140,19 @@ public class therapyEntityDB {
         mDateEnd = dateEnd;
     }
 
-    public int getNotify() {
+    public Integer getNotify() {
         return mNotify;
     }
 
-    public void setNotify(short notify) {
+    public void setNotify(Integer notify) {
         mNotify = notify;
     }
 
-    public int getDays() {
+    public Integer getDays() {
         return mDays;
     }
 
-    public void setDays(int days) {
+    public void setDays(Integer days) {
         mDays = days;
     }
 

@@ -29,7 +29,7 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=3;
+        private static final int DatabaseVersion=4;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -105,26 +105,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor= db.rawQuery(getAllTherapies,null);
         if(!cursor.moveToFirst())
             Log.d("getAllTherapy","No therapy found");
-        do {
-            therapyEntityDB current=new therapyEntityDB();
-            current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
-            current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
-            current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
-            current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
-            current.setNotify(cursor.getShort(cursor.getColumnIndex(therapyNotify)));
-            current.setMon(checkInt(cursor.getInt(cursor.getColumnIndex(therapyMon))));
-            current.setTue(checkInt(cursor.getInt(cursor.getColumnIndex(therapyTue))));
-            current.setThu(checkInt(cursor.getInt(cursor.getColumnIndex(therapyThu))));
-            current.setWed(checkInt(cursor.getInt(cursor.getColumnIndex(therapyWed))));
-            current.setFri(checkInt(cursor.getInt(cursor.getColumnIndex(therapyFri))));
-            current.setSat(checkInt(cursor.getInt(cursor.getColumnIndex(therapySat))));
-            current.setSun(checkInt(cursor.getInt(cursor.getColumnIndex(therapySun))));
-            current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
-            current.setDosage(cursor.getInt(cursor.getColumnIndex(therapyDosage)));
-            list.add(current);
+        else{
+            do {
+                therapyEntityDB current=new therapyEntityDB();
+                current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
+                current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
+                current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
+                current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
+                current.setNotify(cursor.getInt(cursor.getColumnIndex(therapyNotify)));
+                current.setMon(checkInt(cursor.getInt(cursor.getColumnIndex(therapyMon))));
+                current.setTue(checkInt(cursor.getInt(cursor.getColumnIndex(therapyTue))));
+                current.setThu(checkInt(cursor.getInt(cursor.getColumnIndex(therapyThu))));
+                current.setWed(checkInt(cursor.getInt(cursor.getColumnIndex(therapyWed))));
+                current.setFri(checkInt(cursor.getInt(cursor.getColumnIndex(therapyFri))));
+                current.setSat(checkInt(cursor.getInt(cursor.getColumnIndex(therapySat))));
+                current.setSun(checkInt(cursor.getInt(cursor.getColumnIndex(therapySun))));
+                current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
+                current.setDosage(cursor.getInt(cursor.getColumnIndex(therapyDosage)));
+                list.add(current);
 
+            }
+            while(cursor.moveToNext());
         }
-        while(cursor.moveToNext());
+
         cursor.close();
         db.close();
         return list;
@@ -154,7 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
             current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
             current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
-            current.setNotify(cursor.getShort(cursor.getColumnIndex(therapyNotify)));
+            current.setNotify(cursor.getInt(cursor.getColumnIndex(therapyNotify)));
             current.setMon(checkInt(cursor.getInt(cursor.getColumnIndex(therapyMon))));
             current.setTue(checkInt(cursor.getInt(cursor.getColumnIndex(therapyTue))));
             current.setThu(checkInt(cursor.getInt(cursor.getColumnIndex(therapyThu))));
@@ -355,7 +358,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     private void setTypeList(SQLiteDatabase db)
     {
-
         ContentValues[] values=new ContentValues[13];
         for(int i=0;i<13;i++)
             values[i]=new ContentValues();
@@ -571,7 +573,7 @@ private Date stringToDate(String toDate)
     String data="13/05/2018";
     Date dateEnd=stringToDate(data);
     therapyEntityDB therapy1=new therapyEntityDB(dateEnd,3,5,true,true,false,true,false,false,false,1,"Arnica");
-    therapyEntityDB therapy2=new therapyEntityDB(dateEnd,15,15,true,true,false,true,true,false,false,1,"Tachipirina");
+    therapyEntityDB therapy2=new therapyEntityDB(dateEnd,15,15,true,true,false,true,true,false,false,3,"Tachipirina");
     insertTherapy(therapy1);
     insertTherapy(therapy2);
     List<therapyEntityDB> list=getAllTherapies();
