@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,12 +62,12 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
         // Impostare le variabili:
         if(nuova) { // Se è una NUOVA terapia
-            terapia=new therapyEntityDB(null,-1,null,true,false,false,false,false,false,false,1,null);
+            terapia=new therapyEntityDB(null,-1,-1,true,false,false,false,false,false,false,1,null);
             tvDrugName.setText("Seleziona farmaco ...");
         }
         else{   // Se è MODIFICA terapia
             terapia=db.getTherapy(id);
-            tvDrugName.setText(terapia.getDrug()+" "+terapia.getID());
+            tvDrugName.setText(terapia.getDrug());
         }
 
         // TextView Quantità
@@ -75,8 +76,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         // TextView Durata
         final DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         if(terapia.getDays()==-1)tvDuration.setText("Durata: Senza Limiti");
-        else if(terapia.getDays()!=null)tvDuration.setText("Durata: per "+terapia.getDays().toString()+ " giorni");
-        else tvDuration.setText("Durata: fino al "+formatter.format(terapia.getDateEnd()));
+        else if(terapia.getDays()==-2)tvDuration.setText("Durata: fino al "+formatter.format(terapia.getDateEnd()));
+        else tvDuration.setText("Durata: per "+terapia.getDays().toString()+ " giorni");
 
         giorniSelezionati = new boolean[]{terapia.isMon(), terapia.isTue(), terapia.isWed(), terapia.isThu(), terapia.isFri(), terapia.isSat(), terapia.isSun()};
 
@@ -96,8 +97,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         }
 
         // TextView Notifica
-        if(terapia.getNotify()==null) tvNotify.setText("Notifiche: nessuna");
-        else tvNotify.setText("Notifiche: "+terapia.getNotify().toString()+" min prima");
+        if(terapia.getNotify()!=-1) tvNotify.setText("Notifiche: "+terapia.getNotify().toString()+" min prima");
+        else tvNotify.setText("Notifiche: nessuna");
 
 
         // BOTTONI TOOLBAR SALVA E ANNULLA
@@ -105,6 +106,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                terapia.setDosage(Integer.valueOf(etQuantity.getText().toString()));
+                Log.d("Terapia: ",terapia.getDateEnd()+" "+terapia.getDays()+" "+terapia.getNotify()+" ");
                 if(nuova){
 
                     if(terapia.getDrug()==null){    //Se l'utente non ha inserito il farmaco
@@ -112,14 +115,17 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                                 .make(v, "Devi inserire un Farmaco!", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     }else{
-                        // Operazione database inserisci nuova terapia
-                        // Operazione orari
-                    }
 
+                        db.insertTherapy(terapia);  // Operazione DATABASE inserisci nuova terapia
+
+                        // Operazione orari.......
+                        //......
+                        finish();   // Chiude l'activity e riapre la precedente
+                    }
                 }else{
-                    // Operazione database modifica terapia di id=...
+                    db.updateTherapy(terapia);  // Operazione DATABASE modifica terapia di id=...
+                    finish();   // Chiude l'activity e riapre la precedente
                 }
-                finish();
             }
         });
         TextView tvAnnulla = (TextView) findViewById(R.id.toolbar_annulla2);
@@ -176,7 +182,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 final EditText etUntil = (EditText) durationView.findViewById(R.id.etUntil);
                 final EditText etDaysNumb = (EditText) durationView.findViewById(R.id.etDaysNumber);
 
-                if(terapia.getDays()==null){    // DataFine
+                if(terapia.getDays()==-2){    // DataFine
                     rdbtNoLimits.setChecked(false);
                     rdbtUntil.setChecked(true);
                     rdbtNumbDays.setChecked(false);
@@ -222,17 +228,17 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(rdbtNoLimits.isChecked()){
+                        if(rdbtNoLimits.isChecked()){   // Cliccato su senza limiti
                             terapia.setDays(-1);
                             terapia.setDateEnd(null);
                             tvDuration.setText("Durata: Senza Limiti");
                         }
-                        else if(rdbtNumbDays.isChecked()) {
+                        else if(rdbtNumbDays.isChecked()) { //Cliccasto su nGiorni
                             terapia.setDays(Integer.valueOf(etDaysNumb.getText().toString()));
                             terapia.setDateEnd(null);
                             tvDuration.setText("Durata: per "+terapia.getDays().toString()+ " giorni");
-                        }else {
-                            terapia.setDays(null);
+                        }else { //Cliccato su datafine
+                            terapia.setDays(-2);
                             Date date = null;
                             try {
                                 date = formatter.parse(etUntil.getText().toString());
@@ -301,6 +307,14 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                         } else {
                             tvDays.setText("Giorni: " + stringBuilder);
                         }
+
+                        terapia.setMon(giorniSelezionati[0]);
+                        terapia.setTue(giorniSelezionati[1]);
+                        terapia.setWed(giorniSelezionati[2]);
+                        terapia.setThu(giorniSelezionati[3]);
+                        terapia.setFri(giorniSelezionati[4]);
+                        terapia.setSat(giorniSelezionati[5]);
+                        terapia.setSun(giorniSelezionati[6]);
                     }
 
                 });
@@ -338,7 +352,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 final RadioButton rbNotify=(RadioButton)notifyView.findViewById(R.id.minBefore);
                 final EditText etNotify=(EditText)notifyView.findViewById(R.id.etNotify);
 
-                if(terapia.getNotify()==null){
+                if(terapia.getNotify()==-1){
                     rbNotNotify.setChecked(true);
                     rbNotify.setChecked(false);
                     etNotify.setText("");
@@ -358,7 +372,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                             else terapia.setNotify(Integer.valueOf(etNotify.getText().toString()));
                             tvNotify.setText("Notifiche: "+terapia.getNotify().toString() + " min prima");
                         } else {
-                            terapia.setNotify(null);
+                            terapia.setNotify(-1);
                             tvNotify.setText("Notifiche: nessuna");
                         }
 

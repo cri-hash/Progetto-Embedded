@@ -29,7 +29,7 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=4;
+        private static final int DatabaseVersion=6;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -108,7 +108,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else{
             do {
                 therapyEntityDB current=new therapyEntityDB();
-                current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
+                if(cursor.getString(cursor.getColumnIndex(therapyDateEnd))==null)current.setDateEnd(null);
+                else current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
                 current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
                 current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
                 current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
@@ -152,8 +153,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d("sto marso de count",count+"");
             therapyEntityDB current=new therapyEntityDB();
             cursor.moveToFirst(); //N.B!!!! sennò dà errore
-            Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
-            current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
+            //Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
+            if(cursor.getString(cursor.getColumnIndex(therapyDateEnd))==null)current.setDateEnd(null);
+            else current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
             current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
             current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
             current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
@@ -181,7 +183,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(therapyID,toUpdate.getID());
         values.put(therapyDrug, toUpdate.getDrug());
         values.put(therapyDateStart, myFormat.format(toUpdate.getDateStart()));
-        values.put(therapyDateEnd, myFormat.format(toUpdate.getDateEnd()));
+
+        if(toUpdate.getDateEnd()==null)values.put(therapyDateEnd, (String)null);
+        else values.put(therapyDateEnd, myFormat.format(toUpdate.getDateEnd()));
+
         values.put(therapyNumberDays,toUpdate.getDays());
         values.put(therapyNotify,toUpdate.getNotify());
         values.put(therapyMon, checkBool(toUpdate.isMon()));
@@ -197,7 +202,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d("avvenuto","aggiornamento terapia");
         // close db connection
         db.close();
-
         return id;
     }
 
@@ -570,20 +574,20 @@ private Date stringToDate(String toDate)
    // Boolean lun, Boolean mar, Boolean mer, Boolean gio,
      //   Boolean ven, Boolean sab, Boolean dom,
        // Integer dosaggio, String nomeFarmaco)
-    String data="13/05/2018";
+    /*String data="13/05/2018";
     Date dateEnd=stringToDate(data);
     therapyEntityDB therapy1=new therapyEntityDB(dateEnd,3,5,true,true,false,true,false,false,false,1,"Arnica");
     therapyEntityDB therapy2=new therapyEntityDB(dateEnd,15,15,true,true,false,true,true,false,false,3,"Tachipirina");
-    insertTherapy(therapy1);
-    insertTherapy(therapy2);
-    List<therapyEntityDB> list=getAllTherapies();
+    //insertTherapy(therapy1);
+    //insertTherapy(therapy2);
+    /*List<therapyEntityDB> list=getAllTherapies();
     therapy1=list.get(0);
-    therapy2=list.get(1);
+    therapy2=list.get(1);*/
 
-    AssumptionEntity assumption1=new AssumptionEntity(dateEnd,Time.valueOf("13:45:00"),therapy1.getID(),false);
+    /*AssumptionEntity assumption1=new AssumptionEntity(dateEnd,Time.valueOf("13:45:00"),therapy1.getID(),false);
     AssumptionEntity assumption2=new AssumptionEntity(dateEnd,Time.valueOf("12:15:00"),therapy2.getID(),false);
-    insertAssumption(assumption1);
-    insertAssumption(assumption2);
+    //insertAssumption(assumption1);
+    //insertAssumption(assumption2);*/
 
     return true;
 }

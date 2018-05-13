@@ -63,7 +63,7 @@ public class Str {
 
 
    public static final String CREATE_THERAPY_TABLE =  "CREATE TABLE " + therapyTable + " (" + therapyID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-           + therapyDateStart + " VARCHAR(10)," + therapyDateEnd + " VARCHAR(10)," + therapyNotify +" SMALLINT,"+ therapyNumberDays + " INTEGER,"
+           + therapyDateStart + " VARCHAR(10)," + therapyDateEnd + " VARCHAR(10)," + therapyNotify +" INTEGER,"+ therapyNumberDays + " INTEGER,"
           +therapyDosage +" INT, " +therapyMon +" INT, "+therapyTue +" INT, "+therapyWed +" INT, "+therapyThu +" INT, "+therapyFri +" INT, "+therapySat +" INT, "+therapySun +" INT, "
            +therapyDrug+" VARCHAR(50), FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugName+") ON UPDATE CASCADE ON DELETE NO ACTION);";
 
