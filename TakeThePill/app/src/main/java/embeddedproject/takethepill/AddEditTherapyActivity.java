@@ -28,7 +28,7 @@ import database.DatabaseHelper;
 
 public class AddEditTherapyActivity extends AppCompatActivity {
 
-    private therapyEntityDB terapia;    // Rappresenta la terapia in considerazione
+    private TherapyEntityDB terapia;    // Rappresenta la terapia in considerazione
     private String drugList[];  // Rappresenta la lista dei farmaci
     private ArrayList<int[]> listaOre;  // Rappresenta la lista delle ore
     private boolean[] giorniSelezionati;    // Usata nella selezione dei giorni
@@ -66,7 +66,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
         // Impostare le variabili:
         if(nuova) { // Se è una NUOVA terapia
-            terapia=new therapyEntityDB(null,-1,-1,true,false,false,false,false,false,false,1,null);
+            terapia=new TherapyEntityDB(null,-1,-1,true,false,false,false,false,false,false,1,null);
             tvDrugName.setText("Seleziona farmaco ...");
         }
         else{   // Se è MODIFICA terapia
@@ -122,7 +122,11 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                         snackbar.show();
                     }else{
 
-                        db.insertTherapy(terapia);  // Operazione DATABASE inserisci nuova terapia
+
+
+
+                        saveAll();  // Operazione DATABASE inserisci nuova terapia
+                                    //operazione database di salvataggio assunzioni
 
                         // Operazione orari.......
                         //......
@@ -452,4 +456,24 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private void saveAll()
+    {
+        db.insertTherapy(terapia);
+
+        while(!listaOre.isEmpty())
+        {
+            //TO DO: chiami il metodo generateAssumption della classe AssumptionEntity,
+            // passandogli la terapia e l'ora in formato Time
+            //ricevuta la lista terapie, basta salvarle nel db con insertAssumption
+
+
+
+        }
+
+
+
+    }
+
 }

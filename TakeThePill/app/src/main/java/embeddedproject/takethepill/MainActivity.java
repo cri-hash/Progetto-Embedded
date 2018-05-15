@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import database.DatabaseHelper;
 
@@ -51,6 +55,10 @@ public class MainActivity extends AppCompatActivity
 
         DatabaseHelper db=new DatabaseHelper(this); //per testare il db in fase di creazione
         db.popolaDB();
+
+
+
+
 
     }
 

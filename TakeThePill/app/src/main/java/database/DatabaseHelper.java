@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.sql.Time;
 import java.util.Date;
@@ -19,7 +17,7 @@ import java.util.List;
 
 import embeddedproject.takethepill.AssumptionEntity;
 import embeddedproject.takethepill.DrugEntity;
-import embeddedproject.takethepill.therapyEntityDB;
+import embeddedproject.takethepill.TherapyEntityDB;
 
 import static database.Str.*;
 
@@ -80,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return raw's id of new object we've add on db, -1 if it was inserted yet
      */
 
-    public long insertTherapy(therapyEntityDB terapia) {
+    public long insertTherapy(TherapyEntityDB terapia) {
         //  write a new raw on database
                 SQLiteDatabase db = getWritableDatabase();
                 if(getTherapy(terapia.getID())!=null)
@@ -98,16 +96,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<therapyEntityDB> getAllTherapies()
+    public List<TherapyEntityDB> getAllTherapies()
     {
-        List<therapyEntityDB> list=new ArrayList<>();
+        List<TherapyEntityDB> list=new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor= db.rawQuery(getAllTherapies,null);
         if(!cursor.moveToFirst())
             Log.d("getAllTherapy","No therapy found");
         else{
             do {
-                therapyEntityDB current=new therapyEntityDB();
+                TherapyEntityDB current=new TherapyEntityDB();
                 if(cursor.getString(cursor.getColumnIndex(therapyDateEnd))==null)current.setDateEnd(null);
                 else current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
                 current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
@@ -139,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param ID
      * @return therapy if fund, null in otherwise
      */
-    public therapyEntityDB getTherapy(Integer ID)
+    public TherapyEntityDB getTherapy(Integer ID)
         {
             SQLiteDatabase db=getReadableDatabase();
             String query="SELECT * FROM "+ therapyTable +" WHERE "+therapyID + "=?";
@@ -151,7 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             int count=cursor.getCount();
             Log.d("sto marso de count",count+"");
-            therapyEntityDB current=new therapyEntityDB();
+            TherapyEntityDB current=new TherapyEntityDB();
             cursor.moveToFirst(); //N.B!!!! sennò dà errore
             //Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
             if(cursor.getString(cursor.getColumnIndex(therapyDateEnd))==null)current.setDateEnd(null);
@@ -174,7 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return current;
         }
 
-    public long updateTherapy(therapyEntityDB toUpdate)
+    public long updateTherapy(TherapyEntityDB toUpdate)
     {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
@@ -450,6 +448,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return deleteStatus;
     }
+    public int removeAssumptionByTherapy(TherapyEntityDB therapy)
+    {
+        SQLiteDatabase db=getReadableDatabase();
+
+        int deleteStatus =db.delete(drugTable,new String[]{assumptiontherapy}
+                +"=?",new String[]{therapy.getID().toString()});
+        db.close();
+        return deleteStatus;
+    }
      public long setAssumption(AssumptionEntity assumption, boolean state)
      {
 
@@ -539,6 +546,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         current.close();
         return 0;
     }*/
+
+
 
 
 private Date stringToDate(String toDate)

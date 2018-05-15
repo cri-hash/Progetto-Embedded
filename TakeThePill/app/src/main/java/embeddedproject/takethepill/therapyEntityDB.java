@@ -13,7 +13,7 @@ import database.Str;
  * Created by Cristian on 13/04/2018.
  */
 
-public class therapyEntityDB {
+public class TherapyEntityDB {
     private Integer mID;
     private String mDrug;
     private Date mDateStart;
@@ -23,7 +23,7 @@ public class therapyEntityDB {
     private boolean mMon, mTue, mWed, mThu, mFri, mSat, mSun;
     private int mDosaggio;
 
-    public therapyEntityDB()
+    public TherapyEntityDB()
     {
         mID=null;
         mDrug=null;
@@ -41,10 +41,10 @@ public class therapyEntityDB {
         mDosaggio=0;
     }
 
-    public therapyEntityDB(Date dataFine, Integer nGiorni, Integer minNotifica,
-                         Boolean lun, Boolean mar, Boolean mer, Boolean gio,
-                         Boolean ven, Boolean sab, Boolean dom,
-                         Integer dosaggio, String nomeFarmaco){
+    public TherapyEntityDB(Date dataFine, Integer nGiorni, Integer minNotifica,
+                           Boolean lun, Boolean mar, Boolean mer, Boolean gio,
+                           Boolean ven, Boolean sab, Boolean dom,
+                           Integer dosaggio, String nomeFarmaco){
 
         mID = null; //?????
 

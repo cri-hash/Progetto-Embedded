@@ -1,11 +1,9 @@
 package embeddedproject.takethepill;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +36,7 @@ public class TherapyFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    ArrayList<therapyEntityDB> listaTerapie;
+    ArrayList<TherapyEntityDB> listaTerapie;
     CustomAdapterTherapy customAdapter;
     ListView listView;
     DatabaseHelper db;
@@ -95,14 +93,14 @@ public class TherapyFragment extends Fragment {
         // LISTA DELLE  TERAPIE
         listView = (ListView) view.findViewById(R.id.listTherapies);
 
-        listaTerapie = new ArrayList<therapyEntityDB>();
+        listaTerapie = new ArrayList<TherapyEntityDB>();
         /*for(int i=0; i<20;i++) {
             listaTerapie.add(new therapyEntityDB(null, 5, 5,
                     true, false, true, false, false, false, true,
                     1,"Tach"));
         }*/
         db=new DatabaseHelper(getContext());
-        listaTerapie=(ArrayList<therapyEntityDB>) db.getAllTherapies();
+        listaTerapie=(ArrayList<TherapyEntityDB>) db.getAllTherapies();
 
         customAdapter = new CustomAdapterTherapy(listaTerapie, getContext());
         listView.setAdapter(customAdapter);
@@ -112,7 +110,7 @@ public class TherapyFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                therapyEntityDB terapia= listaTerapie.get(position);
+                TherapyEntityDB terapia= listaTerapie.get(position);
                 Integer idTerapia=terapia.getID();
 
                 Intent intent = new Intent(view.getContext(), AddEditTherapyActivity.class);
@@ -130,7 +128,7 @@ public class TherapyFragment extends Fragment {
     public void onResume() {
         super.onResume();
         listaTerapie.clear();
-        listaTerapie.addAll((ArrayList<therapyEntityDB>) db.getAllTherapies());
+        listaTerapie.addAll((ArrayList<TherapyEntityDB>) db.getAllTherapies());
         customAdapter.notifyDataSetChanged();
     }
 

@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CustomAdapterTherapy extends ArrayAdapter<therapyEntityDB> {
+public class CustomAdapterTherapy extends ArrayAdapter<TherapyEntityDB> {
 
-    private ArrayList<therapyEntityDB> dataSet;
+    private ArrayList<TherapyEntityDB> dataSet;
     Context mContext;
 
-    public CustomAdapterTherapy(ArrayList<therapyEntityDB> data, Context context) {
+    public CustomAdapterTherapy(ArrayList<TherapyEntityDB> data, Context context) {
         super(context, R.layout.row_item_therapy, data);
         this.dataSet = data;
         this.mContext=context;
@@ -31,7 +31,7 @@ public class CustomAdapterTherapy extends ArrayAdapter<therapyEntityDB> {
         TextView week = (TextView)convertView.findViewById(R.id.weekDays);
         TextView hours = (TextView)convertView.findViewById(R.id.hoursTV);
 
-        therapyEntityDB actual = getItem(position);
+        TherapyEntityDB actual = getItem(position);
 
         drug.setText(actual.getDrug());
         week.setText(Integer.toString(actual.getDays()));
