@@ -210,13 +210,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public int removeTherapyBYId(int ID)
     {
-        SQLiteDatabase db=getReadableDatabase();
+        SQLiteDatabase db=getWritableDatabase();
         int deleteStatus =db.delete(therapyTable,therapyID +"=?",new String[]{ID+""});
         db.close();
         return deleteStatus;
 
     }
+public List<Time> getTherapyHour(TherapyEntityDB th)
+  {
+    SQLiteDatabase db = getReadableDatabase();
+    Cursor cursor=db.rawQuery("SELECT "+assumptionHour+" FROM "+assumptionTable +" WHERE "+ assumptiontherapy
+            +" = "+th.getID(),null);
 
+   if(cursor.getCount()==0)
+   { Log.d("assumption error","nessun orario trovato per la terapia inserita");
+        return null;}
+
+      List<Time> list = new ArrayList<>();
+    do{
+        String time=cursor.getString(cursor.getColumnIndex(assumptionHour));
+        Time hour=Time.valueOf(time);
+
+        Log.d("letto orario:",hour.toString());
+
+        list.add(hour);
+    }
+    while(cursor.moveToNext());
+
+
+  return list;
+  }
 
     /**
      * * Lazzarin
@@ -277,7 +300,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public int removeDrugBYName(String nome)
     {
-        SQLiteDatabase db=getReadableDatabase();
+        SQLiteDatabase db=getWritableDatabase();
         int deleteStatus =db.delete(drugTable,drugName +"=?",new String[]{nome+""});
         db.close();
         return deleteStatus;
@@ -437,7 +460,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public int removeAssumption(AssumptionEntity assumption)
     {
-        SQLiteDatabase db=getReadableDatabase();
+        SQLiteDatabase db=getWritableDatabase();
 
         SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
         String data=myFormat.format(assumption.getData());
@@ -450,7 +473,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public int removeAssumptionByTherapy(TherapyEntityDB therapy)
     {
-        SQLiteDatabase db=getReadableDatabase();
+        SQLiteDatabase db=getWritableDatabase();
 
         int deleteStatus =db.delete(drugTable,new String[]{assumptiontherapy}
                 +"=?",new String[]{therapy.getID().toString()});
