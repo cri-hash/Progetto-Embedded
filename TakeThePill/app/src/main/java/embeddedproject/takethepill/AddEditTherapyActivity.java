@@ -1,6 +1,7 @@
 package embeddedproject.takethepill;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,6 +39,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
     private final String giorni[] = {"Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"};
     DatabaseHelper db;
     TextView tvHours;
+    int day, month, year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +217,29 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                     etUntil.setText("");
                     etDaysNumb.setText(terapia.getDays().toString());
                 }
+
+                //Pulsante durata
+                etUntil.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Calendar c = Calendar.getInstance();
+                        day = c.get(Calendar.DAY_OF_MONTH);
+                        month = c.get(Calendar.MONTH);
+                        year = c.get(Calendar.YEAR);
+
+                        DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int yearSelected, int monthSelected, int daySelected) {
+                                year = yearSelected;
+                                month = monthSelected;
+                                day = daySelected;
+
+                                etUntil.setText(daySelected + "/" + monthSelected + "/" + yearSelected);
+                            }
+                        };
+                        new DatePickerDialog(AddEditTherapyActivity.this, datePicker, year, month, day).show();
+                    }
+                });
 
                 rdbtNoLimits.setOnClickListener(new View.OnClickListener() {
                     @Override
