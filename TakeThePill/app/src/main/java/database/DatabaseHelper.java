@@ -27,7 +27,7 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=6;
+        private static final int DatabaseVersion=7;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -440,7 +440,6 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
 
         String data=myFormat.format(assumption.getData());
-        Log.d("Data",data);
         toInsert.put(assumptionDate,data);
         toInsert.put(assumptionHour,assumption.getOra().toString()); //formato di default hh:mm:ss. Per riconvertire:valueOf(String)
         toInsert.put(assumptiontherapy,assumption.getTerapia());
@@ -511,7 +510,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         //Query di ricerca
         Cursor current=db.rawQuery("SELECT "+assumptionDate+","+assumptionHour+","+assumptionState+","+therapyDrug+","+therapyDosage
           +" FROM "+assumptionTable+" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
-                +" WHERE "+assumptionDate+ "="+ dataToRead , null);
+                +" WHERE "+assumptionDate+ "='"+ dataToRead+"'" , null);
 
         List<AssumptionEntity> list=new ArrayList<>();
 
@@ -528,8 +527,13 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
                 //query per leggere il tipo(uso un cursore temporaneo)
                 Cursor temp=db.rawQuery("SELECT "+typeName
                         +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
-                        +"WHERE "+drugName+ "="+ farmaco, null);
-                String tipo=temp.getString(temp.getColumnIndex(typeTable));
+                        +" WHERE "+drugName+ "='"+ farmaco+"'", null);
+                Log.d("Cursor",String.valueOf(temp.getCount()));
+                Log.d("query","SELECT "+typeName
+                        +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
+                        +" WHERE "+drugName+ "='"+ farmaco+"'");
+                temp.moveToFirst();
+                String tipo=temp.getString(temp.getColumnIndex(typeName));
                 temp.close();
                 Time ora=Time.valueOf(current.getString(current.getColumnIndex(assumptionHour)));
                 Boolean stato=checkInt(current.getInt(current.getColumnIndex(assumptionState)));
