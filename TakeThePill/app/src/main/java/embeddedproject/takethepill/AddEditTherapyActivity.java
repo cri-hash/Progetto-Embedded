@@ -20,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.text.DateFormat;
@@ -118,17 +119,13 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 terapia.setDosage(Integer.valueOf(etQuantity.getText().toString()));
-                Log.d("Terapia: ",terapia.getDateEnd()+" "+terapia.getDays()+" "+terapia.getNotify()+" ");
-                if(nuova){
+                if(nuova){  // Se si sta creando una nuova Terapia
 
                     if(terapia.getDrug()==null || listaOre==null){    //Se l'utente non ha inserito il farmaco o un orario
                         Snackbar snackbar = Snackbar
                                 .make(v, "Devi inserire tutti i dati", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     }else{
-
-
-
 
                         saveAll();  // Operazione DATABASE inserisci nuova terapia
                                     //operazione database di salvataggio assunzioni
@@ -137,7 +134,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                         //......
                         finish();   // Chiude l'activity e riapre la precedente
                     }
-                }else{
+                }else{  // Se si sta modificando una terapia
                     db.updateTherapy(terapia);  // Operazione DATABASE modifica terapia di id=...
                     finish();   // Chiude l'activity e riapre la precedente
                 }
@@ -194,32 +191,32 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 final RadioButton rdbtNoLimits = (RadioButton) durationView.findViewById(R.id.noLimits);
                 final RadioButton rdbtUntil= (RadioButton) durationView.findViewById(R.id.untilRdBtn);
                 final RadioButton rdbtNumbDays= (RadioButton) durationView.findViewById(R.id.number_days_RdBtn);
-                final EditText etUntil = (EditText) durationView.findViewById(R.id.etUntil);
                 final EditText etDaysNumb = (EditText) durationView.findViewById(R.id.etDaysNumber);
+                final Button btnUntil = (Button) durationView.findViewById(R.id.btnUntil);
 
                 if(terapia.getDays()==-2){    // DataFine
                     rdbtNoLimits.setChecked(false);
                     rdbtUntil.setChecked(true);
                     rdbtNumbDays.setChecked(false);
-                    etUntil.setText(terapia.getDateEnd().toString());
+                    btnUntil.setText(formatter.format(terapia.getDateEnd()));
                     etDaysNumb.setText("");
                 }else if(terapia.getDays()==-1){ //Senza Limiti
                     rdbtNoLimits.setChecked(true);
                     rdbtUntil.setChecked(false);
                     rdbtNumbDays.setChecked(false);
-                    etUntil.setText("");
+                    btnUntil.setText("Seleziona");
                     etDaysNumb.setText("");
                 }
                 else{   // n giorni
                     rdbtNoLimits.setChecked(false);
                     rdbtUntil.setChecked(false);
                     rdbtNumbDays.setChecked(true);
-                    etUntil.setText("");
+                    btnUntil.setText("Seleziona");
                     etDaysNumb.setText(terapia.getDays().toString());
                 }
 
                 //Pulsante durata
-                etUntil.setOnClickListener(new View.OnClickListener() {
+                btnUntil.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Calendar c = Calendar.getInstance();
@@ -234,7 +231,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                                 month = monthSelected;
                                 day = daySelected;
 
-                                etUntil.setText(daySelected + "/" + monthSelected + "/" + yearSelected);
+                                btnUntil.setText(daySelected + "/" + monthSelected + "/" + yearSelected);
                             }
                         };
                         new DatePickerDialog(AddEditTherapyActivity.this, datePicker, year, month, day).show();
@@ -244,21 +241,21 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 rdbtNoLimits.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        etUntil.setEnabled(false);
+                        btnUntil.setEnabled(false);
                         etDaysNumb.setEnabled(false);
                     }
                 });
                 rdbtUntil.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        etUntil.setEnabled(true);
+                        btnUntil.setEnabled(true);
                         etDaysNumb.setEnabled(false);
                     }
                 });
                 rdbtNumbDays.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        etUntil.setEnabled(false);
+                        btnUntil.setEnabled(false);
                         etDaysNumb.setEnabled(true);
                     }
                 });
@@ -279,7 +276,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                             terapia.setDays(-2);
                             Date date = null;
                             try {
-                                date = formatter.parse(etUntil.getText().toString());
+                                date = formatter.parse(btnUntil.getText().toString());
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -488,19 +485,26 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
     private void saveAll()
     {
+        // Salva la terapia
         db.insertTherapy(terapia);
 
-        while(!listaOre.isEmpty())
-        {
-            //TO DO: chiami il metodo generateAssumption della classe AssumptionEntity,
-            // passandogli la terapia e l'ora in formato Time
-            //ricevuta la lista terapie, basta salvarle nel db con insertAssumption
+        // Recupero L'ID dell'ultima terapia inserita
+        ArrayList<TherapyEntityDB> listaTerapie = new ArrayList<TherapyEntityDB>();
+        listaTerapie=(ArrayList<TherapyEntityDB>) db.getAllTherapies();
+        int ID=listaTerapie.get(listaTerapie.size()-1).getID();
 
+        terapia.setID(ID);
+        // Salva le ore
+        for(int i=0;i<listaOre.size();i++){// per ogni ora
 
+            AssumptionEntity assumptionEntity=new AssumptionEntity();
+
+            Time ora=new Time(listaOre.get(i)[0],listaOre.get(i)[1],0);
+            List<AssumptionEntity> listAssunzioni = assumptionEntity.generateAssumption(terapia,ora);
+            Log.d("listAssunzioni",String.valueOf(listAssunzioni.size()));
+            for(int j=0;j<listAssunzioni.size();j++) db.insertAssumption(listAssunzioni.get(j));
 
         }
-
-
 
     }
 

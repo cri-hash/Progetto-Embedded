@@ -46,12 +46,11 @@
         android:layout_toEndOf="@+id/radiog"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etUntil"
-            android:layout_width="150dp"
+        <Button
+            android:id="@+id/btnUntil"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="5"
-            android:inputType="date" />
+            android:text="Seleziona Ora" />
 
         <EditText
             android:id="@+id/etDaysNumber"

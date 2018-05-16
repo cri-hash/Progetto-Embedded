@@ -176,7 +176,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
-        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
         ContentValues values = new ContentValues();
         values.put(therapyID,toUpdate.getID());
         values.put(therapyDrug, toUpdate.getDrug());
@@ -437,9 +437,10 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues toInsert = new ContentValues();
-        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
 
         String data=myFormat.format(assumption.getData());
+        Log.d("Data",data);
         toInsert.put(assumptionDate,data);
         toInsert.put(assumptionHour,assumption.getOra().toString()); //formato di default hh:mm:ss. Per riconvertire:valueOf(String)
         toInsert.put(assumptiontherapy,assumption.getTerapia());
@@ -449,7 +450,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
             toInsert.put(assumptionState,0); //medicina non presa
 
         long id = db.insert(assumptionTable, null, toInsert);
-        Log.d("avvenuto:", "inserimento assunzione");
+        Log.d("avvenuto:", "inserimento assunzione di TerapiaID: "+assumption.getTerapia()+", Data:"+data);
         // close db connection
         db.close();
 
@@ -462,7 +463,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
     {
         SQLiteDatabase db=getWritableDatabase();
 
-        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
         String data=myFormat.format(assumption.getData());
 
         String ora=assumption.getOra().toString();
@@ -483,7 +484,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
      public long setAssumption(AssumptionEntity assumption, boolean state)
      {
 
-         SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+         SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
 
          String data=myFormat.format(assumption.getData());
          SQLiteDatabase db=getWritableDatabase();
@@ -504,7 +505,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
     public List<AssumptionEntity> getAssumptionByDate(Date data)
     {
         SQLiteDatabase db=getReadableDatabase();
-        SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
 
         String dataToRead=myFormat.format(data);
         //Query di ricerca
@@ -576,7 +577,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
 private Date stringToDate(String toDate)
     {
         Date data=null;
-        DateFormat dt= new SimpleDateFormat("dd/mm/yyyy");
+        DateFormat dt= new SimpleDateFormat("dd/MM/yyyy");
         try{
          data=dt.parse(toDate);}
          catch(ParseException e)

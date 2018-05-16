@@ -34,13 +34,18 @@ public class AssumptionEntity {
         this.tipoFarmaco=tipoFarmaco;
     }
     //costruttore per database
-    public AssumptionEntity(Date data, Time ora, Integer terapia, boolean stato)
+    public AssumptionEntity(Date data, Time ora, int terapia, boolean stato)
     {
         this.data=data;
         this.ora=ora;
         this.terapia=terapia;
         this.stato=stato;
     }
+    // Costruttore
+    public AssumptionEntity()
+    {
+    }
+
 
     //METODI GET e SET
 

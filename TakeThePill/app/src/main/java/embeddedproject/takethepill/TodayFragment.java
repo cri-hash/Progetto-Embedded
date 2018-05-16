@@ -42,7 +42,7 @@ public class TodayFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    ArrayList<AssumptionEntity> listAssunzioni;
+
 
     public TodayFragment() {
         // Required empty public constructor
@@ -83,7 +83,9 @@ public class TodayFragment extends Fragment {
 
 
 
-
+    ArrayList<AssumptionEntity> listAssunzioni;
+    CustomAdapterMain customAdapter;
+    DatabaseHelper db;
 
 
     @Override
@@ -108,7 +110,7 @@ public class TodayFragment extends Fragment {
 
         listAssunzioni = new ArrayList<AssumptionEntity>();
 
-        DatabaseHelper db=new DatabaseHelper(getContext());
+        db=new DatabaseHelper(getContext());
         listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
 
         /*for(int i=0; i<20;i++) {
@@ -116,7 +118,7 @@ public class TodayFragment extends Fragment {
                    true, 5, "Pillole"));
         }*/
 
-        CustomAdapterMain customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
+        customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
         listView.setAdapter(customAdapter);
 
     // QUANDO SI CLICCA SU UN ELEMENTO
@@ -151,7 +153,13 @@ public class TodayFragment extends Fragment {
     }
 
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        listAssunzioni.clear();
+        listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+        customAdapter.notifyDataSetChanged();
+    }
 
 
 
