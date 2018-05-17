@@ -219,7 +219,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 public List<Time> getTherapyHour(TherapyEntityDB th)
   {
     SQLiteDatabase db = getReadableDatabase();
-    Cursor cursor=db.rawQuery("SELECT "+assumptionHour+" FROM "+assumptionTable +" WHERE "+ assumptiontherapy
+    Cursor cursor=db.rawQuery("SELECT DISTINCT "+assumptionHour+" FROM "+assumptionTable +" WHERE "+ assumptiontherapy
             +" = "+th.getID(),null);
 
    if(cursor.getCount()==0)
@@ -227,6 +227,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         return null;}
 
       List<Time> list = new ArrayList<>();
+    cursor.moveToFirst();
     do{
         String time=cursor.getString(cursor.getColumnIndex(assumptionHour));
         Time hour=Time.valueOf(time);

@@ -79,7 +79,11 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             terapia=db.getTherapy(id);
             tvDrugName.setText(terapia.getDrug());
 
-            // Operazione database Lista delle ore?????
+            listaOre=new ArrayList<int[]>();
+            List<Time> list =db.getTherapyHour(terapia);    // Operazione database Lista delle ore
+            for (int i=0; i<list.size();i++){
+                listaOre.add(new int[]{list.get(i).getHours(),list.get(i).getMinutes()});
+            }
         }
 
         // TextView Quantità
@@ -111,6 +115,16 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         // TextView Notifica
         if(terapia.getNotify()!=-1) tvNotify.setText("Notifiche: "+terapia.getNotify().toString()+" min prima");
         else tvNotify.setText("Notifiche: nessuna");
+
+
+        // TextView Ore
+        tvHours.setText(listaOre.toString());
+        String o="Ora: ";
+        for (int i=0; i<listaOre.size();i++){
+            o+=listaOre.get(i)[0]+":"+listaOre.get(i)[1];
+            if(i!=listaOre.size()-1)o+=", ";
+        }
+        tvHours.setText(o);
 
 
         // BOTTONI TOOLBAR SALVA E ANNULLA
@@ -482,7 +496,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         }
     }
 
-
+    // QUAANDO SI SALVA
     private void saveAll()
     {
         // Salva la terapia

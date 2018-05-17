@@ -5,14 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
+
+import database.DatabaseHelper;
 
 public class CustomAdapterTherapy extends ArrayAdapter<TherapyEntityDB> {
 
     private ArrayList<TherapyEntityDB> dataSet;
     Context mContext;
+    private boolean[] giorniSelezionati;    // Usata nella selezione dei giorni
+    private final String giorni[] = {"Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"};
+
 
     public CustomAdapterTherapy(ArrayList<TherapyEntityDB> data, Context context) {
         super(context, R.layout.row_item_therapy, data);
@@ -28,17 +36,44 @@ public class CustomAdapterTherapy extends ArrayAdapter<TherapyEntityDB> {
         convertView = inflater.inflate(R.layout.row_item_therapy, null);
 
         TextView drug = (TextView)convertView.findViewById(R.id.drugName);
-        TextView week = (TextView)convertView.findViewById(R.id.weekDays);
+        TextView tvDays = (TextView)convertView.findViewById(R.id.weekDays);
         TextView hours = (TextView)convertView.findViewById(R.id.hoursTV);
+        ImageView ivNotifica=(ImageView)convertView.findViewById(R.id.ivNotification);
 
-        TherapyEntityDB actual = getItem(position);
+        TherapyEntityDB terapia = getItem(position);
 
-        drug.setText(actual.getDrug());
-        week.setText(Integer.toString(actual.getDays()));
-        //hours.setText(actual.getOre()); ??
+        drug.setText(terapia.getDrug());
+
+        giorniSelezionati = new boolean[]{terapia.isMon(), terapia.isTue(), terapia.isWed(), terapia.isThu(), terapia.isFri(), terapia.isSat(), terapia.isSun()};
+        // TextView Giorni
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < giorniSelezionati.length; i++) {
+            if (giorniSelezionati[i]) {
+                if (s.length() > 0) s.append(", ");
+                s.append(giorni[i]);
+            }
+        }
+        if (s.toString().trim().equals("")) {
+            tvDays.setText("");
+            s.setLength(0);
+        } else {
+            tvDays.setText(s);
+        }
+
+        // TextView Ore
+        DatabaseHelper db=new DatabaseHelper(convertView.getContext());
+        List<Time> list =db.getTherapyHour(terapia);    // Operazione database Lista delle ore
+        String h="";
+        for (int i=0; i<list.size();i++){
+            h+=String.valueOf(list.get(i).getHours())+":"+String.valueOf(list.get(i).getMinutes());
+            if(i!=list.size()-1)h+=", ";
+        }
+        hours.setText(h);
+
+        if(terapia.getNotify()==-1)ivNotifica.setImageDrawable(convertView.getResources().getDrawable(R.drawable.ic_notifications_none_black_24dp));
+        else ivNotifica.setImageDrawable(convertView.getResources().getDrawable(R.drawable.ic_notifications_black_24dp));
 
         //???? Gestire immagine Pillola
-        //???? Gestire immagine notifica
 
 
         return convertView;

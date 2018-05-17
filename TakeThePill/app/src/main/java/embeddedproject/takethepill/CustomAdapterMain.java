@@ -43,7 +43,7 @@ public class CustomAdapterMain extends ArrayAdapter<AssumptionEntity> {
         final DateFormat formatter = new SimpleDateFormat("HH:mm");
         hour.setText(formatter.format(actual.getOra()));
 
-        tvDosaggio.setText(actual.getDosaggio().toString()+" "+actual.getTipoFarmaco()+actual.getStato());
+        tvDosaggio.setText(actual.getDosaggio().toString()+" "+actual.getTipoFarmaco());
 
         return convertView;
     }

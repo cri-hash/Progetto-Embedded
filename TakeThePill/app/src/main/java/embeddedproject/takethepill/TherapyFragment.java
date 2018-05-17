@@ -94,11 +94,6 @@ public class TherapyFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listTherapies);
 
         listaTerapie = new ArrayList<TherapyEntityDB>();
-        /*for(int i=0; i<20;i++) {
-            listaTerapie.add(new therapyEntityDB(null, 5, 5,
-                    true, false, true, false, false, false, true,
-                    1,"Tach"));
-        }*/
         db=new DatabaseHelper(getContext());
         listaTerapie=(ArrayList<TherapyEntityDB>) db.getAllTherapies();
 

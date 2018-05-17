@@ -18,7 +18,7 @@ public class TherapyEntityDB {
     private String mDrug;
     private Date mDateStart;
     private Date mDateEnd;
-    private Integer mNotify;
+    private Integer mNotify;    //-1=nessuna notifica, 0=notifica allo stesso momento, >0=min prima
     private Integer mDays;
     private boolean mMon, mTue, mWed, mThu, mFri, mSat, mSun;
     private int mDosaggio;
