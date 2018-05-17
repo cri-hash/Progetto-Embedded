@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class CustomAdapterMain extends ArrayAdapter<AssumptionEntity> {
@@ -28,14 +31,19 @@ public class CustomAdapterMain extends ArrayAdapter<AssumptionEntity> {
 
         TextView drug = (TextView)convertView.findViewById(R.id.drug);
         TextView hour = (TextView)convertView.findViewById(R.id.hour);
+        ImageView ivStato =(ImageView)convertView.findViewById(R.id.ivStato);
+        TextView tvDosaggio = (TextView)convertView.findViewById(R.id.tvAssumpQuantity);
 
         AssumptionEntity actual = getItem(position);
         drug.setText(actual.getNomeFarmaco());
-        hour.setText(/*actual.getOra().toString()*/ "12.00");
 
-        //???? Gestire dosaggio
-        //???? Gestire tipofarmaco
+        if(actual.getStato()) ivStato.setVisibility(View.INVISIBLE);
+        else ivStato.setVisibility(View.VISIBLE);
 
+        final DateFormat formatter = new SimpleDateFormat("HH:mm");
+        hour.setText(formatter.format(actual.getOra()));
+
+        tvDosaggio.setText(actual.getDosaggio().toString()+" "+actual.getTipoFarmaco()+actual.getStato());
 
         return convertView;
     }

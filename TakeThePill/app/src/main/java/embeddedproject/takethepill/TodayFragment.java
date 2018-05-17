@@ -126,7 +126,7 @@ public class TodayFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                AssumptionEntity assunzione= listAssunzioni.get(position);
+                final AssumptionEntity assunzione= listAssunzioni.get(position);
 
             // Messaggio Preso/non preso
                 final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -135,12 +135,14 @@ public class TodayFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ////AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+                        db.setAssumption(assunzione,true);
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+                        db.setAssumption(assunzione,false);
                     }
                 });
                 builder.setCancelable(false);

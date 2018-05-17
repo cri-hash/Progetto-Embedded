@@ -25,13 +25,14 @@ public class AssumptionEntity {
     private Integer terapia;
 
     // costruttore per assunzioni DI SOLA LETTURA
-    public AssumptionEntity(Date data, Time ora, String nomeFarmaco, Boolean stato, Integer dosaggio,String tipoFarmaco){
+    public AssumptionEntity(Date data, Time ora, String nomeFarmaco, Boolean stato, Integer dosaggio,String tipoFarmaco, int terapia){
         this.data=data;
         this.ora=ora;
         this.nomeFarmaco=nomeFarmaco;
         this.stato=stato;
         this.dosaggio=dosaggio;
         this.tipoFarmaco=tipoFarmaco;
+        this.terapia=terapia;
     }
     //costruttore per database
     public AssumptionEntity(Date data, Time ora, int terapia, boolean stato)

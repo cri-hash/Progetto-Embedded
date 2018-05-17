@@ -27,7 +27,7 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=7;
+        private static final int DatabaseVersion=10;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -490,9 +490,21 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
          ContentValues values=new ContentValues();
          values.put(assumptionState,state);
 
-         long id = db.update(assumptionTable,values,new String[]{assumptionDate,assumptionHour,assumptiontherapy}
-         +"=?",new String[]{data,assumption.getOra().toString(),assumption.getTerapia()+""});
-         return id;
+         int stato=0;
+         if(state) stato=1;
+
+         //long id = db.update(assumptionTable,values,new String[]{assumptionDate,assumptionHour,assumptiontherapy}
+        // +"=?",new String[]{data,assumption.getOra().toString(),String.valueOf(assumption.getTerapia())});
+
+         String q="UPDATE "+assumptionTable+" SET "+assumptionState+ "="+stato+" WHERE "
+                 +assumptionDate+"='"+data+"' AND "+assumptionHour+"='"+assumption.getOra().toString()
+                 +"' AND "+assumptiontherapy+"="+String.valueOf(assumption.getTerapia())+";";
+
+         db.rawQuery(q,null);
+
+         Log.d("Update:",q);
+
+         return 5;//niente
      }
 
 
@@ -509,7 +521,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         String dataToRead=myFormat.format(data);
         //Query di ricerca
         Cursor current=db.rawQuery("SELECT "+assumptionDate+","+assumptionHour+","+assumptionState+","+therapyDrug+","+therapyDosage
-          +" FROM "+assumptionTable+" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
+          +","+assumptiontherapy+" FROM "+assumptionTable+" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
                 +" WHERE "+assumptionDate+ "='"+ dataToRead+"'" , null);
 
         List<AssumptionEntity> list=new ArrayList<>();
@@ -528,17 +540,15 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
                 Cursor temp=db.rawQuery("SELECT "+typeName
                         +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
                         +" WHERE "+drugName+ "='"+ farmaco+"'", null);
-                Log.d("Cursor",String.valueOf(temp.getCount()));
-                Log.d("query","SELECT "+typeName
-                        +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
-                        +" WHERE "+drugName+ "='"+ farmaco+"'");
                 temp.moveToFirst();
                 String tipo=temp.getString(temp.getColumnIndex(typeName));
                 temp.close();
                 Time ora=Time.valueOf(current.getString(current.getColumnIndex(assumptionHour)));
                 Boolean stato=checkInt(current.getInt(current.getColumnIndex(assumptionState)));
+                Log.d("Stato Assunzione:",current.getInt(current.getColumnIndex(assumptionState))+stato.toString());
                 int dosaggio=current.getInt(current.getColumnIndex(therapyDosage));
-                AssumptionEntity assunzione=new AssumptionEntity(data,ora,farmaco,stato,dosaggio,tipo);
+                int terapiaId=current.getInt(current.getColumnIndex(assumptiontherapy));
+                AssumptionEntity assunzione=new AssumptionEntity(data,ora,farmaco,stato,dosaggio,tipo,terapiaId);
                 list.add(assunzione);
             }
             while(current.moveToNext());
