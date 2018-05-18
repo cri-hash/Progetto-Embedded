@@ -113,11 +113,6 @@ public class TodayFragment extends Fragment {
         db=new DatabaseHelper(getContext());
         listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
 
-        /*for(int i=0; i<20;i++) {
-            listAssunzioni.add(new AssumptionEntity(null, null, "NomeFarmaco",
-                   true, 5, "Pillole"));
-        }*/
-
         customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
         listView.setAdapter(customAdapter);
 
@@ -136,6 +131,14 @@ public class TodayFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // Funzione database Aggiorna stato assunzione
                         db.setAssumption(assunzione,true);
+
+                        // Aggiornare le scorte del farmaco
+                        if(!assunzione.getStato()){
+                            DrugEntity farmaco = db.getDrugByName(assunzione.getNomeFarmaco());
+                            farmaco.setScorte(farmaco.getScorte()-assunzione.getDosaggio());
+                            db.updateDrug(farmaco);
+                        }
+
                         // Ricarico la lista degli elementi
                         listAssunzioni.clear();
                         listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
@@ -147,6 +150,14 @@ public class TodayFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // Funzione database Aggiorna stato assunzione
                         db.setAssumption(assunzione,false);
+
+                        // Aggiornare le scorte del farmaco
+                        if(assunzione.getStato()){
+                            DrugEntity farmaco = db.getDrugByName(assunzione.getNomeFarmaco());
+                            farmaco.setScorte(farmaco.getScorte()+assunzione.getDosaggio());
+                            db.updateDrug(farmaco);
+                        }
+
                         // Ricarico la lista degli elementi
                         listAssunzioni.clear();
                         listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
