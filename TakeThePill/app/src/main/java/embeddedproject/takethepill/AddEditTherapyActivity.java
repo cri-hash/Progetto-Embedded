@@ -74,6 +74,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         if(nuova) { // Se è una NUOVA terapia
             terapia=new TherapyEntityDB(null,-1,-1,true,false,false,false,false,false,false,1,null);
             tvDrugName.setText("Seleziona farmaco ...");
+            listaOre=new ArrayList<int[]>();
         }
         else{   // Se è MODIFICA terapia
             terapia=db.getTherapy(id);

@@ -43,7 +43,7 @@ public class CustomAdapterTherapy extends ArrayAdapter<TherapyEntityDB> {
         TherapyEntityDB terapia = getItem(position);
 
         drug.setText(terapia.getDrug());
-
+/*
         giorniSelezionati = new boolean[]{terapia.isMon(), terapia.isTue(), terapia.isWed(), terapia.isThu(), terapia.isFri(), terapia.isSat(), terapia.isSun()};
         // TextView Giorni
         StringBuilder s = new StringBuilder();
@@ -75,7 +75,7 @@ public class CustomAdapterTherapy extends ArrayAdapter<TherapyEntityDB> {
 
         //???? Gestire immagine Pillola
 
-
+*/
         return convertView;
     }
 
