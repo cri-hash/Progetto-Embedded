@@ -135,22 +135,18 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 terapia.setDosage(Integer.valueOf(etQuantity.getText().toString()));
                 if(nuova){  // Se si sta creando una nuova Terapia
-
-                    if(terapia.getDrug()==null || listaOre==null){    //Se l'utente non ha inserito il farmaco o un orario
+                    if(terapia.getDrug()==null || listaOre==null || listaOre.size()==0){    //Se l'utente non ha inserito il farmaco o un orario
                         Snackbar snackbar = Snackbar
                                 .make(v, "Devi inserire tutti i dati", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     }else{
-
-                        saveAll();  // Operazione DATABASE inserisci nuova terapia
-                                    //operazione database di salvataggio assunzioni
-
-                        // Operazione orari.......
-                        //......
+                        saveAll();
                         finish();   // Chiude l'activity e riapre la precedente
                     }
                 }else{  // Se si sta modificando una terapia
                     db.updateTherapy(terapia);  // Operazione DATABASE modifica terapia di id=...
+                    db.removeAssumptionByTherapy(terapia);
+                    salvaOre();
                     finish();   // Chiude l'activity e riapre la precedente
                 }
             }
@@ -457,6 +453,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // AGGIUNGI CODICE DATABASE CHE CANCELLA LA TERAPIA
                         db.removeTherapyBYId(terapia.getID());
+                        // Le assunzioni si eliminano da sole in cascata dalle terapie
                         finish();
                     }
                 });
@@ -497,9 +494,8 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         }
     }
 
-    // QUAANDO SI SALVA
-    private void saveAll()
-    {
+    // QUANDO SI SALVA
+    private void saveAll(){
         // Salva la terapia
         db.insertTherapy(terapia);
 
@@ -510,6 +506,11 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
         terapia.setID(ID);
         // Salva le ore
+        salvaOre();
+
+    }
+
+    private void salvaOre(){
         for(int i=0;i<listaOre.size();i++){// per ogni ora
 
             AssumptionEntity assumptionEntity=new AssumptionEntity();
@@ -520,7 +521,6 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             for(int j=0;j<listAssunzioni.size();j++) db.insertAssumption(listAssunzioni.get(j));
 
         }
-
     }
 
 }

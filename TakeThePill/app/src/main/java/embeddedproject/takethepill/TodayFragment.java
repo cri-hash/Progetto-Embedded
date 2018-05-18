@@ -134,15 +134,23 @@ public class TodayFragment extends Fragment {
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ////AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+                        // Funzione database Aggiorna stato assunzione
                         db.setAssumption(assunzione,true);
+                        // Ricarico la lista degli elementi
+                        listAssunzioni.clear();
+                        listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+                        customAdapter.notifyDataSetChanged();
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //AGGIUNGERE CODICE CHE MODIFICA L'ELEMENTO ASSUNZIONE DEL DATABASE
+                        // Funzione database Aggiorna stato assunzione
                         db.setAssumption(assunzione,false);
+                        // Ricarico la lista degli elementi
+                        listAssunzioni.clear();
+                        listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+                        customAdapter.notifyDataSetChanged();
                     }
                 });
                 builder.setCancelable(false);

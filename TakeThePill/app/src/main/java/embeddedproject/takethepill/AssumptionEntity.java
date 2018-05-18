@@ -42,10 +42,8 @@ public class AssumptionEntity {
         this.terapia=terapia;
         this.stato=stato;
     }
-    // Costruttore
-    public AssumptionEntity()
-    {
-    }
+    // Costruttore generico
+    public AssumptionEntity(){}
 
 
     //METODI GET e SET
@@ -100,9 +98,7 @@ public class AssumptionEntity {
     }
 
 
-    /**
-     * Given a therapy, return a list of assumption about this therapy
-     */
+
     public List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour)
     {
         List<AssumptionEntity> list= new ArrayList<>();

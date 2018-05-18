@@ -27,7 +27,7 @@ import static database.Str.*;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=10;
+        private static final int DatabaseVersion=13;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -476,8 +476,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
     {
         SQLiteDatabase db=getWritableDatabase();
 
-        int deleteStatus =db.delete(drugTable,new String[]{assumptiontherapy}
-                +"=?",new String[]{therapy.getID().toString()});
+        int deleteStatus =db.delete(assumptionTable,assumptiontherapy+"="+therapy.getID().toString(),null);
         db.close();
         return deleteStatus;
     }
@@ -494,16 +493,16 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
          int stato=0;
          if(state) stato=1;
 
-         //long id = db.update(assumptionTable,values,new String[]{assumptionDate,assumptionHour,assumptiontherapy}
-        // +"=?",new String[]{data,assumption.getOra().toString(),String.valueOf(assumption.getTerapia())});
-
-         String q="UPDATE "+assumptionTable+" SET "+assumptionState+ "="+stato+" WHERE "
+         db.update(assumptionTable,values,
+                 assumptionDate+"=? and "+assumptionHour+"=? and "+assumptiontherapy+"=?",
+                 new String[]{data,assumption.getOra().toString(),String.valueOf(assumption.getTerapia())});
+         /*String q="UPDATE "+assumptionTable+" SET "+assumptionState+ "="+stato+" WHERE "
                  +assumptionDate+"='"+data+"' AND "+assumptionHour+"='"+assumption.getOra().toString()
                  +"' AND "+assumptiontherapy+"="+String.valueOf(assumption.getTerapia())+";";
 
          db.rawQuery(q,null);
 
-         Log.d("Update:",q);
+         Log.d("Update:",q);*/
 
          return 5;//niente
      }
@@ -566,29 +565,6 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
 
 
 
-
-
-
-    /**
-     *
-     * @return number of drugs storaged on the db
-     */
-     /*
- public int countElements()
-    {
-        int count=0;
-        String queryRequest= "SELECT * FROM "+ Drug.nameTable;
-        SQLiteDatabase db=getReadableDatabase();
-        Cursor current =db.rawQuery(queryRequest,null);
-        count=current.getCount();
-        db.close();
-        current.close();
-        return 0;
-    }*/
-
-
-
-
 private Date stringToDate(String toDate)
     {
         Date data=null;
@@ -606,39 +582,21 @@ private Date stringToDate(String toDate)
       *
       * @return true se tutto va bene, falso se qualcosa non va
      */
-    public boolean popolaDB()
-{
-     //inserimento farmaci
+    public boolean popolaDB(){
+        /*SQLiteDatabase db=getReadableDatabase();
+        Cursor c=db.rawQuery("SELECT * FROM "+assumptionTable+";",null);
+        c.moveToFirst();
+        while(!c.isLast()) {
+            String s=c.getString(c.getColumnIndex(assumptionDate)) + "|"
+                + c.getString(c.getColumnIndex(assumptionHour)) + "|"
+                + c.getString(c.getColumnIndex(assumptiontherapy)) + "|"
+                + c.getString(c.getColumnIndex(assumptionState));
+            Log.d("Tabella Assunzioni:",s);
+            c.moveToNext();
+        }*/
 
-    DrugEntity farmaco1=new DrugEntity("Maaolox","digestivo","Capsula/e",12.50,12);
-    DrugEntity farmaco2=new DrugEntity("Arnica","pomata per ematoma","Applicazione/i",8.50,10);
-    DrugEntity farmaco3=new DrugEntity("tachipirina","analgesico","Pillola/e",7.5,32);
-
-    /*insertDrug(farmaco1);
-    insertDrug(farmaco2);
-    insertDrug(farmaco3);*/
-
-    //inserimento terapia public therapyEntityDB(Date dataFine, Integer nGiorni, int minNotifica,
-   // Boolean lun, Boolean mar, Boolean mer, Boolean gio,
-     //   Boolean ven, Boolean sab, Boolean dom,
-       // Integer dosaggio, String nomeFarmaco)
-    /*String data="13/05/2018";
-    Date dateEnd=stringToDate(data);
-    therapyEntityDB therapy1=new therapyEntityDB(dateEnd,3,5,true,true,false,true,false,false,false,1,"Arnica");
-    therapyEntityDB therapy2=new therapyEntityDB(dateEnd,15,15,true,true,false,true,true,false,false,3,"Tachipirina");
-    //insertTherapy(therapy1);
-    //insertTherapy(therapy2);
-    /*List<therapyEntityDB> list=getAllTherapies();
-    therapy1=list.get(0);
-    therapy2=list.get(1);*/
-
-    /*AssumptionEntity assumption1=new AssumptionEntity(dateEnd,Time.valueOf("13:45:00"),therapy1.getID(),false);
-    AssumptionEntity assumption2=new AssumptionEntity(dateEnd,Time.valueOf("12:15:00"),therapy2.getID(),false);
-    //insertAssumption(assumption1);
-    //insertAssumption(assumption2);*/
-
-    return true;
-}
+        return true;
+    }
 
 
 
