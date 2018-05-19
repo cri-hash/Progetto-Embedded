@@ -239,10 +239,10 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker datePicker, int yearSelected, int monthSelected, int daySelected) {
                                 year = yearSelected;
-                                month = monthSelected;
+                                month = monthSelected+1;
                                 day = daySelected;
 
-                                btnUntil.setText(daySelected + "/" + monthSelected + "/" + yearSelected);
+                                btnUntil.setText(day + "/" + month + "/" + year);
                             }
                         };
                         new DatePickerDialog(AddEditTherapyActivity.this, datePicker, year, month, day).show();

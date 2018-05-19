@@ -9,17 +9,13 @@ import java.util.Date;
 
 import database.Str;
 
-/**
- * Created by Cristian on 13/04/2018.
- */
-
 public class TherapyEntityDB {
     private Integer mID;
     private String mDrug;
     private Date mDateStart;
     private Date mDateEnd;
     private Integer mNotify;    //-1=nessuna notifica, 0=notifica allo stesso momento, >0=min prima
-    private Integer mDays;
+    private Integer mDays;      //-2=DataFine, -1=Senza limiti
     private boolean mMon, mTue, mWed, mThu, mFri, mSat, mSun;
     private int mDosaggio;
 

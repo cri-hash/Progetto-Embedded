@@ -7,11 +7,14 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class AssumptionEntity {
 
@@ -101,18 +104,36 @@ public class AssumptionEntity {
 
     public List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour)
     {
+
+        if(th.getDays()==null){
+            Log.d("errore terapia","numero giorni non trovato");
+            return null;
+        }
+
         List<AssumptionEntity> list= new ArrayList<>();
-        if(th.getDays()==null)
-        { Log.d("errore terapia","numero giorni non trovato");
-            return null;}
-        int count=th.getDays();
-        TimeZone tz=TimeZone.getDefault();
-        Calendar calendar=Calendar.getInstance(tz);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR, 0);
         // torno indietro di un giorno per garantire la correttezza del ciclo
         calendar.add(Calendar.DAY_OF_MONTH,-1);
 
-        while(count>0)
-        {
+
+        int count=0;
+        // Se si ha la data di fine, ricavo i giorni di differenza con oggi
+        if(th.getDays()==-2){
+            long diff = th.getDateEnd().getTime()-calendar.getTime().getTime();
+            long giorni = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            Log.d("Data Fine",th.getDateEnd().toString());
+            Log.d("Data Inizio",calendar.getTime().toString());
+            Log.d("n Giorni",giorni+"");
+            count= (int)giorni;
+        } else if(th.getDays()==-1)count=10;// Se senza limiti???????????
+        else count=th.getDays();
+
+        while(count>0){
             //scorro il calendario un giorno alla volta
             calendar.add(Calendar.DAY_OF_MONTH,1);
             String data=calendar.getTime().toString(); // occhio al formato..da controllare
@@ -125,49 +146,49 @@ public class AssumptionEntity {
             Log.d("day found",day+"");
 
             //compare day found and check if it's a day therapy,then add assumption
-            if(day==1 &&th.isSun())
+            if(day==1 && th.isSun())
             {
                 AssumptionEntity current= new AssumptionEntity(calendar.getTime(),hour,th.getID(),false);
                 list.add(current);
                 count--;
                 continue;
             }
-            if(day==2 &&th.isMon())
+            if(day==2 && th.isMon())
             {
                 AssumptionEntity current= new AssumptionEntity(calendar.getTime(),hour,th.getID(),false);
                 list.add(current);
                 count--;
                 continue;
             }
-            if(day==3 &&th.isTue())
+            if(day==3 && th.isTue())
             {
                 AssumptionEntity current= new AssumptionEntity(calendar.getTime(),hour,th.getID(),false);
                 list.add(current);
                 count--;
                 continue;
             }
-            if(day==4 &&th.isWed())
+            if(day==4 && th.isWed())
             {
                 AssumptionEntity current= new AssumptionEntity(calendar.getTime(),hour,th.getID(),false);
                 list.add(current);
                 count--;
                 continue;
             }
-            if(day==5 &&th.isThu())
+            if(day==5 && th.isThu())
             {
                 AssumptionEntity current= new AssumptionEntity(calendar.getTime(),hour,th.getID(),false);
                 list.add(current);
                 count--;
                 continue;
             }
-            if(day==6 &&th.isFri())
+            if(day==6 && th.isFri())
             {
                 AssumptionEntity current= new AssumptionEntity(calendar.getTime(),hour,th.getID(),false);
                 list.add(current);
                 count--;
                 continue;
             }
-            if(day==7 &&th.isSat())
+            if(day==7 && th.isSat())
             {
                 AssumptionEntity current= new AssumptionEntity(calendar.getTime(),hour,th.getID(),false);
                 list.add(current);
