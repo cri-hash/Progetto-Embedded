@@ -105,7 +105,11 @@ public class AddHourActivity extends AppCompatActivity {
         btnAddHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listaOre.add(new int[]{mHour,mMinute});
+                boolean contiene=false;
+                for(int i=0; i<listaOre.size();i++){
+                    if(listaOre.get(i)[0]==mHour && listaOre.get(i)[1]==mMinute) contiene=true;
+                }
+                if(!contiene) listaOre.add(new int[]{mHour,mMinute});
                 customAdapter.notifyDataSetChanged();
             }
         });
