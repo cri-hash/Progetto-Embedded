@@ -28,6 +28,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddEditDrugActivity" />
         <activity android:name=".AddHourActivity"></activity>
+
+
     </application>
 
 </manifest>
