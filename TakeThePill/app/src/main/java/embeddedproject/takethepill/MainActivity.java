@@ -1,8 +1,10 @@
 package embeddedproject.takethepill;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,11 +37,10 @@ import java.util.TimeZone;
 import database.DatabaseHelper;
 
 import static android.app.Notification.EXTRA_NOTIFICATION_ID;
+import android.os.SystemClock;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    ArrayList<AssumptionEntity> listAssunzioni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,35 +64,15 @@ public class MainActivity extends AppCompatActivity
         displaySelectedFragment(fragment);
 
 
-        DatabaseHelper db=new DatabaseHelper(this); //per testare il db in fase di creazione
-        db.popolaDB();
-
-
-
-        // Terapie di durata Senza Fine
-
-        // Cerco terapie con getDays==-1
-        List<TherapyEntityDB> listaTerapie = db.getAllTherapies();
-
-        // Per ogni terapia:
-        for(int i=0;i<listaTerapie.size();i++){
-            if(listaTerapie.get(i).getDays()==-1){
-                // n° Assunzioni della terapia da oggi in poi
-                // Data di oggi
-                SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
-                Calendar calendar = Calendar.getInstance();
-                String oggi = myFormat.format(calendar.getTime());
-            }
-        }
-            // conto il numero di assunzioni da oggi in poi
-            // Se <10 ne aggiungo 10
-            //.......
-
-
-
         // NOTIFICHE
-        Intent i = new Intent(this, NotificheIntentService.class);
-        startService(i);
+        // Ogni minuto manda un broadcast che attiva la classe AlarmNotificationReiceiver
+        AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent myIntent;
+        PendingIntent pendingIntent;
+        myIntent = new Intent(MainActivity.this,AlarmNotificationReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(this,0,myIntent,0);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP,SystemClock.elapsedRealtime()+3000,60000,pendingIntent);
+
 
     }
 
@@ -143,6 +124,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
     }
-    
+
 
 }

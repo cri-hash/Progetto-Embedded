@@ -4,16 +4,10 @@ package embeddedproject.takethepill;
 import android.util.Log;
 
 import java.sql.Time;
-import java.text.DateFormat;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class AssumptionEntity {
@@ -102,8 +96,7 @@ public class AssumptionEntity {
 
 
 
-    public List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour)
-    {
+    public List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour){
 
         if(th.getDays()==null){
             Log.d("errore terapia","numero giorni non trovato");

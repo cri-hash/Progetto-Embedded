@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.AdapterView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -113,6 +114,7 @@ public class TodayFragment extends Fragment {
         db=new DatabaseHelper(getContext());
         listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
 
+
         customAdapter = new CustomAdapterMain(listAssunzioni, getContext());
         listView.setAdapter(customAdapter);
 
@@ -142,6 +144,7 @@ public class TodayFragment extends Fragment {
                         // Ricarico la lista degli elementi
                         listAssunzioni.clear();
                         listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+
                         customAdapter.notifyDataSetChanged();
                     }
                 });
@@ -161,6 +164,7 @@ public class TodayFragment extends Fragment {
                         // Ricarico la lista degli elementi
                         listAssunzioni.clear();
                         listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+
                         customAdapter.notifyDataSetChanged();
                     }
                 });
@@ -179,6 +183,7 @@ public class TodayFragment extends Fragment {
         super.onResume();
         listAssunzioni.clear();
         listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+
         customAdapter.notifyDataSetChanged();
     }
 

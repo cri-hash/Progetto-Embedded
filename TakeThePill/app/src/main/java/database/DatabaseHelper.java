@@ -23,7 +23,7 @@ import embeddedproject.takethepill.TherapyEntityDB;
 import static database.Str.*;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=13;
+        private static final int DatabaseVersion=14;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -209,6 +209,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         do{
             String time=cursor.getString(cursor.getColumnIndex(assumptionHour));
+            //SimpleDateFormat myFormat = new SimpleDateFormat("HH:mm");
             Time hour=Time.valueOf(time);
 
             Log.d("letto orario:",hour.toString());
@@ -372,16 +373,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues toInsert = new ContentValues();
-        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+        //SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat myFormat=new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat myFormat2=new SimpleDateFormat("HH-mm");
 
         String data=myFormat.format(assumption.getData());
         toInsert.put(assumptionDate,data);
         toInsert.put(assumptionHour,assumption.getOra().toString()); //formato di default hh:mm:ss. Per riconvertire:valueOf(String)
+        //toInsert.put(assumptionHour,myFormat2.format(assumption.getOra()));
         toInsert.put(assumptiontherapy,assumption.getTerapia());
-        if(assumption.getStato())
-            toInsert.put(assumptionState,1); //medicina presa
-        else
-            toInsert.put(assumptionState,0); //medicina non presa
+        if(assumption.getStato()) toInsert.put(assumptionState,1); //medicina presa
+        else toInsert.put(assumptionState,0); //medicina non presa
 
         long id = db.insert(assumptionTable, null, toInsert);
         Log.d("insertAssuption()", "inserimento assunzione di TerapiaID: "+assumption.getTerapia()+", Data:"+data);
@@ -394,7 +396,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int removeAssumption(AssumptionEntity assumption){
         SQLiteDatabase db=getWritableDatabase();
 
-        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+        //SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat myFormat=new SimpleDateFormat("yyyy-MM-dd");
         String data=myFormat.format(assumption.getData());
 
         String ora=assumption.getOra().toString();
@@ -412,7 +415,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void setAssumption(AssumptionEntity assumption, boolean state){
-        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+        //SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat myFormat=new SimpleDateFormat("yyyy-MM-dd");
 
         String data=myFormat.format(assumption.getData());
         SQLiteDatabase db=getWritableDatabase();
@@ -425,18 +429,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(assumptionTable,values,
              assumptionDate+"=? and "+assumptionHour+"=? and "+assumptiontherapy+"=?",
              new String[]{data,assumption.getOra().toString(),String.valueOf(assumption.getTerapia())});
-        /*String q="UPDATE "+assumptionTable+" SET "+assumptionState+ "="+stato+" WHERE "
-             +assumptionDate+"='"+data+"' AND "+assumptionHour+"='"+assumption.getOra().toString()
-             +"' AND "+assumptiontherapy+"="+String.valueOf(assumption.getTerapia())+";";
-
-        db.rawQuery(q,null);
-        Log.d("Update:",q);*/
     }
 
     // Lista delle Assunzioni di oggi
     public List<AssumptionEntity> getAssumptionByDate(Date data){
         SQLiteDatabase db=getReadableDatabase();
-        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+        //SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat myFormat=new SimpleDateFormat("yyyy-MM-dd");
 
         String dataToRead=myFormat.format(data);
         //Query di ricerca
@@ -482,6 +481,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
 
     }
+
+    // Usata per le notifiche, restituisce le assunzioni con data da oggi in poi
+    public List<AssumptionEntity> getAssumptionsFromNow(){
+        SimpleDateFormat myFormat=new SimpleDateFormat("yyyy-MM-dd");
+
+        List<AssumptionEntity> list=new ArrayList<>();
+
+        // Database
+        SQLiteDatabase db=getReadableDatabase();
+        String query="SELECT * FROM "+assumptionTable+" WHERE "+assumptionDate + ">= date('now')";
+        Cursor cursor = db.rawQuery(query,null);
+
+        if(!cursor.moveToFirst()) Log.d("getAssumptionsFromNow","Nessuna assunzione trovata");
+        else{
+            do{
+                Date data = null;
+                try {
+                    data = myFormat.parse(cursor.getString(cursor.getColumnIndex(assumptionDate)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Time ora=Time.valueOf(cursor.getString(cursor.getColumnIndex(assumptionHour)));
+                int terapia=cursor.getInt(cursor.getColumnIndex(assumptiontherapy));
+                Boolean stato=checkInt(cursor.getInt(cursor.getColumnIndex(assumptionState)));
+                AssumptionEntity assunzione = new AssumptionEntity(data,ora,terapia,stato);
+                list.add(assunzione);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        Log.d("lista assunzioni","creata");
+        return list;
+    }
+
 
     // Lista delle assunzioni di una Terapia(usata per le terapie con durata senza limiti)
     public List<AssumptionEntity> getAssumptionsByTherapy(TherapyEntityDB terapia){
