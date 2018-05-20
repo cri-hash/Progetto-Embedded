@@ -27,13 +27,19 @@ public class CustomAdapterDrug extends ArrayAdapter<DrugEntity> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.row_item_drug, null);
 
-        TextView info = (TextView)convertView.findViewById(R.id.drugInfo);
+        TextView name = (TextView)convertView.findViewById(R.id.drugName);
+        TextView type = (TextView)convertView.findViewById(R.id.tvType);
+        TextView scorte = (TextView)convertView.findViewById(R.id.tvScorte);
+        TextView prezzo = (TextView)convertView.findViewById(R.id.tvPrezzo);
         TextView descr = (TextView)convertView.findViewById(R.id.drugDescr);
 
         DrugEntity actual = getItem(position);
 
-        info.setText(actual.getNome()+", "+actual.getTipo()+", "+actual.getScorte());
-        descr.setText(actual.getDescrizione());
+        name.setText(actual.getNome());
+        type.setText("Tipo: "+actual.getTipo());
+        scorte.setText("Scorte: " + actual.getScorte());
+        prezzo.setText("Prezzo: " +actual.getPrezzo()+ "€");
+        descr.setText("Descrizione: " + actual.getDescrizione());
 
         return convertView;
     }

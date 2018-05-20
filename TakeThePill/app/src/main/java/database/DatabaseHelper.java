@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,11 +21,6 @@ import embeddedproject.takethepill.DrugEntity;
 import embeddedproject.takethepill.TherapyEntityDB;
 
 import static database.Str.*;
-
-/**
- * Created by Cristian on 13/04/2018.
- * Class that avoid to create and use database
- */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
         private static final int DatabaseVersion=13;
@@ -71,13 +67,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
 
-    /**
-     * Lazzarin
-     * @param terapia: terapy we want to add on db
-     *               LASCIARE ID NULL( DOVREBBE INCREMENTARSI DA SOLO)
-     * @return raw's id of new object we've add on db, -1 if it was inserted yet
-     */
 
+/////////////////////////////////////////////////////////////////
+////////////////////////////// TERAPIE /////////////////////////
+/////////////////////////////////////////////////////////////////
     public long insertTherapy(TherapyEntityDB terapia) {
         //  write a new raw on database
                 SQLiteDatabase db = getWritableDatabase();
@@ -96,13 +89,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<TherapyEntityDB> getAllTherapies()
-    {
+    public List<TherapyEntityDB> getAllTherapies(){
         List<TherapyEntityDB> list=new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor= db.rawQuery(getAllTherapies,null);
-        if(!cursor.moveToFirst())
-            Log.d("getAllTherapy","No therapy found");
+        if(!cursor.moveToFirst()) Log.d("getAllTherapy","No therapy found");
         else{
             do {
                 TherapyEntityDB current=new TherapyEntityDB();
@@ -132,45 +123,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    /**
-     * search a therapy using ID
-     * @param ID
-     * @return therapy if fund, null in otherwise
-     */
-    public TherapyEntityDB getTherapy(Integer ID)
-        {
-            SQLiteDatabase db=getReadableDatabase();
-            String query="SELECT * FROM "+ therapyTable +" WHERE "+therapyID + "=?";
-            Cursor cursor=db.rawQuery(query,new String[] {ID+""});
-            if((cursor.getCount()==0)||(cursor.getCount()==-1))
-            {
-                Log.d("therapy ",ID+" not found");
-                return null;
-            }
-            int count=cursor.getCount();
-            Log.d("sto marso de count",count+"");
-            TherapyEntityDB current=new TherapyEntityDB();
-            cursor.moveToFirst(); //N.B!!!! sennò dà errore
-            //Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
-            if(cursor.getString(cursor.getColumnIndex(therapyDateEnd))==null)current.setDateEnd(null);
-            else current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
-            current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
-            current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
-            current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
-            current.setNotify(cursor.getInt(cursor.getColumnIndex(therapyNotify)));
-            current.setMon(checkInt(cursor.getInt(cursor.getColumnIndex(therapyMon))));
-            current.setTue(checkInt(cursor.getInt(cursor.getColumnIndex(therapyTue))));
-            current.setThu(checkInt(cursor.getInt(cursor.getColumnIndex(therapyThu))));
-            current.setWed(checkInt(cursor.getInt(cursor.getColumnIndex(therapyWed))));
-            current.setFri(checkInt(cursor.getInt(cursor.getColumnIndex(therapyFri))));
-            current.setSat(checkInt(cursor.getInt(cursor.getColumnIndex(therapySat))));
-            current.setSun(checkInt(cursor.getInt(cursor.getColumnIndex(therapySun))));
-            current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
-            current.setDosage(cursor.getInt(cursor.getColumnIndex(therapyDosage)));
-            db.close();
-            cursor.close();
-            return current;
+    public TherapyEntityDB getTherapy(Integer ID){
+        SQLiteDatabase db=getReadableDatabase();
+        String query="SELECT * FROM "+ therapyTable +" WHERE "+therapyID + "=?";
+        Cursor cursor=db.rawQuery(query,new String[] {ID+""});
+        if((cursor.getCount()==0)||(cursor.getCount()==-1)){
+            Log.d("therapy ",ID+" not found");
+            return null;
         }
+        int count=cursor.getCount();
+        Log.d("sto marso de count",count+"");
+        TherapyEntityDB current=new TherapyEntityDB();
+        cursor.moveToFirst(); //N.B!!!! sennò dà errore
+        //Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
+        if(cursor.getString(cursor.getColumnIndex(therapyDateEnd))==null)current.setDateEnd(null);
+        else current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))));
+        current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))));
+        current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)));
+        current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)));
+        current.setNotify(cursor.getInt(cursor.getColumnIndex(therapyNotify)));
+        current.setMon(checkInt(cursor.getInt(cursor.getColumnIndex(therapyMon))));
+        current.setTue(checkInt(cursor.getInt(cursor.getColumnIndex(therapyTue))));
+        current.setThu(checkInt(cursor.getInt(cursor.getColumnIndex(therapyThu))));
+        current.setWed(checkInt(cursor.getInt(cursor.getColumnIndex(therapyWed))));
+        current.setFri(checkInt(cursor.getInt(cursor.getColumnIndex(therapyFri))));
+        current.setSat(checkInt(cursor.getInt(cursor.getColumnIndex(therapySat))));
+        current.setSun(checkInt(cursor.getInt(cursor.getColumnIndex(therapySun))));
+        current.setDrug(cursor.getString(cursor.getColumnIndex(therapyDrug)));
+        current.setDosage(cursor.getInt(cursor.getColumnIndex(therapyDosage)));
+        db.close();
+        cursor.close();
+        return current;
+    }
 
     public long updateTherapy(TherapyEntityDB toUpdate)
     {
@@ -203,50 +187,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    /**
-     *
-     * @param ID Therapy we want to delete
-     * @return number of raws deleted(1 if found, 0 in other wise)
-     */
-    public int removeTherapyBYId(int ID)
-    {
+    public int removeTherapyBYId(int ID){
         SQLiteDatabase db=getWritableDatabase();
         int deleteStatus =db.delete(therapyTable,therapyID +"=?",new String[]{ID+""});
         db.close();
         return deleteStatus;
-
     }
-public List<Time> getTherapyHour(TherapyEntityDB th)
-  {
-    SQLiteDatabase db = getReadableDatabase();
-    Cursor cursor=db.rawQuery("SELECT DISTINCT "+assumptionHour+" FROM "+assumptionTable +" WHERE "+ assumptiontherapy
-            +" = "+th.getID(),null);
 
-   if(cursor.getCount()==0)
-   { Log.d("assumption error","nessun orario trovato per la terapia inserita");
-        return null;}
+    // Ottenere la lista delle ore di una terapia
+    public List<Time> getTherapyHour(TherapyEntityDB th){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT DISTINCT "+assumptionHour+" FROM "+assumptionTable +" WHERE "+ assumptiontherapy
+                +" = "+th.getID(),null);
 
-      List<Time> list = new ArrayList<>();
-    cursor.moveToFirst();
-    do{
-        String time=cursor.getString(cursor.getColumnIndex(assumptionHour));
-        Time hour=Time.valueOf(time);
+        if(cursor.getCount()==0){
+            Log.d("assumption error","nessun orario trovato per la terapia inserita");
+            return null;
+        }
 
-        Log.d("letto orario:",hour.toString());
+        List<Time> list = new ArrayList<>();
+        cursor.moveToFirst();
+        do{
+            String time=cursor.getString(cursor.getColumnIndex(assumptionHour));
+            Time hour=Time.valueOf(time);
 
-        list.add(hour);
+            Log.d("letto orario:",hour.toString());
+
+            list.add(hour);
+        }
+        while(cursor.moveToNext());
+
+        return list;
     }
-    while(cursor.moveToNext());
 
 
-  return list;
-  }
-
-    /**
-     * * Lazzarin
-     * @param drug: drug we want to add on db
-     * @return raw's id of new object we've add on db, -1 if it was inserted yet
-     */
+/////////////////////////////////////////////////////////////////
+////////////////////////////// FARMACI //////////////////////////
+/////////////////////////////////////////////////////////////////
     public long insertDrug(DrugEntity drug) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -263,21 +240,14 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         return id;
     }
 
-    /**
-     *
-     * @param name of drug we want
-     * @return drug if found, else null.
-     */
 
-    public DrugEntity getDrugByName(String name)
-    {
+    public DrugEntity getDrugByName(String name) {
 
         SQLiteDatabase db=getReadableDatabase();
         String query="SELECT * FROM "+ drugTable +" WHERE "+ drugName+ "=?";
         Cursor cursor=db.rawQuery(query,new String[] {name+""});
-        if((cursor.getCount()==0)||(cursor.getCount()==-1))
-        {
-            Log.d("drug ",name+" not found");
+        if((cursor.getCount()==0)||(cursor.getCount()==-1)){
+            Log.d("getDrugByName",name+" non trovata");
             return null;
         }
         DrugEntity  current=new DrugEntity();
@@ -290,31 +260,23 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         cursor.close();
         db.close();
         return current;
-
     }
 
 
-    /**
-     *
-     * @param nome drug we want to delete
-     * @return number of raw deleted(1 if found, 0 in other wise)
-     */
-    public int removeDrugBYName(String nome)
-    {
+    public int removeDrugBYName(String nome){
         SQLiteDatabase db=getWritableDatabase();
         int deleteStatus =db.delete(drugTable,drugName +"=?",new String[]{nome+""});
         db.close();
         return deleteStatus;
-
     }
 
-    public List<DrugEntity> getAllDrugs()
-    {
+
+    public List<DrugEntity> getAllDrugs(){
         List<DrugEntity> list=new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor= db.rawQuery(getAllDrugs,null);
         if(!cursor.moveToFirst())
-            Log.d("getAllTherapy","No therapy found");
+            Log.d("getAllDrugs","Nessuna terapia trovata");
         else{
             do {
                 DrugEntity  current=new DrugEntity();
@@ -334,8 +296,7 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         return list;
     }
 
-    public long updateDrug(DrugEntity toUpdate)
-    {
+    public long updateDrug(DrugEntity toUpdate){
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -348,47 +309,22 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         values.put(drugType,toUpdate.getTipo());
         // update row
         long id = db.update(drugTable,values,drugName+"=?",new String[]{toUpdate.getNome()+""});
-        Log.d("avvenuto","aggiornamento farmaco");
+        Log.d("updateDrug","aggiornata");
         // close db connection
         db.close();
 
         return id;
     }
 
-    /**
-     * simple conversion method
-     * @param i 1 or 0
-     * @return true or false
-     */
-    private boolean checkInt(int i)
-    {
-        if(i==1)
-            return true;
-        else
-            return false;
 
-    }
-    /**
-     * simple conversion method
-     * @param value true or false
-     * @return 1 or 0
-     */
-    private int checkBool(boolean value)
-    {
-        if(value) return 1;
-        else return 0;
-    }
 
-    /**
-     * launched when db is created, set available types of drugs
-     */
-    private void setTypeList(SQLiteDatabase db)
-    {
-        ContentValues[] values=new ContentValues[13];
-        for(int i=0;i<13;i++)
-            values[i]=new ContentValues();
-        ContentValues prova=new ContentValues();
-        prova.put("prova","riuscita");
+/////////////////////////////////////////////////////////////////
+////////////////////////////// TIPI /////////////////////////////
+/////////////////////////////////////////////////////////////////
+    // Richiamata all'avvio dell'applicazione
+    private void setTypeList(SQLiteDatabase db){
+        ContentValues[] values=new ContentValues[13];   // Abbiamo 13 tipi predefiniti
+        for(int i=0;i<13;i++) values[i]=new ContentValues();
         values[0].put(typeName,"Applicazione/i");
         values[1].put(typeName,"Capsula/e");
         values[2].put(typeName,"Fiala/e");
@@ -403,29 +339,24 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         values[11].put(typeName,"Supposta/e");
         values[12].put(typeName,"Unità");
 
-        for(int i=0;i<13;i++)
-            db.insert(typeTable,null,values[i]);
+        for(int i=0;i<13;i++) db.insert(typeTable,null,values[i]);
       //db non viene chiuso perchè lo fa già il metodo onCreate, dopo aver chiamato questo metodo
 
     }
 
-    /**
-     *
-      * @return a String array with all type of drug available
-     */
-    public String[] getTypeList()
-    { SQLiteDatabase db=getReadableDatabase();
+    public String[] getTypeList(){
+        SQLiteDatabase db=getReadableDatabase();
         String query="SELECT * FROM "+ typeTable+" ORDER BY "+ typeName;
         Cursor cursor=  db.rawQuery(query,null);
         cursor.moveToFirst();
         //create an array using size of query's result
         String[] list=new String[cursor.getCount()];
         int i=0;
-        do {
+        do{
             list[i]=cursor.getString(cursor.getColumnIndex(typeName));
             i++;
-            Log.d("inserito nella lista:",cursor.getString(cursor.getColumnIndex(typeName)));
-            }
+            Log.d("getTypeList()","Inserito: "+cursor.getString(cursor.getColumnIndex(typeName)));
+        }
         while(cursor.moveToNext());
         cursor.close();
         db.close();
@@ -433,8 +364,11 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
     }
 
 
-    public long insertAssumption(AssumptionEntity assumption)
-    {
+
+////////////////////////////////////////////////////////////////////
+////////////////////////////// ASSUNZIONI //////////////////////////
+////////////////////////////////////////////////////////////////////
+    public long insertAssumption(AssumptionEntity assumption){
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues toInsert = new ContentValues();
@@ -450,17 +384,14 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
             toInsert.put(assumptionState,0); //medicina non presa
 
         long id = db.insert(assumptionTable, null, toInsert);
-        Log.d("avvenuto:", "inserimento assunzione di TerapiaID: "+assumption.getTerapia()+", Data:"+data);
+        Log.d("insertAssuption()", "inserimento assunzione di TerapiaID: "+assumption.getTerapia()+", Data:"+data);
         // close db connection
         db.close();
 
         return id;
-
-
     }
 
-    public int removeAssumption(AssumptionEntity assumption)
-    {
+    public int removeAssumption(AssumptionEntity assumption){
         SQLiteDatabase db=getWritableDatabase();
 
         SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
@@ -472,49 +403,38 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
         db.close();
         return deleteStatus;
     }
-    public int removeAssumptionByTherapy(TherapyEntityDB therapy)
-    {
+    public int removeAssumptionByTherapy(TherapyEntityDB therapy){
         SQLiteDatabase db=getWritableDatabase();
 
         int deleteStatus =db.delete(assumptionTable,assumptiontherapy+"="+therapy.getID().toString(),null);
         db.close();
         return deleteStatus;
     }
-     public long setAssumption(AssumptionEntity assumption, boolean state)
-     {
 
-         SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
+    public void setAssumption(AssumptionEntity assumption, boolean state){
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
 
-         String data=myFormat.format(assumption.getData());
-         SQLiteDatabase db=getWritableDatabase();
-         ContentValues values=new ContentValues();
-         values.put(assumptionState,state);
+        String data=myFormat.format(assumption.getData());
+        SQLiteDatabase db=getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(assumptionState,state);
 
-         int stato=0;
-         if(state) stato=1;
+        int stato=0;
+        if(state) stato=1;
 
-         db.update(assumptionTable,values,
-                 assumptionDate+"=? and "+assumptionHour+"=? and "+assumptiontherapy+"=?",
-                 new String[]{data,assumption.getOra().toString(),String.valueOf(assumption.getTerapia())});
-         /*String q="UPDATE "+assumptionTable+" SET "+assumptionState+ "="+stato+" WHERE "
-                 +assumptionDate+"='"+data+"' AND "+assumptionHour+"='"+assumption.getOra().toString()
-                 +"' AND "+assumptiontherapy+"="+String.valueOf(assumption.getTerapia())+";";
+        db.update(assumptionTable,values,
+             assumptionDate+"=? and "+assumptionHour+"=? and "+assumptiontherapy+"=?",
+             new String[]{data,assumption.getOra().toString(),String.valueOf(assumption.getTerapia())});
+        /*String q="UPDATE "+assumptionTable+" SET "+assumptionState+ "="+stato+" WHERE "
+             +assumptionDate+"='"+data+"' AND "+assumptionHour+"='"+assumption.getOra().toString()
+             +"' AND "+assumptiontherapy+"="+String.valueOf(assumption.getTerapia())+";";
 
-         db.rawQuery(q,null);
+        db.rawQuery(q,null);
+        Log.d("Update:",q);*/
+    }
 
-         Log.d("Update:",q);*/
-
-         return 5;//niente
-     }
-
-
-    /**
-     *
-     * @param data of Assupmtions we want
-     * @return list of assumptions with this date
-     */
-    public List<AssumptionEntity> getAssumptionByDate(Date data)
-    {
+    // Lista delle Assunzioni di oggi
+    public List<AssumptionEntity> getAssumptionByDate(Date data){
         SQLiteDatabase db=getReadableDatabase();
         SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
 
@@ -563,25 +483,82 @@ public List<Time> getTherapyHour(TherapyEntityDB th)
 
     }
 
+    // Lista delle assunzioni di una Terapia(usata per le terapie con durata senza limiti)
+    public List<AssumptionEntity> getAssumptionsByTherapy(TherapyEntityDB terapia){
+        SQLiteDatabase db=getReadableDatabase();
+        String query = "SELECT "+assumptionDate+","+assumptionHour+","+assumptionState+","+therapyDrug+","+therapyDosage +","+assumptiontherapy
+                        +" FROM "+assumptionTable
+                        +" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
+                        +" WHERE " + assumptiontherapy+"="+terapia.getID();
+
+        List<AssumptionEntity> list=new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(query,null);
+        if(!cursor.moveToFirst()) Log.d("getAssumptionsByTherapy","Nessuna assunzione trovata");
+        else{
+            do {
+                // Tipo del farmaco
+                String farmaco=cursor.getString(cursor.getColumnIndex(therapyDrug));
+                String query2="SELECT "+typeName
+                        +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
+                        +" WHERE "+drugName+ "='"+ farmaco+"'";
+                Cursor temp=db.rawQuery(query2, null);
+                temp.moveToFirst();
+                String tipo=temp.getString(temp.getColumnIndex(typeName));
+                temp.close();
+
+                Date data= stringToDate(cursor.getString(cursor.getColumnIndex(assumptionDate)));
+                Time ora=Time.valueOf(cursor.getString(cursor.getColumnIndex(assumptionHour)));
+                Boolean stato=checkInt(cursor.getInt(cursor.getColumnIndex(assumptionState)));
+                Log.d("Stato Assunzione:",cursor.getInt(cursor.getColumnIndex(assumptionState))+stato.toString());
+                int dosaggio=cursor.getInt(cursor.getColumnIndex(therapyDosage));
+                int terapiaId=cursor.getInt(cursor.getColumnIndex(assumptiontherapy));
+                AssumptionEntity assunzione=new AssumptionEntity(data,ora,farmaco,stato,dosaggio,tipo,terapiaId);
+                list.add(assunzione);
+            }
+            while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        db.close();
+        return list;
+    }
 
 
-private Date stringToDate(String toDate)
-    {
-        Date data=null;
-        DateFormat dt= new SimpleDateFormat("dd/MM/yyyy");
-        try{
-         data=dt.parse(toDate);}
-         catch(ParseException e)
-         {Log.d("parsing Data", "fallito");}
-         return data;
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////// METODI DI SUPPORTO //////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
+    // Converte INT in BOOLEAN
+    private boolean checkInt(int i){
+        if(i==1)
+            return true;
+        else
+            return false;
 
     }
 
-    /**metodo per popolare il db con alcuni elementi
-      *
-      * @return true se tutto va bene, falso se qualcosa non va
-     */
+    // Converte BOOLEAN in INT
+    private int checkBool(boolean value){
+        if(value) return 1;
+        else return 0;
+    }
+
+    private Date stringToDate(String toDate){
+        Date data=null;
+        DateFormat dt= new SimpleDateFormat("dd/MM/yyyy");
+        try{
+            data=dt.parse(toDate);
+        }
+        catch(ParseException e){
+            Log.d("parsing Data", "fallito");
+        }
+        return data;
+    }
+
+
+    // Usato in fase di test
     public boolean popolaDB(){
         /*SQLiteDatabase db=getReadableDatabase();
         Cursor c=db.rawQuery("SELECT * FROM "+assumptionTable+";",null);
@@ -597,9 +574,6 @@ private Date stringToDate(String toDate)
 
         return true;
     }
-
-
-
 
 
 
