@@ -27,6 +27,8 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.Date;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +40,7 @@ import database.DatabaseHelper;
 
 import static android.app.Notification.EXTRA_NOTIFICATION_ID;
 import android.os.SystemClock;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         displaySelectedFragment(fragment);
 
 
-        // NOTIFICHE
+        // GESTIONE DELLE NOTIFICHE:
         // Ogni minuto manda un broadcast che attiva la classe AlarmNotificationReiceiver
         AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent myIntent;
@@ -72,6 +75,44 @@ public class MainActivity extends AppCompatActivity
         myIntent = new Intent(MainActivity.this,AlarmNotificationReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this,0,myIntent,0);
         manager.setRepeating(AlarmManager.RTC_WAKEUP,SystemClock.elapsedRealtime()+3000,60000,pendingIntent);
+
+
+        // GESTIONE DELLE TERAPIE DI DURATA SENZA LIMITI:
+        // Lista delle terapie con durata senza limite
+        DatabaseHelper db= new DatabaseHelper(this);
+        ArrayList<TherapyEntityDB> listTerapie = (ArrayList<TherapyEntityDB>)db.getAllTherapies();
+        for(int i=0; i<listTerapie.size();i++){
+            // Lista assunzioni da domani in avanti
+            ArrayList<AssumptionEntity> listAssunzioni = (ArrayList<AssumptionEntity>) db.getAssumptionsByTherapy(listTerapie.get(i));
+
+            // Se ci sono meno di 10 assunzioni ne aggiungo 10 dalla data finale
+            if(listAssunzioni.size()<10){
+                // Lista delle ore della terapia
+                ArrayList<int[]> listaOre=new ArrayList<int[]>();
+                List<Time> list =db.getTherapyHour(listTerapie.get(i));    // Operazione database Lista delle ore
+                for (int j=0; j<list.size();j++){
+                    listaOre.add(new int[]{list.get(j).getHours(),list.get(j).getMinutes()});
+                }
+
+                Date ultimoGiorno=listAssunzioni.get(listAssunzioni.size()-1).getData();
+                Calendar giornoDopo=Calendar.getInstance();
+                giornoDopo.set(Calendar.DATE,ultimoGiorno.getDate());
+
+                // Per ogni ora si genera una lista di assunzioni
+                for(int j=0; j<listaOre.size();j++){
+                    AssumptionEntity assumptionEntity=new AssumptionEntity();
+                    Time ora=new Time(listaOre.get(j)[0],listaOre.get(j)[1],0);
+
+                    List<AssumptionEntity> listAss = assumptionEntity.generateAssumption(listTerapie.get(i),ora,giornoDopo);
+
+                    // Inserimento di ogni assunzione nuova
+                    for(int k=0;k<listAss.size();k++) db.insertAssumption(listAss.get(k));
+                }
+
+            }
+        }
+
+
 
 
     }

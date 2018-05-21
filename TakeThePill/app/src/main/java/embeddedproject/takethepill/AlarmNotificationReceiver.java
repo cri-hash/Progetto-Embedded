@@ -9,19 +9,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
-
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import database.DatabaseHelper;
-
-
 
 public class AlarmNotificationReceiver extends BroadcastReceiver {
 
@@ -36,9 +27,12 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
         listAssunzioni = new ArrayList<AssumptionEntity>();
         listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
 
+        // Controllo se c'è un assunzione che ha lo stesso orario dell'orario attuale
         for(int i=0; i<listAssunzioni.size();i++){
             int minNotifica=db.getTherapy(listAssunzioni.get(i).getTerapia()).getNotify(); //-1=nessuno, 0=stesso momento, >0=min prima
-            if(minNotifica==-1)continue;    // Se la terapia è impostata su NessunaNotifica passo avanti
+
+            // Se l'assunzione non ha notifiche oppure è già stata assunta, passo al prossimo elemento
+            if(minNotifica==-1 || listAssunzioni.get(i).getStato())continue;
 
             // Ora attuale + il ritardo della notifica
             Calendar oraCorrente= Calendar.getInstance();
@@ -56,11 +50,11 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
             int oraA=oraAssunzione.get(Calendar.HOUR_OF_DAY);
             int minA=oraAssunzione.get(Calendar.MINUTE);
 
-            Log.d("OraCorrente",oraC+":"+minC);
-            Log.d("oraAssunzione",oraA+":"+minA);
+            // Se sono la stessa ora: NOTIFICO
+            if((oraC==oraA && minC==minA)){
+                TherapyEntityDB terapia= db.getTherapy(listAssunzioni.get(i).getTerapia());
+                DrugEntity farmaco=db.getDrugByName(terapia.getDrug());
 
-            // Se sono la stessa ora NOTIFICO
-            if(oraC==oraA && minC==minA){
                 createNotificationChannel(context);
 
                 // Quando si clicca sulla notifica viene richiamato il MAIN
@@ -68,10 +62,11 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
                 inte.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, inte, 0);
 
+                // Costruisco la notifica
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "idCanale")
-                        .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!")
+                        .setSmallIcon(R.drawable.ic_notification_pill)
+                        .setContentTitle("Devi prendere "+farmaco.getNome())
+                        .setContentText(terapia.getDosaggio()+" "+farmaco.getTipo())
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         // Set the intent that will fire when the user taps the notification
                         .setContentIntent(pendingIntent)
@@ -79,19 +74,17 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
+                // Lancio la notifica
                 notificationManager.notify(1, mBuilder.build());
             }
 
         }
 
 
-
-
-
     }
 
 
-
+    // Funzione utilizzata per creare il canale delle notifiche
     private void createNotificationChannel(Context context) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library

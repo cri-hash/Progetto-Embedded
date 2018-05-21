@@ -96,7 +96,7 @@ public class AssumptionEntity {
 
 
 
-    public List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour){
+    public List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour,Calendar dataInizio){
 
         if(th.getDays()==null){
             Log.d("errore terapia","numero giorni non trovato");
@@ -104,8 +104,8 @@ public class AssumptionEntity {
         }
 
         List<AssumptionEntity> list= new ArrayList<>();
-
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar= Calendar.getInstance();;
+        if(dataInizio!=null) calendar = dataInizio;
         calendar.set(Calendar.MILLISECOND, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);

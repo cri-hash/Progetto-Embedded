@@ -471,10 +471,11 @@ public class AddEditTherapyActivity extends AppCompatActivity {
     }
 
 
-    // QUANDO SI RITORNA DA ADDHOURACTIVITY
+    // QUANDO SI RITORNA DA AddHourActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
                 listaOre=(ArrayList<int[]>)data.getSerializableExtra("result");
@@ -494,7 +495,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         }
     }
 
-    // QUANDO SI SALVA
+    // QUANDO SI SALVA UNA NUOVA TERAPIA
     private void saveAll(){
         // Salva la terapia
         db.insertTherapy(terapia);
@@ -505,19 +506,20 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         int ID=listaTerapie.get(listaTerapie.size()-1).getID();
 
         terapia.setID(ID);
-        // Salva le ore
+        // Salva le ore (Assunzioni)
         salvaOre();
 
     }
 
+    // SALVARE LE ASSUNZIONI
     private void salvaOre(){
-        for(int i=0;i<listaOre.size();i++){// per ogni ora
-
+        // Per ogni ora si genera una lista di assunzioni
+        for(int i=0;i<listaOre.size();i++){
             AssumptionEntity assumptionEntity=new AssumptionEntity();
-
             Time ora=new Time(listaOre.get(i)[0],listaOre.get(i)[1],0);
-            List<AssumptionEntity> listAssunzioni = assumptionEntity.generateAssumption(terapia,ora);
-            Log.d("listAssunzioni",String.valueOf(listAssunzioni.size()));
+
+            List<AssumptionEntity> listAssunzioni = assumptionEntity.generateAssumption(terapia,ora,null);
+
             for(int j=0;j<listAssunzioni.size();j++) db.insertAssumption(listAssunzioni.get(j));
 
         }

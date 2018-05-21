@@ -445,10 +445,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         List<AssumptionEntity> list=new ArrayList<>();
 
-        if(current.getCount()==0) //nessuna assunzione con quella data
-        { Log.d("nessuna assunzione in data",dataToRead);
-            //return null;
-        }
+        if(current.getCount()==0) Log.d("nessuna assunzione in data",dataToRead);
         else{
             current.moveToFirst();
             do{
@@ -517,46 +514,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // Lista delle assunzioni di una Terapia(usata per le terapie con durata senza limiti)
-    public List<AssumptionEntity> getAssumptionsByTherapy(TherapyEntityDB terapia){
-        SQLiteDatabase db=getReadableDatabase();
-        String query = "SELECT "+assumptionDate+","+assumptionHour+","+assumptionState+","+therapyDrug+","+therapyDosage +","+assumptiontherapy
-                        +" FROM "+assumptionTable
-                        +" INNER JOIN "+ therapyTable+" ON "+ assumptiontherapy+"="+therapyID
-                        +" WHERE " + assumptiontherapy+"="+terapia.getID();
+    // Lista delle assunzioni di una Terapia da domani in poi(usata per le terapie con durata senza limiti)
+    public List<AssumptionEntity> getAssumptionsByTherapy(TherapyEntityDB therapy){
+        SimpleDateFormat myFormat=new SimpleDateFormat("yyyy-MM-dd");
 
         List<AssumptionEntity> list=new ArrayList<>();
 
+        // Database
+        SQLiteDatabase db=getReadableDatabase();
+        String query="SELECT * FROM "+assumptionTable
+                    +" WHERE "+assumptionDate + "> date('now')"+" AND " +assumptiontherapy+"="+therapy.getID();
         Cursor cursor = db.rawQuery(query,null);
+
         if(!cursor.moveToFirst()) Log.d("getAssumptionsByTherapy","Nessuna assunzione trovata");
         else{
-            do {
-                // Tipo del farmaco
-                String farmaco=cursor.getString(cursor.getColumnIndex(therapyDrug));
-                String query2="SELECT "+typeName
-                        +" FROM "+drugTable+" INNER JOIN "+ typeTable+" ON "+ drugType+"="+typeName
-                        +" WHERE "+drugName+ "='"+ farmaco+"'";
-                Cursor temp=db.rawQuery(query2, null);
-                temp.moveToFirst();
-                String tipo=temp.getString(temp.getColumnIndex(typeName));
-                temp.close();
-
-                Date data= stringToDate(cursor.getString(cursor.getColumnIndex(assumptionDate)));
+            do{
+                Date data = null;
+                try {
+                    data = myFormat.parse(cursor.getString(cursor.getColumnIndex(assumptionDate)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Time ora=Time.valueOf(cursor.getString(cursor.getColumnIndex(assumptionHour)));
+                int terapia=cursor.getInt(cursor.getColumnIndex(assumptiontherapy));
                 Boolean stato=checkInt(cursor.getInt(cursor.getColumnIndex(assumptionState)));
-                Log.d("Stato Assunzione:",cursor.getInt(cursor.getColumnIndex(assumptionState))+stato.toString());
-                int dosaggio=cursor.getInt(cursor.getColumnIndex(therapyDosage));
-                int terapiaId=cursor.getInt(cursor.getColumnIndex(assumptiontherapy));
-                AssumptionEntity assunzione=new AssumptionEntity(data,ora,farmaco,stato,dosaggio,tipo,terapiaId);
+                AssumptionEntity assunzione = new AssumptionEntity(data,ora,terapia,stato);
                 list.add(assunzione);
-            }
-            while(cursor.moveToNext());
+            }while(cursor.moveToNext());
         }
-
         cursor.close();
-
         db.close();
+
+        Log.d("getAssumptionsByTherapy()","Lista creata");
         return list;
+
     }
 
 
