@@ -20,7 +20,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_plus"
+        android:src="@drawable/ic_create_black_40dp"
         app:backgroundTint="@color/colorPrimary"
         tools:layout_editor_absoluteX="330dp" />
 

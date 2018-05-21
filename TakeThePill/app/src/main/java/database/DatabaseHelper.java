@@ -23,7 +23,7 @@ import embeddedproject.takethepill.TherapyEntityDB;
 import static database.Str.*;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=14;
+        private static final int DatabaseVersion=15;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
@@ -50,6 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 setTypeList(db);
                 Log.d("tipi inseriti","ok");
 
+                popolaDB(); // Inserimento di alcuni farmaci
             }
         @Override
         public void onUpgrade(SQLiteDatabase db, int newDb, int old){
@@ -596,6 +597,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d("Tabella Assunzioni:",s);
             c.moveToNext();
         }*/
+
+        insertDrug(new DrugEntity(
+                "Aspirina",
+                "combatte febbre, gola infiammata e dolori influenzali",
+                "Capsula/e",
+                12.9,
+                20));
+
+        insertDrug(new DrugEntity(
+                "Tachipirina 500mg",
+                "trattamento sintomatico di affezioni febbrili quali l'influenza, le malattie esantematiche",
+                "Pillola/e",
+                14.99,
+                30));
+
+        insertDrug(new DrugEntity(
+                "Xanax",
+                "trattamento di disturbi da panico o ansia.",
+                "Goccia/e",
+                9.99,
+                200));
+
+        insertDrug(new DrugEntity(
+                "Morfina",
+                "allevia il dolore.",
+                "Iniezione/i",
+                29.99,
+                15));
+
+        insertDrug(new DrugEntity(
+                "Benzoilmetilecgonina",
+                "agisce come potente stimolante del sistema nervoso centrale.",
+                "Grammo/i",
+                200,
+                10));
 
         return true;
     }

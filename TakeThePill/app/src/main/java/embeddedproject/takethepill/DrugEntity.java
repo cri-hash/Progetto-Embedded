@@ -15,7 +15,7 @@ public class DrugEntity {
     private int scorte;
 
 //COSTRUTTORE
-    public DrugEntity( String nome, String descrizione, String tipo, double prezzo, int scorte){
+    public DrugEntity(String nome, String descrizione, String tipo, double prezzo, int scorte){
 
         this.nome=nome;
         this.descrizione=descrizione;

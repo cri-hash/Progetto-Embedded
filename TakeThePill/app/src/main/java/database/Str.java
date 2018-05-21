@@ -44,7 +44,7 @@ public class Str {
                    + drugPrice +" REAL,"
                    + drugQuantities + " INTEGER,"
                    + drugType +" VARCHAR(30),"
-                   + "FOREIGN KEY("+ drugType +") REFERENCES "+ typeTable +" ("+ typeName +") ON UPDATE CASCADE ON DELETE NO ACTION"
+                   + "FOREIGN KEY("+ drugType +") REFERENCES "+ typeTable +" ("+ typeName +") ON UPDATE CASCADE ON DELETE CASCADE"
                    +");";
 
    public static final String CREATE_TYPE_TABLE =

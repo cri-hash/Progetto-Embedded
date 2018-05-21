@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:ems="10"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
                     android:text="20" />
 
             </RelativeLayout>

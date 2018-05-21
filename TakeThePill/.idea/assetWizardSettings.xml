@@ -113,7 +113,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_notifications_none_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_create_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -123,9 +123,11 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_notifications_none_black_24dp" />
+                            <entry key="height" value="40" />
+                            <entry key="outputName" value="ic_create_black_40dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\Maurizio" />
+                            <entry key="width" value="40" />
                           </map>
                         </option>
                       </PersistentState>
