@@ -1,4 +1,4 @@
-package takethepill.embeddedproject.takethepill_kotlinversion
+package takethepill.embeddedproject.takethepillkv
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

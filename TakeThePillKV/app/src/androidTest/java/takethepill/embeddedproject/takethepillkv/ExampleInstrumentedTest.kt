@@ -1,4 +1,4 @@
-package takethepill.embeddedproject.takethepill_kotlinversion
+package takethepill.embeddedproject.takethepillkv
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("takethepill.embeddedproject.takethepill_kotlinversion", appContext.packageName)
+        assertEquals("takethepill.embeddedproject.takethepillkv", appContext.packageName)
     }
 }

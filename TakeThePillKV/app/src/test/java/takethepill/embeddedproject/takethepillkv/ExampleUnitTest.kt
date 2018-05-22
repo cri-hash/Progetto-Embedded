@@ -1,4 +1,4 @@
-package takethepill.embeddedproject.takethepill_kotlinversion
+package takethepill.embeddedproject.takethepillkv
 
 import org.junit.Test
 
