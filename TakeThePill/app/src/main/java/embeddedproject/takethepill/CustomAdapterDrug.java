@@ -39,6 +39,9 @@ public class CustomAdapterDrug extends ArrayAdapter<DrugEntity> {
         type.setText("Tipo: "+actual.getTipo());
         scorte.setText("Scorte: " + actual.getScorte());
         prezzo.setText("Prezzo: " +actual.getPrezzo()+ "€");
+        if(actual.getDescrizione().equals("")||actual.getDescrizione()==null)
+            descr.setText("Nessuna descrizione");
+        else
         descr.setText("Descrizione: " + actual.getDescrizione());
 
         return convertView;
