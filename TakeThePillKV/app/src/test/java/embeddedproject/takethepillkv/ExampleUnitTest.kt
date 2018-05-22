@@ -1,4 +1,4 @@
-package takethepill.embeddedproject.takethepillkv
+package embeddedproject.takethepillkv
 
 import org.junit.Test
 
