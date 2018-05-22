@@ -78,7 +78,7 @@ public class Str {
                    + therapySat + " INT,"
                    + therapySun + " INT,"
                    + therapyDrug + " VARCHAR(50),"
-                   + "FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugName+") ON UPDATE CASCADE ON DELETE NO ACTION"
+                   + "FOREIGN KEY("+ therapyDrug +") REFERENCES "+ drugTable +" ("+ drugName+") ON UPDATE CASCADE ON DELETE CASCADE"
                    + ");";
 
 

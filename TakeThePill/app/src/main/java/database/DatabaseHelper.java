@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import java.sql.Time;
-import java.util.Calendar;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,45 +21,35 @@ import embeddedproject.takethepill.TherapyEntityDB;
 import static database.Str.*;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=15;
+        private static final int DatabaseVersion=19;
         private static final String DatabaseName="PillDb";
         public DatabaseHelper(Context context){
             super(context,DatabaseName,null,DatabaseVersion);
 
             Log.d("costruttore db","ok");
             SQLiteDatabase db=getWritableDatabase();
+
         }
         //create Database
         @Override
-        public void onCreate(SQLiteDatabase db)
-            {
-                db.execSQL(CREATE_TYPE_TABLE);
-                Log.d("tabella type ", "creata");
-                db.execSQL(CREATE_DRUG_TABLE);
-                Log.d("tabella drug ", "creata");
-                //db.execSQL(CREATE_HOUR_TABLE);
-                //Log.d("tabella hour ", "creata");
-                db.execSQL(CREATE_THERAPY_TABLE);
-                Log.d("tabella terapy ", "creata");
-                db.execSQL(CREATE_ASSUMPTION_TABLE);
-                Log.d("tabella assumption ", "creata");
-                // db.execSQL(CREATE_MOMENT_TABLE);
-                //Log.d("tabella moment ", "creata");
-                setTypeList(db);
-                Log.d("tipi inseriti","ok");
+        public void onCreate(SQLiteDatabase db){
+            db.execSQL(CREATE_TYPE_TABLE);
+            db.execSQL(CREATE_DRUG_TABLE);
+            db.execSQL(CREATE_THERAPY_TABLE);
+            db.execSQL(CREATE_ASSUMPTION_TABLE);
+            setTypeList(db);
 
-                popolaDB(); // Inserimento di alcuni farmaci
-            }
+            //popolaDB();
+        }
         @Override
         public void onUpgrade(SQLiteDatabase db, int newDb, int old){
-        //delete table
+            //delete table
             db.execSQL("DROP TABLE IF EXISTS "+Str.therapyTable);
             db.execSQL("DROP TABLE IF EXISTS "+Str.momentTable);
             db.execSQL("DROP TABLE IF EXISTS "+Str.hourTable);
             db.execSQL("DROP TABLE IF EXISTS "+Str.assumptionTable);
             db.execSQL("DROP TABLE IF EXISTS "+Str.drugTable);
             db.execSQL("DROP TABLE IF EXISTS "+Str.typeTable);
-
 
             // Create tables again
             onCreate(db);
@@ -194,6 +182,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return deleteStatus;
     }
+    public int removeTherapyByDrug(String nome){
+        SQLiteDatabase db=getWritableDatabase();
+        int deleteStatus =db.delete(therapyTable,therapyDrug +"=?",new String[]{nome});
+        db.close();
+        return deleteStatus;
+    }
+
 
     // Ottenere la lista delle ore di una terapia
     public List<Time> getTherapyHour(TherapyEntityDB th){
@@ -585,7 +580,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Usato in fase di test
-    public boolean popolaDB(){
+    public void popolaDB(){
         /*SQLiteDatabase db=getReadableDatabase();
         Cursor c=db.rawQuery("SELECT * FROM "+assumptionTable+";",null);
         c.moveToFirst();
@@ -633,7 +628,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 200,
                 10));
 
-        return true;
     }
 
 

@@ -153,6 +153,7 @@ public class AddEditDrugActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // Operazione DATABASE CHE CANCELLA IL FARMACO
                         db.removeDrugBYName(drug.getNome());
+                        db.removeTherapyByDrug(drug.getNome());
                         finish();
                     }
                 });
