@@ -11,13 +11,11 @@ public class Str {
    public static final String drugDescription="descrizione";
    public static final String typeTable="TIPO";
    public static final String typeName="nomeTipo";
-   public static final String momentTable="MOMENTO";
    public static final String assumptionTable="ASSUNZIONE";
    public static final String assumptionDate="data";
    public static final String assumptionHour="ora";
    public static final String assumptiontherapy="terapiaAssunzione";
    public static final String assumptionState="stato";
-   public static final String hourTable="ORARIO";
    public static final String therapyTable="TERAPIA";
    public static final String therapyID="ID";
    public static final String therapyDateStart="dataInizio";
