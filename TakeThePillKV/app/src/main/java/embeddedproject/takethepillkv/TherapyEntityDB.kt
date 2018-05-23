@@ -11,6 +11,8 @@ import database.Str
 
 public class TherapyEntityDB {
     //variabili rese pubbliche, per poter sfruttare i getter ed i setter impliciti di Kotlin
+
+
      var mID : Int?=null
      var mDrug: String?=null
      var mDateStart : Date?=null
@@ -25,7 +27,8 @@ public class TherapyEntityDB {
      var mSat : Boolean=false
      var mSun : Boolean=false
      var mDosaggio: Int=0
-    val stringa: String="ciao";
+       //istanza di un'oggetto Str, necessario per leggere le stringhe
+     val str: Str=Str()
 
 //serve...?
     public fun TherapyEntityDB()
@@ -53,7 +56,7 @@ public class TherapyEntityDB {
         mID = null //?????
 
          val c: Calendar = Calendar.getInstance()    // Data di oggi
-        mDateStart=  Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH);
+        mDateStart=  Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))  // da testare se funziona
 
         // Uno tra dataFine e nGiorni deve essere NULL
         this.mDateEnd=dataFine
@@ -120,25 +123,27 @@ public class TherapyEntityDB {
 
  fun getAllValues() : ContentValues
     {   val current=  ContentValues()
-        current.put(,mDrug);
-        val myFormat=SimpleDateFormat("dd/mm/yyyy");
-        //Log.d("data letta da therapy",myFormat.format(mDateEnd));
+        current.put(str.therapyDrug,mDrug)
+        val myFormat=SimpleDateFormat("dd/mm/yyyy")
+        //Log.d("data letta da therapy",myFormat.format(mDateEnd))
 
-        if(mDateEnd==null)current.put(Str.therapyDateEnd,(String)null);
-        else current.put(Str.therapyDateEnd,myFormat.format(mDateEnd));
+        if(mDateEnd==null)
+            current.put(str.therapyDateEnd,null as? String)
+        else
+            current.put(str.therapyDateEnd,myFormat.format(mDateEnd))
 
-        current.put(Str.therapyDateStart,myFormat.format(mDateStart));
-        current.put(Str.therapyNotify,mNotify);
-        current.put(Str.therapyNumberDays,mDays);
-        current.put(Str.therapyID,mID);
-        current.put(Str.therapyDosage,mDosaggio);
-        current.put(Str.therapyMon,checkBool(mMon));
-        current.put(Str.therapyTue,checkBool(mTue));
-        current.put(Str.therapyWed,checkBool(mWed));
-        current.put(Str.therapyThu,checkBool(mThu));
-        current.put(Str.therapyFri,checkBool(mFri));
-        current.put(Str.therapySat,checkBool(mSat));
-        current.put(Str.therapySun,checkBool(mSun));
+        current.put(str.therapyDateStart,myFormat.format(mDateStart))
+        current.put(str.therapyNotify,mNotify)
+        current.put(str.therapyNumberDays,mDays)
+        current.put(str.therapyID,mID)
+        current.put(str.therapyDosage,mDosaggio)
+        current.put(str.therapyMon,checkBool(mMon))
+        current.put(str.therapyTue,checkBool(mTue))
+        current.put(str.therapyWed,checkBool(mWed))
+        current.put(str.therapyThu,checkBool(mThu))
+        current.put(str.therapyFri,checkBool(mFri))
+        current.put(str.therapySat,checkBool(mSat))
+        current.put(str.therapySun,checkBool(mSun))
 
         return current;
     }
@@ -148,10 +153,10 @@ public class TherapyEntityDB {
      * @param value true or false
      * @return 1 or 0
      */
-    private int checkBool(boolean value)
+    private fun checkBool( value: Boolean) : Int
     {
-        if(value) return 1;
-        else return 0;
+        if(value) return 1
+        else return 0
     }
 
 
