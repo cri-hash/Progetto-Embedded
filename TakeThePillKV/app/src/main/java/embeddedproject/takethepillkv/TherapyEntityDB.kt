@@ -31,7 +31,7 @@ public class TherapyEntityDB {
      val str: Str=Str()
 
 //serve...?
-    public fun TherapyEntityDB()
+    constructor()
     {
         mID=null
         mDrug=null
@@ -49,7 +49,7 @@ public class TherapyEntityDB {
         mDosaggio=0
     }
 
-     fun TherapyEntityDB( dataFine: Date?,  nGiorni: Int, minNotifica: Int,
+    constructor( dataFine: Date?,  nGiorni: Int, minNotifica: Int,
             lun:Boolean, mar:Boolean, mer:Boolean, gio:Boolean, ven:Boolean, sab:Boolean, dom:Boolean,
      dosaggio: Int, nomeFarmaco: String){
 
