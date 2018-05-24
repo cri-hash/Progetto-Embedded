@@ -13,20 +13,20 @@ public class TherapyEntityDB {
     //variabili rese pubbliche, per poter sfruttare i getter ed i setter impliciti di Kotlin
 
 
-     var mID : Int?=null
-     var mDrug: String?=null
-     var mDateStart : Date?=null
-     var mDateEnd :Date?=null
-     var mNotify : Int =20   //-1=nessuna notifica, 0=notifica allo stesso momento, >0=min prima
-     var mDays : Int=1     //-2=DataFine, -1=Senza limiti
-     var mMon : Boolean=false
-     var mTue : Boolean=false
-     var mWed : Boolean=false
-     var mThu : Boolean=false
-     var mFri : Boolean=false
-     var mSat : Boolean=false
-     var mSun : Boolean=false
-     var mDosaggio: Int=0
+     var mID : Int?
+     var mDrug: String?
+     var mDateStart : Date?
+     var mDateEnd :Date?
+     var mNotify : Int   //-1=nessuna notifica, 0=notifica allo stesso momento, >0=min prima
+     var mDays : Int    //-2=DataFine, -1=Senza limiti
+     var mMon : Boolean
+     var mTue : Boolean
+     var mWed : Boolean
+     var mThu : Boolean
+     var mFri : Boolean
+     var mSat : Boolean
+     var mSun : Boolean
+     var mDosaggio: Int
        //istanza di un'oggetto Str, necessario per leggere le stringhe
      val str: Str=Str()
 

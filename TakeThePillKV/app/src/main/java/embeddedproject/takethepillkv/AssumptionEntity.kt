@@ -12,17 +12,17 @@ import java.util.concurrent.TimeUnit
  class AssumptionEntity {
 
     // VARIABILI
-     var  data: Date = Date()   //generica data..tanto siamo sicuri venga settata
-     var ora : Time =Time(1) //generico tempo..tanto siamo sicuri venga settato
-     var nomeFarmaco: String=String()
-     var stato: Boolean=false
+     var  data : Date
+     var ora : Time
+     var nomeFarmaco: String="farmaco non definito " // non deve mai restare così
+     var stato: Boolean
      var dosaggio: Int=0
-     var tipoFarmaco: String=String()
-     var terapia: Int?=null
+     var tipoFarmaco: String="tipo non definito"  // non deve mai restare così
+     var terapia: Int?
 
     // costruttore per assunzioni DI SOLA LETTURA
-     constructor(data:Date, ora: Time, nomeFarmaco:String,stato:Boolean, dosaggio:Int,tipoFarmaco:String,terapia:Int){
-        this.data=data
+     constructor(dat:Date, ora: Time, nomeFarmaco:String,stato:Boolean, dosaggio:Int,tipoFarmaco:String,terapia:Int){
+        this.data=dat
         this.ora=ora
         this.nomeFarmaco=nomeFarmaco
         this.stato=stato
@@ -38,8 +38,7 @@ import java.util.concurrent.TimeUnit
         this.terapia=terapia
         this.stato=stato
     }
-    // Costruttore generico
-        constructor(){}
+
 
 
     //METODI GET e SET non servono in quanto automatici in Kotlin
