@@ -16,37 +16,40 @@ import database.DatabaseHelper
 
 public class AddEditDrugActivity : AppCompatActivity() {
 
-    private int elemSelez,prev; //Gestiscono la selezione del tipo di farmaco
+    private var elemSelez:Int=-1 //Gestiscono la selezione del tipo di farmaco
+    private var prev: Int=-1   //necessario inizializzarlo
 
-    private String tipiFarmaci[];// Lista dei tipi di farmaci
-    private DrugEntity drug;    // Rappresenta il farmaco in considerazione
+    private var tipiFarmaci: Array<String>= Array<String>(1){"e= $e"} // Lista dei tipi di farmaci
+    private var drug: DrugEntity?=null    // Rappresenta il farmaco in considerazione
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected fun onCreate( savedInstanceState:Bundle) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_drug);
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        val toolbar: android.support.v7.widget.Toolbar =  findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        final DatabaseHelper db=new DatabaseHelper(this);
-        tipiFarmaci=db.getTypeList();
+        val  db: DatabaseHelper= DatabaseHelper(this)
+        tipiFarmaci=db.getTypeList()
 
         // TextView e EditText del layout:
-        final EditText etNome = (EditText) findViewById(R.id.etDrugName);
-        final TextView tvTipo = (TextView) findViewById(R.id.tvDrugType);
-        final EditText etDescr = (EditText) findViewById(R.id.etDescription);
-        final EditText etPrezzo = (EditText) findViewById(R.id.etDrugPrice);
-        final EditText etScorte = (EditText) findViewById(R.id.etDrugQuantity);
+        val etNome : EditText =  findViewById(R.id.etDrugName)
+        val tvTipo : TextView  =  findViewById(R.id.tvDrugType)
+        val etDescr : EditText =  findViewById(R.id.etDescription)
+        val etPrezzo : EditText = findViewById(R.id.etDrugPrice)
+        val etScorte : EditText = findViewById(R.id.etDrugQuantity)
 
-        final boolean nuovo=getIntent().getBooleanExtra("nuovo",true);
+        val  nuovo : Boolean=getIntent().getBooleanExtra("nuovo",true)
         if(nuovo){  // Se stiamo creando un nuovo farmaco
-            drug=new DrugEntity("","","Applicazione/i",5,20);
-            elemSelez=prev=0;   // elemento selezionato nella lista TIPO farmaco
-            tvTipo.setText("Tipo: seleziona...");
+            drug=DrugEntity("","","Applicazione/i",5 as Double,20)
+            elemSelez=0
+            prev=0   // elemento selezionato nella lista TIPO farmaco
+            tvTipo.setText("Tipo: seleziona...")
         }else { // Se stiamo modificando un farmaco
-            drug= db.getDrugByName(getIntent().getStringExtra("name"));
-            for(int i=0; i<tipiFarmaci.length;i++){
+            drug= db.getDrugByName(getIntent().getStringExtra("name"))
+            var i:Int
+            for(i in 0 until tipiFarmaci.size){
                 if(tipiFarmaci[i].equals(drug.getTipo()))elemSelez=prev=i;   // elemento selezionato nella lista TIPO farmaco
             }
             tvTipo.setText("Tipo: "+tipiFarmaci[elemSelez]);
@@ -139,18 +142,18 @@ public class AddEditDrugActivity : AppCompatActivity() {
         });
 
         // BOTTONE ELIMINA
-        Button btnElimina = (Button) findViewById(R.id.btnDeleteDrug);
+        val btnElimina:Button =  findViewById(R.id.btnDeleteDrug);
         if(nuovo) btnElimina.setVisibility(View.GONE);  //Se si sta inserendo un nuovo farmaco il bottone non deve essere visibile
-        btnElimina.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnElimina.setOnClickListener( View.OnClickListener() {
+
+            fun onClick( v:View) {
 
                 // Messaggio "SICURO? SI/NO"
-                final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                val  builder : AlertDialog.Builder= AlertDialog.Builder(v.getContext())
                 builder.setMessage("Sei sicuro di voler eliminare il farmaco?");
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                builder.setPositiveButton("Si", DialogInterface.OnClickListener() {
+
+                        void onClick(val dialog :DialogInterface,which:Int) {
                         // Operazione DATABASE CHE CANCELLA IL FARMACO
                         db.removeDrugBYName(drug.getNome());
                         db.removeTherapyByDrug(drug.getNome());
