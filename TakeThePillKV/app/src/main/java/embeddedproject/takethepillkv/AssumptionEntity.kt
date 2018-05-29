@@ -1,6 +1,6 @@
 package embeddedproject.takethepillkv
 
-import android.util.Log;
+import android.util.Log
 
 import java.sql.Time
 import java.util.ArrayList

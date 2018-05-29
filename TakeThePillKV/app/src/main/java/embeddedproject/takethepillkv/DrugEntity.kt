@@ -1,4 +1,4 @@
-package embeddedproject.takethepill;
+package embeddedproject.takethepillkv
 
 import android.content.ContentValues;
 
