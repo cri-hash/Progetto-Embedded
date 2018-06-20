@@ -72,7 +72,12 @@ public class AddHourActivity extends AppCompatActivity {
 
         //TextView orario
         final TextView tvTime=(TextView)findViewById(R.id.tvNewHour);
-        tvTime.setText(mHour + ":" + mMinute);
+        String orario="";
+        if(mHour<10) orario="0"+mHour;
+        else orario = mHour+"";
+        if(mMinute<10) orario+=(":0"+mMinute);
+        else orario+=(":"+mMinute);
+        tvTime.setText(orario);
 
         // Bottone Seleziona Orario
         Button btnTimePicker=(Button)findViewById(R.id.btnSelectHour);
@@ -92,7 +97,12 @@ public class AddHourActivity extends AppCompatActivity {
                                                   int minute) {
                                 mHour=hourOfDay;
                                 mMinute=minute;
-                                tvTime.setText(hourOfDay + ":" + minute);
+                                String orario="";
+                                if(mHour<10) orario="0"+mHour;
+                                else orario = mHour+"";
+                                if(mMinute<10) orario+=(":0"+mMinute);
+                                else orario+=(":"+mMinute);
+                                tvTime.setText(orario);
                             }
                         }, mHour, mMinute, true);
                 timePickerDialog.show();

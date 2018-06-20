@@ -45,8 +45,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         public void onUpgrade(SQLiteDatabase db, int newDb, int old){
             //delete table
             db.execSQL("DROP TABLE IF EXISTS "+Str.therapyTable);
-            db.execSQL("DROP TABLE IF EXISTS "+Str.momentTable);
-            db.execSQL("DROP TABLE IF EXISTS "+Str.hourTable);
             db.execSQL("DROP TABLE IF EXISTS "+Str.assumptionTable);
             db.execSQL("DROP TABLE IF EXISTS "+Str.drugTable);
             db.execSQL("DROP TABLE IF EXISTS "+Str.typeTable);
@@ -62,19 +60,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 /////////////////////////////////////////////////////////////////
     public long insertTherapy(TherapyEntityDB terapia) {
         //  write a new raw on database
-                SQLiteDatabase db = getWritableDatabase();
-                if(getTherapy(terapia.getID())!=null)
-                    {
-                        Log.d("inserimento","tentato ma fallito");
-                        return -1;
-                    }
-                ContentValues toInsert=terapia.getAllValues();
-                long id = db.insert(Str.therapyTable, null, toInsert);
-                Log.d("avvenuto:","inserimento terapia");
-                // close db connection
-                db.close();
+        SQLiteDatabase db = getWritableDatabase();
+        SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
 
-                return id;
+        if(getTherapy(terapia.getID())!=null){
+            Log.d("insertTherapy()","tentato ma fallito");
+            return -1;
+        }
+        //ContentValues toInsert=terapia.getAllValues();
+
+        ContentValues values = new ContentValues();
+        //values.put(therapyID,terapia.getID());
+        values.put(therapyDrug, terapia.getDrug());
+        values.put(therapyDateStart, myFormat.format(terapia.getDateStart()));
+
+        if(terapia.getDateEnd()==null)values.put(therapyDateEnd, (String)null);
+        else values.put(therapyDateEnd, myFormat.format(terapia.getDateEnd()));
+
+        values.put(therapyNumberDays,terapia.getDays());
+        values.put(therapyNotify,terapia.getNotify());
+        values.put(therapyMon, checkBool(terapia.isMon()));
+        values.put(therapyTue, checkBool(terapia.isTue()));
+        values.put(therapyWed, checkBool(terapia.isWed()));
+        values.put(therapyThu, checkBool(terapia.isThu()));
+        values.put(therapyFri, checkBool(terapia.isFri()));
+        values.put(therapySat, checkBool(terapia.isSat()));
+        values.put(therapySun, checkBool(terapia.isSun()));
+        values.put(therapyDosage,terapia.getDosaggio());
+
+        long id = db.insert(Str.therapyTable, null, values);
+        Log.d("insertTherapy()","inserimento terapia");
+        // close db connection
+        db.close();
+
+        return id;
     }
 
 
@@ -170,7 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(therapyDosage,toUpdate.getDosaggio());
         // update row
         long id = db.update(therapyTable,values,therapyID+"=?",new String[]{toUpdate.getID()+""});
-        Log.d("avvenuto","aggiornamento terapia");
+        Log.d("updateTherapy()","terapia aggiornata");
         // close db connection
         db.close();
         return id;
@@ -407,6 +426,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         int deleteStatus =db.delete(assumptionTable,assumptiontherapy+"="+therapy.getID().toString(),null);
         db.close();
+        Log.d("removeAssumptionByTherapy","assunzioni eliminate, deleteStatus:"+deleteStatus);
         return deleteStatus;
     }
 

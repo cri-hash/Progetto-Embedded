@@ -99,7 +99,7 @@ public class AssumptionEntity {
     public List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour,Calendar dataInizio){
 
         if(th.getDays()==null){
-            Log.d("errore terapia","numero giorni non trovato");
+            Log.d("generateAssumption()","numero giorni non trovato");
             return null;
         }
 
@@ -119,9 +119,9 @@ public class AssumptionEntity {
         if(th.getDays()==-2){
             long diff = th.getDateEnd().getTime()-calendar.getTime().getTime();
             long giorni = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            Log.d("Data Fine",th.getDateEnd().toString());
-            Log.d("Data Inizio",calendar.getTime().toString());
-            Log.d("n Giorni",giorni+"");
+            Log.d("generateAssumption(): Data Fine",th.getDateEnd().toString());
+            Log.d("generateAssumption(): Data Inizio",calendar.getTime().toString());
+            Log.d("generateAssumption(): n Giorni",giorni+"");
             count= (int)giorni;
         } else if(th.getDays()==-1)count=10;// Se senza limiti???????????
         else count=th.getDays();

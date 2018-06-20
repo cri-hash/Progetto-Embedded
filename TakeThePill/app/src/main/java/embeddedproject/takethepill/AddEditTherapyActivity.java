@@ -85,6 +85,9 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             for (int i=0; i<list.size();i++){
                 listaOre.add(new int[]{list.get(i).getHours(),list.get(i).getMinutes()});
             }
+
+            if(terapia.getDays()==-2) Log.d("onCreate: AddEditTher: Data Fine",terapia.getDateEnd().toString());
+
         }
 
         // TextView Quantità
@@ -122,7 +125,10 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         tvHours.setText(listaOre.toString());
         String o="Ora: ";
         for (int i=0; i<listaOre.size();i++){
-            o+=listaOre.get(i)[0]+":"+listaOre.get(i)[1];
+            if(listaOre.get(i)[0]<10)o+=("0"+listaOre.get(i)[0]);
+            else o+=listaOre.get(i)[0]+"";
+            if(listaOre.get(i)[1]<10)o+=":0"+listaOre.get(i)[1];
+            else o+=(":"+listaOre.get(i)[1]);
             if(i!=listaOre.size()-1)o+=", ";
         }
         tvHours.setText(o);
@@ -146,6 +152,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 }else{  // Se si sta modificando una terapia
                     db.updateTherapy(terapia);  // Operazione DATABASE modifica terapia di id=...
                     db.removeAssumptionByTherapy(terapia);
+
                     salvaOre();
                     finish();   // Chiude l'activity e riapre la precedente
                 }
@@ -478,16 +485,22 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
+
+                if(terapia.getDays()==-2) Log.d("onActivityResult(): Data Fine",terapia.getDateEnd().toString());
+
                 listaOre=(ArrayList<int[]>)data.getSerializableExtra("result");
 
                 // Visualizzo le ore sul tvHour
                 tvHours.setText(listaOre.toString());
-                String s="Ora: ";
+                String o="Ora: ";
                 for (int i=0; i<listaOre.size();i++){
-                    s+=listaOre.get(i)[0]+":"+listaOre.get(i)[1];
-                    if(i!=listaOre.size()-1)s+=", ";
+                    if(listaOre.get(i)[0]<10)o+=("0"+listaOre.get(i)[0]);
+                    else o+=listaOre.get(i)[0]+"";
+                    if(listaOre.get(i)[1]<10)o+=":0"+listaOre.get(i)[1];
+                    else o+=(":"+listaOre.get(i)[1]);
+                    if(i!=listaOre.size()-1)o+=", ";
                 }
-                tvHours.setText(s);
+                tvHours.setText(o);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -514,11 +527,15 @@ public class AddEditTherapyActivity extends AppCompatActivity {
     // SALVARE LE ASSUNZIONI
     private void salvaOre(){
         // Per ogni ora si genera una lista di assunzioni
+        Log.d("salvaOre()","salvataggio assunzioni");
+        if(terapia.getDays()==-2) Log.d("salvaOre(): Data Fine",terapia.getDateEnd().toString());
+
         for(int i=0;i<listaOre.size();i++){
             AssumptionEntity assumptionEntity=new AssumptionEntity();
             Time ora=new Time(listaOre.get(i)[0],listaOre.get(i)[1],0);
 
             List<AssumptionEntity> listAssunzioni = assumptionEntity.generateAssumption(terapia,ora,null);
+
 
             for(int j=0;j<listAssunzioni.size();j++) db.insertAssumption(listAssunzioni.get(j));
 

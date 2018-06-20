@@ -37,7 +37,12 @@ public class CustomAdapterHour extends ArrayAdapter<int[]> {
 
         int[] actual = getItem(position);
 
-        hour.setText(String.valueOf(actual[0])+" : "+String.valueOf(actual[1]));
+        String orario="";
+        if(actual[0]<10) orario="0"+actual[0];
+        else orario = actual[0]+"";
+        if(actual[1]<10) orario+=(":0"+actual[1]);
+        else orario+=(":"+actual[1]);
+        hour.setText(orario);
 
         ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -65,7 +65,10 @@ public class CustomAdapterTherapy extends ArrayAdapter<TherapyEntityDB> {
         List<Time> list =db.getTherapyHour(terapia);    // Operazione database Lista delle ore
         String h="";
         for (int i=0; i<list.size();i++){
-            h+=String.valueOf(list.get(i).getHours())+":"+String.valueOf(list.get(i).getMinutes());
+            if(list.get(i).getHours()<10)h+="0";
+            h+=list.get(i).getHours()+":";
+            if(list.get(i).getMinutes()<10)h+="0";
+            h+=list.get(i).getMinutes();
             if(i!=list.size()-1)h+=", ";
         }
         hours.setText(h);
