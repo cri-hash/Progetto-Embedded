@@ -3,6 +3,7 @@ package embeddedproject.takethepillkv
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -28,8 +29,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //Select Home by default
         nav_view.setCheckedItem(R.id.nav_today)
-        //val fragment = TodayFragment()
-        //displaySelectedFragment(fragment)
+        val fragment = TodayFragment()
+        displaySelectedFragment(fragment)
 
     }
 
@@ -50,10 +51,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
 
+        // Handle navigation view item clicks here.
+        val id = item.itemId
+
+        var fragment: Fragment? = null
+
+        if (id == R.id.nav_today) {
+            supportActionBar!!.setTitle("OGGI")
+
+            fragment = TodayFragment()
+            displaySelectedFragment(fragment)
+
+        } else if (id == R.id.nav_therapy) {
+            supportActionBar!!.setTitle("TERAPIA")
+            fragment = TherapyFragment()
+            displaySelectedFragment(fragment)
+
+        } /*else if (id == R.id.nav_drugs) {
+            supportActionBar!!.setTitle("FARMACI")
+            fragment = DrugsFragment()
+            displaySelectedFragment(fragment)
+        }*/
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+
+    // Metodo per visualizzare i fragment
+    private fun displaySelectedFragment(fragment: Fragment) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame, fragment)
+        fragmentTransaction.commit()
+    }
+
+
+
 }

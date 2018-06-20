@@ -20,8 +20,14 @@ import embeddedproject.takethepillkv.TherapyEntityDB
 
 import database.Str
 
-class DatabaseHelper(context: Context?, name: String?, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(context, "PillDb", null, 1) {
+//class DatabaseHelper(context: Context?, name: String?, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(context, "PillDb", null, 1) {
 
+class DatabaseHelper:SQLiteOpenHelper{
+
+    constructor(context: Context?):super(context, "PillDb", null, 1){
+        Log.d("costruttore db", "ok")
+        val db = writableDatabase
+    }
 
 
     override fun onCreate(db: SQLiteDatabase?) {
