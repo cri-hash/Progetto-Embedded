@@ -118,7 +118,117 @@ public class TherapyEntityDB {
     }
 
 
+    fun getID(): Int? {
+        return mID
+    }
 
+    fun getDrug(): String? {
+        return mDrug
+    }
+
+    fun setDrug(drug: String) {
+        mDrug = drug
+    }
+
+    fun setID(ID: Int?) {
+        mID = ID
+    }
+
+    fun getDateStart(): Date? {
+        return mDateStart
+    }
+
+    fun setDateStart(dateStart: Date?) {
+        mDateStart = dateStart
+    }
+
+    fun getDateEnd(): Date? {
+        return mDateEnd
+    }
+
+    fun setDateEnd(dateEnd: Date?) {
+        mDateEnd = dateEnd
+    }
+
+    fun getNotify(): Int? {
+        return mNotify
+    }
+
+    fun setNotify(notify: Int) {
+        mNotify = notify
+    }
+
+    fun getDays(): Int? {
+        return mDays
+    }
+
+    fun setDays(days: Int) {
+        mDays = days
+    }
+
+    fun isMon(): Boolean {
+        return mMon
+    }
+
+    fun setMon(lun: Boolean) {
+        mMon = lun
+    }
+
+    fun isTue(): Boolean {
+        return mTue
+    }
+
+    fun setTue(tue: Boolean) {
+        mTue = tue
+    }
+
+    fun isWed(): Boolean {
+        return mWed
+    }
+
+    fun setWed(wed: Boolean) {
+        mWed = wed
+    }
+
+    fun isThu(): Boolean {
+        return mThu
+    }
+
+    fun setThu(thu: Boolean) {
+        mThu = thu
+    }
+
+    fun isFri(): Boolean {
+        return mFri
+    }
+
+    fun setFri(fri: Boolean) {
+        mFri = fri
+    }
+
+    fun isSat(): Boolean {
+        return mSat
+    }
+
+    fun setSat(sat: Boolean) {
+        mSat = sat
+    }
+
+    fun isSun(): Boolean {
+        return mSun
+    }
+
+    fun setSun(sun: Boolean) {
+        mSun = sun
+    }
+
+    fun setDosage(dosaggio: Int) {
+        mDosaggio = dosaggio
+    }
+
+    fun getDosaggio(): Int {
+        return mDosaggio
+    }
 
 
  fun getAllValues() : ContentValues

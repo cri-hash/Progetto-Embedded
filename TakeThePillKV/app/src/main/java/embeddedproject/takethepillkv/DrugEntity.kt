@@ -25,9 +25,8 @@ public class DrugEntity {
     }
 
 
-    fun DrugEntity()
+    constructor()
     {
-
         this.nome=null
         this.descrizione=null
         this.tipo=null
@@ -35,7 +34,47 @@ public class DrugEntity {
         this.scorte=0
     }
 
+//METODI GET e SET
 
+    fun getNome(): String? {
+        return nome
+    }
+
+    fun setNome(nome: String) {
+        this.nome = nome
+    }
+
+    fun getDescrizione(): String? {
+        return descrizione
+    }
+
+    fun setDescrizione(descrizione: String) {
+        this.descrizione = descrizione
+    }
+
+    fun getTipo(): String? {
+        return tipo
+    }
+
+    fun setTipo(tipo: String) {
+        this.tipo = tipo
+    }
+
+    fun getPrezzo(): Double {
+        return prezzo
+    }
+
+    fun setPrezzo(prezzo: Double) {
+        this.prezzo = prezzo
+    }
+
+    fun getScorte(): Int {
+        return scorte
+    }
+
+    fun setScorte(scorte: Int) {
+        this.scorte = scorte
+    }
 
    fun  getAllValues() : ContentValues
     {

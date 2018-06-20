@@ -1,5 +1,6 @@
 package database
 
+@SuppressWarnings("WeakerAccess")
 class Str {
     val drugTable = "FARMACO"
     val drugName = "nomeFarmaco"
@@ -79,4 +80,6 @@ class Str {
 
     val getAllTherapies = "SELECT * FROM $therapyTable ;"
     val getAllDrugs = "SELECT * FROM $drugTable ;"
+
+
 }

@@ -25,6 +25,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        //Select Home by default
+        nav_view.setCheckedItem(R.id.nav_today)
+        //val fragment = TodayFragment()
+        //displaySelectedFragment(fragment)
+
     }
 
     override fun onBackPressed() {
@@ -35,11 +41,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.activity_main_drawer, menu)
         return true
-    }
+    }*/
 
 
 

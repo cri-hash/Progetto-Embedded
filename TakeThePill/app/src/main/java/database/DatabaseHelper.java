@@ -21,37 +21,38 @@ import embeddedproject.takethepill.TherapyEntityDB;
 import static database.Str.*;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-        private static final int DatabaseVersion=19;
-        private static final String DatabaseName="PillDb";
-        public DatabaseHelper(Context context){
-            super(context,DatabaseName,null,DatabaseVersion);
 
-            Log.d("costruttore db","ok");
-            SQLiteDatabase db=getWritableDatabase();
+    private static final int DatabaseVersion=19;
+    private static final String DatabaseName="PillDb";
+    public DatabaseHelper(Context context){
+        super(context,DatabaseName,null,DatabaseVersion);
 
-        }
-        //create Database
-        @Override
-        public void onCreate(SQLiteDatabase db){
-            db.execSQL(CREATE_TYPE_TABLE);
-            db.execSQL(CREATE_DRUG_TABLE);
-            db.execSQL(CREATE_THERAPY_TABLE);
-            db.execSQL(CREATE_ASSUMPTION_TABLE);
-            setTypeList(db);
+        Log.d("costruttore db","ok");
+        SQLiteDatabase db=getWritableDatabase();
 
-            //popolaDB();
-        }
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int newDb, int old){
-            //delete table
-            db.execSQL("DROP TABLE IF EXISTS "+Str.therapyTable);
-            db.execSQL("DROP TABLE IF EXISTS "+Str.assumptionTable);
-            db.execSQL("DROP TABLE IF EXISTS "+Str.drugTable);
-            db.execSQL("DROP TABLE IF EXISTS "+Str.typeTable);
+    }
+    //create Database
+    @Override
+    public void onCreate(SQLiteDatabase db){
+        db.execSQL(CREATE_TYPE_TABLE);
+        db.execSQL(CREATE_DRUG_TABLE);
+        db.execSQL(CREATE_THERAPY_TABLE);
+        db.execSQL(CREATE_ASSUMPTION_TABLE);
+        setTypeList(db);
 
-            // Create tables again
-            onCreate(db);
-        }
+        //popolaDB();
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int newDb, int old){
+        //delete table
+        db.execSQL("DROP TABLE IF EXISTS "+Str.therapyTable);
+        db.execSQL("DROP TABLE IF EXISTS "+Str.assumptionTable);
+        db.execSQL("DROP TABLE IF EXISTS "+Str.drugTable);
+        db.execSQL("DROP TABLE IF EXISTS "+Str.typeTable);
+
+        // Create tables again
+        onCreate(db);
+    }
 
 
 
