@@ -53,12 +53,12 @@ class DatabaseHelper:SQLiteOpenHelper{
 /////////////////////////////////////////////////////////////////
 ////////////////////////////// TERAPIE /////////////////////////
 /////////////////////////////////////////////////////////////////
-    fun insertTherapy(terapia: TherapyEntityDB): Long {
+    fun insertTherapy(terapia: TherapyEntityDB?): Long {
         //  write a new raw on database
         val db = writableDatabase
         val myFormat = SimpleDateFormat("dd/MM/yyyy")
 
-        if (getTherapy(terapia.getID()) != null) {
+        if (getTherapy(terapia?.getID()) != null) {
             Log.d("insertTherapy()", "tentato ma fallito")
             return -1
         }
@@ -66,17 +66,17 @@ class DatabaseHelper:SQLiteOpenHelper{
 
         val values = ContentValues()
         //values.put(therapyID,terapia.getID());
-        values.put(therapyDrug, terapia.getDrug())
-        values.put(therapyDateStart, myFormat.format(terapia.getDateStart()))
+        values.put(therapyDrug, terapia?.getDrug())
+        values.put(therapyDateStart, myFormat.format(terapia?.getDateStart()))
 
-        if (terapia.getDateEnd() == null)
+        if (terapia?.getDateEnd() == null)
             values.put(therapyDateEnd, null as String?)
         else
             values.put(therapyDateEnd, myFormat.format(terapia.getDateEnd()))
 
-        values.put(therapyNumberDays, terapia.getDays())
-        values.put(therapyNotify, terapia.getNotify())
-        values.put(therapyMon, checkBool(terapia.isMon()))
+        values.put(therapyNumberDays, terapia?.getDays())
+        values.put(therapyNotify, terapia?.getNotify())
+        values.put(therapyMon, checkBool(terapia!!.isMon()))
         values.put(therapyTue, checkBool(terapia.isTue()))
         values.put(therapyWed, checkBool(terapia.isWed()))
         values.put(therapyThu, checkBool(terapia.isThu()))
@@ -132,21 +132,24 @@ class DatabaseHelper:SQLiteOpenHelper{
     fun getTherapy(ID: Int?): TherapyEntityDB? {
         val db = readableDatabase
         val query = "SELECT * FROM $therapyTable WHERE $therapyID=?"
-        val cursor = db.rawQuery(query, arrayOf(ID!!.toString() + ""))
-        if (cursor.count == 0 || cursor.count == -1) {
+
+        Log.d("getTherapy ", "id="+ID.toString())
+        if(ID==null)return null
+        val cursor:Cursor? = db.rawQuery(query, arrayOf(ID!!.toString() + ""))
+        if (cursor?.count == 0 || cursor?.count == -1) {
             Log.d("therapy ", ID.toString() + " not found")
             return null
         }
-        val count = cursor.count
+        val count = cursor?.count
         Log.d("sto marso de count", count.toString() + "")
         val current = TherapyEntityDB()
-        cursor.moveToFirst() //N.B!!!! sennò dà errore
+        cursor?.moveToFirst() //N.B!!!! sennò dà errore
         //Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
-        if (cursor.getString(cursor.getColumnIndex(therapyDateEnd)) == null)
+        if (cursor?.getString(cursor.getColumnIndex(therapyDateEnd)) == null)
             current.setDateEnd(null)
         else
             current.setDateEnd(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateEnd))))
-        current.setDateStart(stringToDate(cursor.getString(cursor.getColumnIndex(therapyDateStart))))
+        current.setDateStart(stringToDate(cursor!!.getString(cursor.getColumnIndex(therapyDateStart))))
         current.setDays(cursor.getInt(cursor.getColumnIndex(therapyNumberDays)))
         current.setID(cursor.getInt(cursor.getColumnIndex(therapyID)))
         current.setNotify(cursor.getInt(cursor.getColumnIndex(therapyNotify)))
@@ -164,23 +167,23 @@ class DatabaseHelper:SQLiteOpenHelper{
         return current
     }
 
-    fun updateTherapy(toUpdate: TherapyEntityDB): Long {
+    fun updateTherapy(toUpdate: TherapyEntityDB?): Long {
         // get writable database as we want to write data
         val db = this.writableDatabase
         val myFormat = SimpleDateFormat("dd/MM/yyyy")
         val values = ContentValues()
-        values.put(therapyID, toUpdate.getID())
-        values.put(therapyDrug, toUpdate.getDrug())
-        values.put(therapyDateStart, myFormat.format(toUpdate.getDateStart()))
+        values.put(therapyID, toUpdate?.getID())
+        values.put(therapyDrug, toUpdate?.getDrug())
+        values.put(therapyDateStart, myFormat.format(toUpdate?.getDateStart()))
 
-        if (toUpdate.getDateEnd() == null)
+        if (toUpdate?.getDateEnd() == null)
             values.put(therapyDateEnd, null as String?)
         else
             values.put(therapyDateEnd, myFormat.format(toUpdate.getDateEnd()))
 
-        values.put(therapyNumberDays, toUpdate.getDays())
-        values.put(therapyNotify, toUpdate.getNotify())
-        values.put(therapyMon, checkBool(toUpdate.isMon()))
+        values.put(therapyNumberDays, toUpdate?.getDays())
+        values.put(therapyNotify, toUpdate?.getNotify())
+        values.put(therapyMon, checkBool(toUpdate!!.isMon()))
         values.put(therapyTue, checkBool(toUpdate.isTue()))
         values.put(therapyWed, checkBool(toUpdate.isWed()))
         values.put(therapyThu, checkBool(toUpdate.isThu()))
@@ -196,7 +199,7 @@ class DatabaseHelper:SQLiteOpenHelper{
         return id
     }
 
-    fun removeTherapyBYId(ID: Int): Int {
+    fun removeTherapyBYId(ID: Int?): Int {
         val db = writableDatabase
         val deleteStatus = db.delete(therapyTable, "$therapyID=?", arrayOf(ID.toString() + ""))
         db.close()
@@ -212,10 +215,10 @@ class DatabaseHelper:SQLiteOpenHelper{
 
 
     // Ottenere la lista delle ore di una terapia
-    fun getTherapyHour(th: TherapyEntityDB): List<Time>? {
+    fun getTherapyHour(th: TherapyEntityDB?): List<Time>? {
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT DISTINCT " + assumptionHour + " FROM " + assumptionTable + " WHERE " + assumptiontherapy
-                + " = " + th.getID(), null)
+                + " = " + th?.getID(), null)
 
         if (cursor.count == 0) {
             Log.d("assumption error", "nessun orario trovato per la terapia inserita")
@@ -418,10 +421,10 @@ class DatabaseHelper:SQLiteOpenHelper{
         db.close()
         return deleteStatus
     }
-    fun removeAssumptionByTherapy(therapy: TherapyEntityDB): Int {
+    fun removeAssumptionByTherapy(therapy: TherapyEntityDB?): Int {
         val db = writableDatabase
 
-        val deleteStatus = db.delete(assumptionTable, assumptiontherapy + "=" + therapy.getID().toString(), null)
+        val deleteStatus = db.delete(assumptionTable, assumptiontherapy + "=" + therapy?.getID().toString(), null)
         db.close()
         Log.d("removeAssumptionByTherapy", "assunzioni eliminate, deleteStatus:$deleteStatus")
         return deleteStatus

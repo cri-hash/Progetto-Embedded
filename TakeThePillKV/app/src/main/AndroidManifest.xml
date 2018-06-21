@@ -19,7 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".AddEditTherapyActivity"
+            android:label="@string/title_activity_add_edit_therapy"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddEditDrugActivity" />
         <activity android:name=".AddHourActivity"></activity>
 

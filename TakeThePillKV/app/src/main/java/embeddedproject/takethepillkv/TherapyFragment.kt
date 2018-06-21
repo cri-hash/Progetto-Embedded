@@ -59,10 +59,10 @@ class TherapyFragment : Fragment() {
         // BOTTONE AGGIUNGI TERAPIA
         val fab = view.findViewById(R.id.fab_therapy) as FloatingActionButton
         fab.setOnClickListener { view ->
-            /*val intent = Intent(view.context, AddEditTherapyActivity::class.java)
+            val intent = Intent(view.context, AddEditTherapyActivity::class.java)
             intent.putExtra("nuova", true)
             intent.putExtra("id", "")
-            startActivity(intent)*/
+            startActivity(intent)
             Log.d("TherapyFragment","bottone premuto")
         }
 
@@ -82,10 +82,10 @@ class TherapyFragment : Fragment() {
             val terapia = listaTerapie[position]
             val idTerapia = terapia.getID()
 
-            /*val intent = Intent(view.context, AddEditTherapyActivity::class.java)
+            val intent = Intent(view.context, AddEditTherapyActivity::class.java)
             intent.putExtra("nuova", false)
             intent.putExtra("id", idTerapia)
-            startActivity(intent)*/
+            startActivity(intent)
             Log.d("TherapyFragment","elemento cliccato")
         }
 

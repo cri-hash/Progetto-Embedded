@@ -12,15 +12,15 @@ import java.util.concurrent.TimeUnit
  class AssumptionEntity {
 
     // VARIABILI
-     var data : Date?
-     var ora : Time
+     var data : Date? = null
+     lateinit var ora : Time
      var nomeFarmaco: String="farmaco non definito " // non deve mai restare così
-     var stato: Boolean
+     var stato: Boolean = false
      var dosaggio: Int=0
      var tipoFarmaco: String="tipo non definito"  // non deve mai restare così
-     var terapia: Int?
+     var terapia: Int? = null
 
-    // costruttore per assunzioni DI SOLA LETTURA
+     // costruttore per assunzioni DI SOLA LETTURA
      constructor(dat:Date?, ora: Time, nomeFarmaco:String,stato:Boolean, dosaggio:Int,tipoFarmaco:String,terapia:Int){
         this.data=dat
         this.ora=ora
@@ -39,6 +39,8 @@ import java.util.concurrent.TimeUnit
         this.stato=stato
     }
 
+     // Costruttore generico
+     constructor() {}
 
      //METODI GET e SET
 
@@ -48,9 +50,9 @@ import java.util.concurrent.TimeUnit
 
 
 
-    public fun generateAssumption(th :TherapyEntityDB, hour:Time, dataInizio: Calendar): List<AssumptionEntity>?{
+    public fun generateAssumption(th :TherapyEntityDB?, hour:Time, dataInizio: Calendar?): List<AssumptionEntity>?{
 
-        if(th.mDays==0){
+        if(th?.mDays==0){
             Log.d("errore terapia","numero giorni non trovato");
             return null
         }
@@ -68,15 +70,15 @@ import java.util.concurrent.TimeUnit
 
         var count=0
         // Se si ha la data di fine, ricavo i giorni di differenza con oggi
-        if(th.mDays==-2){
-            var diff = (th.mDateEnd as Date).getTime()-calendar.getTime().getTime()  // cast per assicurare che non è null
+        if(th?.mDays==-2){
+            var diff = (th?.mDateEnd as Date).getTime()-calendar.getTime().getTime()  // cast per assicurare che non è null
             var giorni = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
             Log.d("Data Fine",th.mDateEnd.toString())
             Log.d("Data Inizio",calendar.getTime().toString())
             Log.d("n Giorni",giorni.toString())
             count= giorni as Int
-        } else if(th.mDays==-1)count=10;// Se senza limiti???????????
-        else count=th.mDays
+        } else if(th?.mDays==-1)count=10;// Se senza limiti???????????
+        else count= th?.mDays!!
 
         while(count>0){
             //scorro il calendario un giorno alla volta

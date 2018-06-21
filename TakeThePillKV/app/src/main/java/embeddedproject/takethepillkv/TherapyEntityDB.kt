@@ -51,7 +51,7 @@ public class TherapyEntityDB {
 
     constructor( dataFine: Date?,  nGiorni: Int, minNotifica: Int,
             lun:Boolean, mar:Boolean, mer:Boolean, gio:Boolean, ven:Boolean, sab:Boolean, dom:Boolean,
-     dosaggio: Int, nomeFarmaco: String){
+     dosaggio: Int, nomeFarmaco: String?){
 
         mID = null //?????
 
@@ -126,7 +126,7 @@ public class TherapyEntityDB {
         return mDrug
     }
 
-    fun setDrug(drug: String) {
+    fun setDrug(drug: String?) {
         mDrug = drug
     }
 
