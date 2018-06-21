@@ -21,6 +21,7 @@
         </activity>
 
         <activity android:name=".AddEditDrugActivity" />
+        <activity android:name=".AddHourActivity"></activity>
 
     </application>
 
