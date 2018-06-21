@@ -1,6 +1,11 @@
 package embeddedproject.takethepillkv
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -9,8 +14,11 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import database.DatabaseHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import java.sql.Time
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,11 +41,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         displaySelectedFragment(fragment)
 
         // GESTIONE DELLE NOTIFICHE:
-        //...................... RICOPIAREEEE
+        // Ogni minuto manda un broadcast che attiva la classe AlarmNotificationReiceiver
+        val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val myIntent: Intent
+        val pendingIntent: PendingIntent
+        myIntent = Intent(this@MainActivity, AlarmNotificationReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this, 0, myIntent, 0)
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 3000, 60000, pendingIntent)
 
 
         // GESTIONE DELLE TERAPIE DI DURATA SENZA LIMITI:
-        //...................... RICOPIAREEEE
+        // Lista delle terapie con durata senza limite
+        val db = DatabaseHelper(this)
+        val listTerapie = db.getAllTherapies() as ArrayList<TherapyEntityDB>
+        for (i in listTerapie.indices) {
+            // Lista assunzioni da domani in avanti
+            val listAssunzioni = db.getAssumptionsByTherapy(listTerapie[i]) as ArrayList<AssumptionEntity>
+
+            // Se ci sono meno di 10 assunzioni ne aggiungo 10 dalla data finale
+            if (listAssunzioni.size < 10) {
+                // Lista delle ore della terapia
+                val listaOre = ArrayList<IntArray>()
+                val list = db.getTherapyHour(listTerapie[i])    // Operazione database Lista delle ore
+                for (j in list!!.indices) {
+                    listaOre.add(intArrayOf(list[j].hours, list[j].minutes))
+                }
+
+                val ultimoGiorno = listAssunzioni[listAssunzioni.size - 1].data
+                val giornoDopo = Calendar.getInstance()
+                giornoDopo.set(Calendar.DATE, ultimoGiorno!!.getDate())
+
+                // Per ogni ora si genera una lista di assunzioni
+                for (j in listaOre.indices) {
+                    val assumptionEntity = AssumptionEntity()
+                    val ora = Time(listaOre[j][0], listaOre[j][1], 0)
+
+                    val listAss = assumptionEntity.generateAssumption(listTerapie[i], ora, giornoDopo)
+
+                    // Inserimento di ogni assunzione nuova
+                    for (k in listAss!!.indices) db.insertAssumption(listAss.get(k))
+                }
+
+            }
+        }
 
 
     }

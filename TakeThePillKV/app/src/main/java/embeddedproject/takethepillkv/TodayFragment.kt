@@ -64,8 +64,8 @@ class TodayFragment : Fragment() {
         val fab = view.findViewById(R.id.fab_main) as FloatingActionButton
         fab.setOnClickListener { view ->
             // Richiama AddEditTherapyActivity
-            //val intent = Intent(view.context, AddEditTherapyActivity::class.java)
-            //startActivity(intent)
+            val intent = Intent(view.context, AddEditTherapyActivity::class.java)
+            startActivity(intent)
             Log.d("TodayFragment","bottone premuto")
         }
 

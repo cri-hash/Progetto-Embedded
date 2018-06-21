@@ -68,7 +68,7 @@ import java.util.concurrent.TimeUnit
         calendar.add(Calendar.DAY_OF_MONTH,-1)
 
 
-        var count=0
+        var count:Int=0
         // Se si ha la data di fine, ricavo i giorni di differenza con oggi
         if(th?.mDays==-2){
             var diff = (th?.mDateEnd as Date).getTime()-calendar.getTime().getTime()  // cast per assicurare che non è null
@@ -76,7 +76,7 @@ import java.util.concurrent.TimeUnit
             Log.d("Data Fine",th.mDateEnd.toString())
             Log.d("Data Inizio",calendar.getTime().toString())
             Log.d("n Giorni",giorni.toString())
-            count= giorni as Int
+            count= giorni.toInt()
         } else if(th?.mDays==-1)count=10;// Se senza limiti???????????
         else count= th?.mDays!!
 
