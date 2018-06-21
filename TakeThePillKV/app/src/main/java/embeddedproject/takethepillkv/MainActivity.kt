@@ -32,6 +32,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val fragment = TodayFragment()
         displaySelectedFragment(fragment)
 
+        // GESTIONE DELLE NOTIFICHE:
+        //...................... RICOPIAREEEE
+
+
+        // GESTIONE DELLE TERAPIE DI DURATA SENZA LIMITI:
+        //...................... RICOPIAREEEE
+
+
     }
 
     override fun onBackPressed() {
@@ -68,11 +76,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             fragment = TherapyFragment()
             displaySelectedFragment(fragment)
 
-        } /*else if (id == R.id.nav_drugs) {
+        } else if (id == R.id.nav_drugs) {
             supportActionBar!!.setTitle("FARMACI")
             fragment = DrugsFragment()
             displaySelectedFragment(fragment)
-        }*/
+        }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true

@@ -56,7 +56,7 @@ public class DrugEntity {
         return tipo
     }
 
-    fun setTipo(tipo: String) {
+    fun setTipo(tipo: String?) {
         this.tipo = tipo
     }
 

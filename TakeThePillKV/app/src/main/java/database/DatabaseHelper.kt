@@ -50,7 +50,7 @@ class DatabaseHelper:SQLiteOpenHelper{
 
     }
 
-    /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 ////////////////////////////// TERAPIE /////////////////////////
 /////////////////////////////////////////////////////////////////
     fun insertTherapy(terapia: TherapyEntityDB): Long {
@@ -203,7 +203,7 @@ class DatabaseHelper:SQLiteOpenHelper{
         return deleteStatus
     }
 
-    fun removeTherapyByDrug(nome: String): Int {
+    fun removeTherapyByDrug(nome: String?): Int {
         val db = writableDatabase
         val deleteStatus = db.delete(therapyTable, "$therapyDrug=?", arrayOf(nome))
         db.close()
@@ -241,14 +241,14 @@ class DatabaseHelper:SQLiteOpenHelper{
     /////////////////////////////////////////////////////////////////
     ////////////////////////////// FARMACI //////////////////////////
     /////////////////////////////////////////////////////////////////
-    fun insertDrug(drug: DrugEntity): Long {
+    fun insertDrug(drug: DrugEntity?): Long {
         val db = writableDatabase
 
-        if (getDrugByName(drug.getNome()) != null) {
+        if (getDrugByName(drug?.getNome()) != null) {
             Log.d("inserimento fallito", "farmaco già presente")
             return -1
         }
-        val toInsert = drug.getAllValues()
+        val toInsert = drug?.getAllValues()
         val id = db.insert(drugTable, null, toInsert)
         Log.d("avvenuto:", "inserimento farmaco")
         // close db connection
@@ -279,7 +279,7 @@ class DatabaseHelper:SQLiteOpenHelper{
     }
 
 
-    fun removeDrugBYName(nome: String): Int {
+    fun removeDrugBYName(nome: String?): Int {
         val db = writableDatabase
         val deleteStatus = db.delete(drugTable, "$drugName=?", arrayOf(nome + ""))
         db.close()
@@ -311,19 +311,19 @@ class DatabaseHelper:SQLiteOpenHelper{
         return list
     }
 
-    fun updateDrug(toUpdate: DrugEntity): Long {
+    fun updateDrug(toUpdate: DrugEntity?): Long {
         // get writable database as we want to write data
         val db = this.writableDatabase
 
         val values = ContentValues()
 
-        values.put(drugName, toUpdate.getNome())
-        values.put(drugPrice, toUpdate.getPrezzo())
-        values.put(drugDescription, toUpdate.getDescrizione())
-        values.put(drugQuantities, toUpdate.getScorte())
-        values.put(drugType, toUpdate.getTipo())
+        values.put(drugName, toUpdate?.getNome())
+        values.put(drugPrice, toUpdate?.getPrezzo())
+        values.put(drugDescription, toUpdate?.getDescrizione())
+        values.put(drugQuantities, toUpdate?.getScorte())
+        values.put(drugType, toUpdate?.getTipo())
         // update row
-        val id = db.update(drugTable, values, "$drugName=?", arrayOf(toUpdate.getNome() + "")).toLong()
+        val id = db.update(drugTable, values, "$drugName=?", arrayOf(toUpdate?.getNome() + "")).toLong()
         Log.d("updateDrug", "aggiornata")
         // close db connection
         db.close()
