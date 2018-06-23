@@ -39,9 +39,9 @@ class AddEditTherapyActivity : AppCompatActivity() {
     private val giorni = arrayOf("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica")
     lateinit var db: DatabaseHelper
     lateinit var tvHours: TextView
-    private var day: Int = 0
-    private var month:Int = 0
-    private var year:Int = 0
+    private var day = 0
+    private var month = 0
+    private var year  = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -23,7 +23,7 @@ import java.util.Calendar
 
 class AddHourActivity : AppCompatActivity() {
 
-    lateinit var listaOre: ArrayList<IntArray> /*? = null*/
+    lateinit var listaOre: ArrayList<IntArray>
     private var mHour: Int = 0
     private var mMinute: Int = 0
     lateinit var customAdapter: CustomAdapterHour
