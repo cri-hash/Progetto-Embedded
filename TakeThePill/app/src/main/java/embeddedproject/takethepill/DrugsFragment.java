@@ -28,12 +28,12 @@ import database.DatabaseHelper;
  * create an instance of this fragment.
  */
 public class DrugsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
@@ -56,7 +56,7 @@ public class DrugsFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment DrugsFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static DrugsFragment newInstance(String param1, String param2) {
         DrugsFragment fragment = new DrugsFragment();
         Bundle args = new Bundle();
@@ -83,13 +83,11 @@ public class DrugsFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_drugs, container, false);
 
         // LISTA DEI FARMACI
-        listView = (ListView) view.findViewById(R.id.listDrugs);
+        listView =  view.findViewById(R.id.listDrugs);
 
-        // Operazione DATABASE: lista farmaci (nome,
-        listaFarmaci = new ArrayList<DrugEntity>();
-        /*for(int i=0; i<20;i++) {
-            listaFarmaci.add(new DrugEntity("Tachipirina", "Per la febbre","Pillole",10.5, 30 ));
-        }*/
+        // Operazione DATABASE: lista farmaci
+        listaFarmaci = new ArrayList<>();
+
         db=new DatabaseHelper(getContext());
         listaFarmaci=(ArrayList<DrugEntity>) db.getAllDrugs();
 
@@ -97,7 +95,7 @@ public class DrugsFragment extends Fragment {
         listView.setAdapter(customAdapter);
 
         // BOTTONE AGGIUNGI-FARMACO
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_drug);
+        FloatingActionButton fab =  view.findViewById(R.id.fab_drug);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,11 +132,11 @@ public class DrugsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         listaFarmaci.clear();
-        listaFarmaci.addAll((ArrayList<DrugEntity>) db.getAllDrugs());
+        listaFarmaci.addAll( db.getAllDrugs());
         customAdapter.notifyDataSetChanged();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -157,7 +155,7 @@ public class DrugsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 }

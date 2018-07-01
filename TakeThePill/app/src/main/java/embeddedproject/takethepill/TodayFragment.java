@@ -1,12 +1,12 @@
 package embeddedproject.takethepill;
 
 import android.app.AlertDialog;
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.AdapterView;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 
 import database.DatabaseHelper;
 
@@ -32,12 +30,12 @@ import database.DatabaseHelper;
  * create an instance of this fragment.
  */
 public class TodayFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
@@ -57,7 +55,7 @@ public class TodayFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment TodayFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static TodayFragment newInstance(String param1, String param2) {
         TodayFragment fragment = new TodayFragment();
         Bundle args = new Bundle();
@@ -96,7 +94,7 @@ public class TodayFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_today, container, false);
 
         // BOTTONE AGGIUNGI-TERAPIA
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_main);
+        FloatingActionButton fab =  view.findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,9 +105,9 @@ public class TodayFragment extends Fragment {
         });
 
     // LISTA ASSUNZIONI
-        ListView listView = (ListView) view.findViewById(R.id.listAssumptions);
+        ListView listView =  view.findViewById(R.id.listAssumptions);
 
-        listAssunzioni = new ArrayList<AssumptionEntity>();
+        listAssunzioni = new ArrayList<>();
 
         db=new DatabaseHelper(getContext());
         listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
@@ -143,7 +141,7 @@ public class TodayFragment extends Fragment {
 
                         // Ricarico la lista degli elementi
                         listAssunzioni.clear();
-                        listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+                        listAssunzioni.addAll( db.getAssumptionByDate(Calendar.getInstance().getTime()));
 
                         customAdapter.notifyDataSetChanged();
                     }
@@ -163,7 +161,7 @@ public class TodayFragment extends Fragment {
 
                         // Ricarico la lista degli elementi
                         listAssunzioni.clear();
-                        listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+                        listAssunzioni.addAll( db.getAssumptionByDate(Calendar.getInstance().getTime()));
 
                         customAdapter.notifyDataSetChanged();
                     }
@@ -182,7 +180,7 @@ public class TodayFragment extends Fragment {
     public void onResume() {
         super.onResume();
         listAssunzioni.clear();
-        listAssunzioni.addAll((ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime()));
+        listAssunzioni.addAll( db.getAssumptionByDate(Calendar.getInstance().getTime()));
 
         customAdapter.notifyDataSetChanged();
     }
@@ -199,7 +197,7 @@ public class TodayFragment extends Fragment {
 
 
 
-// TODO: Rename method, update argument and hook method into UI event
+
 public void onButtonPressed(Uri uri) {
         if (mListener != null) {
         mListener.onFragmentInteraction(uri);
@@ -218,7 +216,6 @@ public void onButtonPressed(Uri uri) {
  * >Communicating with Other Fragments</a> for more information.
  */
 public interface OnFragmentInteractionListener {
-    // TODO: Update argument type and name
     void onFragmentInteraction(Uri uri);
 }
 }

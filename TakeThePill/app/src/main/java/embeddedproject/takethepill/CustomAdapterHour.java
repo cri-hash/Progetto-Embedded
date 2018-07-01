@@ -32,8 +32,8 @@ public class CustomAdapterHour extends ArrayAdapter<int[]> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.row_item_hour, null);
 
-        final TextView hour = (TextView)convertView.findViewById(R.id.tvSingleHour);
-        ImageButton ibDelete=(ImageButton)convertView.findViewById(R.id.ibDeleteHour);
+        final TextView hour = convertView.findViewById(R.id.tvSingleHour);
+        ImageButton ibDelete=convertView.findViewById(R.id.ibDeleteHour);
 
         int[] actual = getItem(position);
 

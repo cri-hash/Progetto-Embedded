@@ -33,12 +33,11 @@ public class AddHourActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_hour);
 
         // BOTTONI TOOLBAR SALVA E ANNULLA
-        TextView tvSave = (TextView) findViewById(R.id.toolbar_save3);
+        TextView tvSave =  findViewById(R.id.toolbar_save3);
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Snackbar.make(v, "Hai cliccato su salva", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+
                 // PASSARE ad AddEtitTherapy la lista delle ore
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result",listaOre); // Passo la lista delle ore ad AddEdictTherapy
@@ -46,7 +45,7 @@ public class AddHourActivity extends AppCompatActivity {
                 finish();   // Chiude l'activity e riapre la precedente
             }
         });
-        TextView tvAnnulla = (TextView) findViewById(R.id.toolbar_annulla3);
+        TextView tvAnnulla =  findViewById(R.id.toolbar_annulla3);
         tvAnnulla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,18 +60,18 @@ public class AddHourActivity extends AppCompatActivity {
         mMinute = c.get(Calendar.MINUTE);
 
         // LISTA DELLE ORE
-        final ListView listView = (ListView) findViewById(R.id.listHours);
+        final ListView listView =  findViewById(R.id.listHours);
 
         //Ricevo la lista delle ore da AddEditTherapyActivity
         listaOre=(ArrayList<int[]>)getIntent().getSerializableExtra("listaore");
-        if(listaOre==null) listaOre = new ArrayList<int[]>();
+        if(listaOre==null) listaOre = new ArrayList<>();
 
         customAdapter = new CustomAdapterHour(listaOre, this);
         listView.setAdapter(customAdapter);
 
         //TextView orario
-        final TextView tvTime=(TextView)findViewById(R.id.tvNewHour);
-        String orario="";
+        final TextView tvTime=findViewById(R.id.tvNewHour);
+        String orario;
         if(mHour<10) orario="0"+mHour;
         else orario = mHour+"";
         if(mMinute<10) orario+=(":0"+mMinute);
@@ -80,7 +79,7 @@ public class AddHourActivity extends AppCompatActivity {
         tvTime.setText(orario);
 
         // Bottone Seleziona Orario
-        Button btnTimePicker=(Button)findViewById(R.id.btnSelectHour);
+        Button btnTimePicker=findViewById(R.id.btnSelectHour);
         btnTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

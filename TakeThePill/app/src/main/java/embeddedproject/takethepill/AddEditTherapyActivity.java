@@ -18,7 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -47,7 +47,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_therapy);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        Toolbar toolbar =  findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
 
         // Database
@@ -59,12 +59,12 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         for(int i=0;i<l.size();i++) drugList[i]=l.get(i).getNome();
 
         // TextView ed EditText del layout
-        final TextView tvDrugName=(TextView)findViewById(R.id.tvDrugName);
-        final EditText etQuantity=(EditText)findViewById(R.id.etDrugQuantity2);
-        final TextView tvDuration=(TextView)findViewById(R.id.tvDuration);
-        final TextView tvDays=(TextView)findViewById(R.id.tvDays);
-        final TextView tvNotify=(TextView)findViewById(R.id.tvNotify);
-        tvHours=(TextView)findViewById(R.id.tvHour);
+        final TextView tvDrugName=findViewById(R.id.tvDrugName);
+        final EditText etQuantity=findViewById(R.id.etDrugQuantity2);
+        final TextView tvDuration=findViewById(R.id.tvDuration);
+        final TextView tvDays=findViewById(R.id.tvDays);
+        final TextView tvNotify=findViewById(R.id.tvNotify);
+        tvHours=findViewById(R.id.tvHour);
 
         // Stiamo creando una nuova terapia?
         final boolean nuova=getIntent().getBooleanExtra("nuova",true);
@@ -74,13 +74,13 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         if(nuova) { // Se è una NUOVA terapia
             terapia=new TherapyEntityDB(null,-1,-1,true,false,false,false,false,false,false,1,null);
             tvDrugName.setText("Seleziona farmaco ...");
-            listaOre=new ArrayList<int[]>();
+            listaOre=new ArrayList<>();
         }
         else{   // Se è MODIFICA terapia
             terapia=db.getTherapy(id);
             tvDrugName.setText(terapia.getDrug());
 
-            listaOre=new ArrayList<int[]>();
+            listaOre=new ArrayList<>();
             List<Time> list =db.getTherapyHour(terapia);    // Operazione database Lista delle ore
             for (int i=0; i<list.size();i++){
                 listaOre.add(new int[]{list.get(i).getHours(),list.get(i).getMinutes()});
@@ -141,7 +141,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 terapia.setDosage(Integer.valueOf(etQuantity.getText().toString()));
                 if(nuova){  // Se si sta creando una nuova Terapia
-                    if(terapia.getDrug()==null || listaOre==null || listaOre.size()==0){    //Se l'utente non ha inserito il farmaco o un orario
+                    if(terapia==null || listaOre==null || listaOre.size()==0){    //Se l'utente non ha inserito il farmaco o un orario
                         Snackbar snackbar = Snackbar
                                 .make(v, "Devi inserire tutti i dati", Snackbar.LENGTH_LONG);
                         snackbar.show();
@@ -167,7 +167,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         });
 
         // BOTTONE "Nome farmaco"
-        ImageButton drugName = (ImageButton) findViewById(R.id.ibEditDrugName);
+        ImageButton drugName = findViewById(R.id.ibEditDrugName);
         drugName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,7 +196,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
         // BOTTONE DURATA
-        ImageButton btnDuration = (ImageButton) findViewById(R.id.ibEditDuration);
+        ImageButton btnDuration =  findViewById(R.id.ibEditDuration);
         btnDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,11 +206,11 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 final View durationView = getLayoutInflater().inflate(R.layout.alert_duration, null);
                 builder.setView(durationView);
 
-                final RadioButton rdbtNoLimits = (RadioButton) durationView.findViewById(R.id.noLimits);
-                final RadioButton rdbtUntil= (RadioButton) durationView.findViewById(R.id.untilRdBtn);
-                final RadioButton rdbtNumbDays= (RadioButton) durationView.findViewById(R.id.number_days_RdBtn);
-                final EditText etDaysNumb = (EditText) durationView.findViewById(R.id.etDaysNumber);
-                final Button btnUntil = (Button) durationView.findViewById(R.id.btnUntil);
+                final RadioButton rdbtNoLimits =  durationView.findViewById(R.id.noLimits);
+                final RadioButton rdbtUntil=  durationView.findViewById(R.id.untilRdBtn);
+                final RadioButton rdbtNumbDays=  durationView.findViewById(R.id.number_days_RdBtn);
+                final EditText etDaysNumb = durationView.findViewById(R.id.etDaysNumber);
+                final Button btnUntil =  durationView.findViewById(R.id.btnUntil);
 
                 if(terapia.getDays()==-2){    // DataFine
                     rdbtNoLimits.setChecked(false);
@@ -319,7 +319,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
         // BOTTONE GIORNI
-        ImageButton btnDays = (ImageButton) findViewById(R.id.ibEditDays);
+        ImageButton btnDays =  findViewById(R.id.ibEditDays);
         btnDays.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -342,7 +342,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
                         ListView list = ((AlertDialog) dialogInterface).getListView();
 
-                        // make selected item in the comma separated string
+
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < list.getCount(); i++) {
                             boolean checked = list.isItemChecked(i);
@@ -379,7 +379,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
         // BOTTONE ORA
-        ImageButton btnHour = (ImageButton) findViewById(R.id.ibEditHour);
+        ImageButton btnHour =  findViewById(R.id.ibEditHour);
         btnHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -393,7 +393,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
         // BOTTONE NOTIFICHE
-        ImageButton btnNotify = (ImageButton) findViewById(R.id.ibEditNotify);
+        ImageButton btnNotify =  findViewById(R.id.ibEditNotify);
         btnNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -402,9 +402,9 @@ public class AddEditTherapyActivity extends AppCompatActivity {
                 final View notifyView = getLayoutInflater().inflate(R.layout.alert_notify, null);
                 builder.setView(notifyView);
 
-                final RadioButton rbNotNotify=(RadioButton)notifyView.findViewById(R.id.notNotify);
-                final RadioButton rbNotify=(RadioButton)notifyView.findViewById(R.id.minBefore);
-                final EditText etNotify=(EditText)notifyView.findViewById(R.id.etNotify);
+                final RadioButton rbNotNotify=notifyView.findViewById(R.id.notNotify);
+                final RadioButton rbNotify=notifyView.findViewById(R.id.minBefore);
+                final EditText etNotify=notifyView.findViewById(R.id.etNotify);
 
                 if(terapia.getNotify()==-1){
                     rbNotNotify.setChecked(true);
@@ -447,12 +447,12 @@ public class AddEditTherapyActivity extends AppCompatActivity {
 
 
         // BOTTONE ELIMINA
-        Button btnElimina = (Button) findViewById(R.id.btnDeleteTherapy);
+        Button btnElimina =  findViewById(R.id.btnDeleteTherapy);
         if(nuova) btnElimina.setVisibility(View.GONE);  //Se si sta inserendo una nuova terapia il bottone non deve essere visibile
         btnElimina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Messaggio "SICURO? SI/NO"
+
                 final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(v.getContext());
                 builder.setTitle("Sei sicuro di voler eliminare la Terapia?");
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
@@ -514,7 +514,7 @@ public class AddEditTherapyActivity extends AppCompatActivity {
         db.insertTherapy(terapia);
 
         // Recupero L'ID dell'ultima terapia inserita
-        ArrayList<TherapyEntityDB> listaTerapie = new ArrayList<TherapyEntityDB>();
+        ArrayList<TherapyEntityDB> listaTerapie ;
         listaTerapie=(ArrayList<TherapyEntityDB>) db.getAllTherapies();
         int ID=listaTerapie.get(listaTerapie.size()-1).getID();
 

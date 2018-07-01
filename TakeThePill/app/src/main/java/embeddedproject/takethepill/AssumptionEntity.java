@@ -40,7 +40,7 @@ public class AssumptionEntity {
         this.stato=stato;
     }
     // Costruttore generico
-    public AssumptionEntity(){}
+     AssumptionEntity(){}
 
 
     //METODI GET e SET
@@ -96,10 +96,9 @@ public class AssumptionEntity {
 
 
 
-    public List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour,Calendar dataInizio){
+     List<AssumptionEntity> generateAssumption(TherapyEntityDB th, Time hour,Calendar dataInizio){
 
         if(th.getDays()==null){
-            Log.d("generateAssumption()","numero giorni non trovato");
             return null;
         }
 
@@ -114,7 +113,7 @@ public class AssumptionEntity {
         calendar.add(Calendar.DAY_OF_MONTH,-1);
 
 
-        int count=0;
+        int count;
         // Se si ha la data di fine, ricavo i giorni di differenza con oggi
         if(th.getDays()==-2){
             long diff = th.getDateEnd().getTime()-calendar.getTime().getTime();
@@ -123,14 +122,13 @@ public class AssumptionEntity {
             Log.d("generateAssumption(): Data Inizio",calendar.getTime().toString());
             Log.d("generateAssumption(): n Giorni",giorni+"");
             count= (int)giorni;
-        } else if(th.getDays()==-1)count=10;// Se senza limiti???????????
+        } else if(th.getDays()==-1)count=10;
         else count=th.getDays();
 
         while(count>0){
             //scorro il calendario un giorno alla volta
             calendar.add(Calendar.DAY_OF_MONTH,1);
-            String data=calendar.getTime().toString(); // occhio al formato..da controllare
-
+            String data=calendar.getTime().toString();
             Log.d("data processata",data);
 
             //1=sunday,..7=saturday
@@ -186,7 +184,7 @@ public class AssumptionEntity {
                 AssumptionEntity current= new AssumptionEntity(calendar.getTime(),hour,th.getID(),false);
                 list.add(current);
                 count--;
-                continue;
+
             }
 
 

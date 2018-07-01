@@ -26,18 +26,18 @@ public class AddEditDrugActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_drug);
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        android.support.v7.widget.Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final DatabaseHelper db=new DatabaseHelper(this);
         tipiFarmaci=db.getTypeList();
 
         // TextView e EditText del layout:
-        final EditText etNome = (EditText) findViewById(R.id.etDrugName);
-        final TextView tvTipo = (TextView) findViewById(R.id.tvDrugType);
-        final EditText etDescr = (EditText) findViewById(R.id.etDescription);
-        final EditText etPrezzo = (EditText) findViewById(R.id.etDrugPrice);
-        final EditText etScorte = (EditText) findViewById(R.id.etDrugQuantity);
+        final EditText etNome =    findViewById(R.id.etDrugName);
+        final TextView tvTipo =    findViewById(R.id.tvDrugType);
+        final EditText etDescr =   findViewById(R.id.etDescription);
+        final EditText etPrezzo =  findViewById(R.id.etDrugPrice);
+        final EditText etScorte =  findViewById(R.id.etDrugQuantity);
 
         final boolean nuovo=getIntent().getBooleanExtra("nuovo",true);
         if(nuovo){  // Se stiamo creando un nuovo farmaco
@@ -58,7 +58,7 @@ public class AddEditDrugActivity extends AppCompatActivity {
         etScorte.setText(String.valueOf(drug.getScorte()));
 
         // BOTTONI TOOLBAR SALVA E ANNULLA
-        TextView tvSave = (TextView) findViewById(R.id.toolbar_save);
+        TextView tvSave =  findViewById(R.id.toolbar_save);
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +86,7 @@ public class AddEditDrugActivity extends AppCompatActivity {
 
             }
         });
-        TextView tvAnnulla = (TextView) findViewById(R.id.toolbar_annulla);
+        TextView tvAnnulla =  findViewById(R.id.toolbar_annulla);
         tvAnnulla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +160,7 @@ public class AddEditDrugActivity extends AppCompatActivity {
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Niente
+                        //Nothing
                     }
                 });
                 builder.setCancelable(false);

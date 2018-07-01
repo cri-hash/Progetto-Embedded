@@ -37,17 +37,18 @@ public class TherapyEntityDB {
         mDosaggio=0;
     }
 
-    public TherapyEntityDB(Date dataFine, Integer nGiorni, Integer minNotifica,
+     TherapyEntityDB(Date dataFine, Integer nGiorni, Integer minNotifica,
                            Boolean lun, Boolean mar, Boolean mer, Boolean gio,
                            Boolean ven, Boolean sab, Boolean dom,
                            Integer dosaggio, String nomeFarmaco){
 
-        mID = null; //?????
+        mID = null; //per consentire l'autoincremento
 
         Calendar c = Calendar.getInstance();    // Data di oggi
-        mDateStart= new java.util.Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH);
+         //noinspection deprecation
+         mDateStart= new java.util.Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH);
 
-        // Uno tra dataFine e nGiorni deve essere NULL
+
         this.mDateEnd=dataFine;
         this.mDays=nGiorni;
 
@@ -214,7 +215,7 @@ public class TherapyEntityDB {
     {ContentValues current= new ContentValues();
         current.put(Str.therapyDrug,mDrug);
         SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
-        //Log.d("data letta da therapy",myFormat.format(mDateEnd));
+
 
         if(mDateEnd==null)current.put(Str.therapyDateEnd,(String)null);
         else current.put(Str.therapyDateEnd,myFormat.format(mDateEnd));

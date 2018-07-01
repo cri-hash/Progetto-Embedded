@@ -24,7 +24,7 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // Assunzioni di OGGI
         db=new DatabaseHelper(context);
-        listAssunzioni = new ArrayList<AssumptionEntity>();
+        listAssunzioni = new ArrayList<>();
         listAssunzioni= (ArrayList<AssumptionEntity>) db.getAssumptionByDate(Calendar.getInstance().getTime());
 
         // Controllo se c'è un assunzione che ha lo stesso orario dell'orario attuale

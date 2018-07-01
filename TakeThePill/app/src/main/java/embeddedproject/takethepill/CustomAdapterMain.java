@@ -29,10 +29,10 @@ public class CustomAdapterMain extends ArrayAdapter<AssumptionEntity> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.row_item_assumption, null);
 
-        TextView drug = (TextView)convertView.findViewById(R.id.drug);
-        TextView hour = (TextView)convertView.findViewById(R.id.hour);
-        ImageView ivStato =(ImageView)convertView.findViewById(R.id.ivStato);
-        TextView tvDosaggio = (TextView)convertView.findViewById(R.id.tvAssumpQuantity);
+        TextView drug = convertView.findViewById(R.id.drug);
+        TextView hour = convertView.findViewById(R.id.hour);
+        ImageView ivStato =convertView.findViewById(R.id.ivStato);
+        TextView tvDosaggio = convertView.findViewById(R.id.tvAssumpQuantity);
 
         AssumptionEntity actual = getItem(position);
         drug.setText(actual.getNomeFarmaco());

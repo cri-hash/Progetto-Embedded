@@ -25,12 +25,12 @@ import database.DatabaseHelper;
  * create an instance of this fragment.
  */
 public class TherapyFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
@@ -53,7 +53,7 @@ public class TherapyFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment TherapyFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static TherapyFragment newInstance(String param1, String param2) {
         TherapyFragment fragment = new TherapyFragment();
         Bundle args = new Bundle();
@@ -79,7 +79,7 @@ public class TherapyFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_therapy, container, false);
 
         // BOTTONE AGGIUNGI TERAPIA
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_therapy);
+        FloatingActionButton fab = view.findViewById(R.id.fab_therapy);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,9 +91,9 @@ public class TherapyFragment extends Fragment {
         });
 
         // LISTA DELLE  TERAPIE
-        listView = (ListView) view.findViewById(R.id.listTherapies);
+        listView =  view.findViewById(R.id.listTherapies);
 
-        listaTerapie = new ArrayList<TherapyEntityDB>();
+        listaTerapie = new ArrayList<>();
         db=new DatabaseHelper(getContext());
         listaTerapie=(ArrayList<TherapyEntityDB>) db.getAllTherapies();
 
@@ -123,11 +123,11 @@ public class TherapyFragment extends Fragment {
     public void onResume() {
         super.onResume();
         listaTerapie.clear();
-        listaTerapie.addAll((ArrayList<TherapyEntityDB>) db.getAllTherapies());
+        listaTerapie.addAll( db.getAllTherapies());
         customAdapter.notifyDataSetChanged();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -145,7 +145,7 @@ public class TherapyFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 

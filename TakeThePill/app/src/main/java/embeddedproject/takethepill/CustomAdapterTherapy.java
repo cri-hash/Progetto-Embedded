@@ -35,10 +35,10 @@ public class CustomAdapterTherapy extends ArrayAdapter<TherapyEntityDB> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.row_item_therapy, null);
 
-        TextView drug = (TextView)convertView.findViewById(R.id.drugName);
-        TextView tvDays = (TextView)convertView.findViewById(R.id.weekDays);
-        TextView hours = (TextView)convertView.findViewById(R.id.hoursTV);
-        ImageView ivNotifica=(ImageView)convertView.findViewById(R.id.ivNotification);
+        TextView drug = convertView.findViewById(R.id.drugName);
+        TextView tvDays = convertView.findViewById(R.id.weekDays);
+        TextView hours = convertView.findViewById(R.id.hoursTV);
+        ImageView ivNotifica=convertView.findViewById(R.id.ivNotification);
 
         TherapyEntityDB terapia = getItem(position);
 
@@ -76,7 +76,7 @@ public class CustomAdapterTherapy extends ArrayAdapter<TherapyEntityDB> {
         if(terapia.getNotify()==-1)ivNotifica.setImageDrawable(convertView.getResources().getDrawable(R.drawable.ic_notifications_none_black_24dp));
         else ivNotifica.setImageDrawable(convertView.getResources().getDrawable(R.drawable.ic_notifications_black_24dp));
 
-        //???? Gestire immagine Pillola
+
 
 
         return convertView;
