@@ -7,7 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import database.Str;
+//import database.Str;
+import static database.Str.*;
 
 public class TherapyEntityDB {
     private Integer mID;
@@ -213,25 +214,25 @@ public class TherapyEntityDB {
 
     public ContentValues getAllValues()
     {ContentValues current= new ContentValues();
-        current.put(Str.therapyDrug,mDrug);
+        current.put(therapyDrug,mDrug);
         SimpleDateFormat myFormat=new SimpleDateFormat("dd/mm/yyyy");
 
 
-        if(mDateEnd==null)current.put(Str.therapyDateEnd,(String)null);
-        else current.put(Str.therapyDateEnd,myFormat.format(mDateEnd));
+        if(mDateEnd==null)current.put(therapyDateEnd,(String)null);
+        else current.put(therapyDateEnd,myFormat.format(mDateEnd));
 
-        current.put(Str.therapyDateStart,myFormat.format(mDateStart));
-        current.put(Str.therapyNotify,mNotify);
-        current.put(Str.therapyNumberDays,mDays);
-        current.put(Str.therapyID,mID);
-        current.put(Str.therapyDosage,mDosaggio);
-        current.put(Str.therapyMon,checkBool(mMon));
-        current.put(Str.therapyTue,checkBool(mTue));
-        current.put(Str.therapyWed,checkBool(mWed));
-        current.put(Str.therapyThu,checkBool(mThu));
-        current.put(Str.therapyFri,checkBool(mFri));
-        current.put(Str.therapySat,checkBool(mSat));
-        current.put(Str.therapySun,checkBool(mSun));
+        current.put(therapyDateStart,myFormat.format(mDateStart));
+        current.put(therapyNotify,mNotify);
+        current.put(therapyNumberDays,mDays);
+        current.put(therapyID,mID);
+        current.put(therapyDosage,mDosaggio);
+        current.put(therapyMon,checkBool(mMon));
+        current.put(therapyTue,checkBool(mTue));
+        current.put(therapyWed,checkBool(mWed));
+        current.put(therapyThu,checkBool(mThu));
+        current.put(therapyFri,checkBool(mFri));
+        current.put(therapySat,checkBool(mSat));
+        current.put(therapySun,checkBool(mSun));
 
         return current;
     }

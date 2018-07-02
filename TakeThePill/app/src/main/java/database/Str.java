@@ -2,34 +2,34 @@ package database;
 
 
 public class Str {
-   static final String drugTable="FARMACO";
-   static final String drugName="nomeFarmaco";
-   static final String drugPrice="prezzo";
-   static final String drugQuantities="scorte";
-   static final String drugType="tipo";
-   static final String drugDescription="descrizione";
-   static final String typeTable="TIPO";
-   static final String typeName="nomeTipo";
-   static final String assumptionTable="ASSUNZIONE";
-   static final String assumptionDate="data";
-   static final String assumptionHour="ora";
-   static final String assumptiontherapy="terapiaAssunzione";
-   static final String assumptionState="stato";
-   static final String therapyTable="TERAPIA";
-   static final String therapyID="ID";
-   static final String therapyDateStart="dataInizio";
-   static final String therapyDateEnd="dataFine";
-   static final String therapyNotify="minNotifica";
-   static final String therapyNumberDays="numeroGiorni";
-   static final String therapyMon="Lunedì";
-   static final String therapyTue="Martedì";
-   static final String therapyWed="Mercoledì";
-   static final String therapyThu="Giovedì";
-   static final String therapyFri="Venerdì";
-   static final String therapySat="Sabato";
-   static final String therapySun="Domenica";
-   static final String therapyDrug="farmaco";
-   static final String therapyDosage="dosaggio";
+   public static final String drugTable="FARMACO";
+   public static final String drugName="nomeFarmaco";
+   public static final String drugPrice="prezzo";
+   public static final String drugQuantities="scorte";
+   public static final String drugType="tipo";
+   public static final String drugDescription="descrizione";
+   public static final String typeTable="TIPO";
+   public static final String typeName="nomeTipo";
+   public static final String assumptionTable="ASSUNZIONE";
+   public static final String assumptionDate="data";
+   public static final String assumptionHour="ora";
+   public static final String assumptiontherapy="terapiaAssunzione";
+   public static final String assumptionState="stato";
+   public static final String therapyTable="TERAPIA";
+   public static final String therapyID="ID";
+   public static final String therapyDateStart="dataInizio";
+   public static final String therapyDateEnd="dataFine";
+   public static final String therapyNotify="minNotifica";
+   public static final String therapyNumberDays="numeroGiorni";
+   public static final String therapyMon="Lunedì";
+   public static final String therapyTue="Martedì";
+   public static final String therapyWed="Mercoledì";
+   public static final String therapyThu="Giovedì";
+   public static final String therapyFri="Venerdì";
+   public static final String therapySat="Sabato";
+   public static final String therapySun="Domenica";
+   public static final String therapyDrug="farmaco";
+   public static final String therapyDosage="dosaggio";
 
 
 
