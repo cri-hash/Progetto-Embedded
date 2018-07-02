@@ -25,8 +25,6 @@ public class AddEditDrugActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState:Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_drug)
-
-        //val toolbar = findViewById(R.id.toolbar) as android.support.v7.widget.Toolbar
         setSupportActionBar(toolbar)
 
         val db = DatabaseHelper(this)
@@ -96,7 +94,6 @@ public class AddEditDrugActivity : AppCompatActivity() {
             //private String chooseItem;
             val builder = AlertDialog.Builder(v.context)
             builder.setTitle("Tipo di Farmaco")
-
 
             builder.setSingleChoiceItems(tipiFarmaci, elemSelez) { dialogInterface, itemIndex ->
                 elemSelez = itemIndex

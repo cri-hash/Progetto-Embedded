@@ -36,8 +36,6 @@ class AddHourActivity : AppCompatActivity() {
         // BOTTONI TOOLBAR SALVA E ANNULLA
         val tvSave = findViewById(R.id.toolbar_save3) as TextView
         tvSave.setOnClickListener {
-            /*Snackbar.make(v, "Hai cliccato su salva", Snackbar.LENGTH_LONG)
-        .setAction("Action", null).show();*/
             // PASSARE ad AddEtitTherapy la lista delle ore
             val returnIntent = Intent()
             returnIntent.putExtra("result", listaOre) // Passo la lista delle ore ad AddEdictTherapy

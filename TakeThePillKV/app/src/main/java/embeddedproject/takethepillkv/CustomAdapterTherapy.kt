@@ -66,9 +66,6 @@ class CustomAdapterTherapy(private val dataSet: ArrayList<TherapyEntityDB>, inte
         else
             ivNotifica.setImageDrawable(convertView.resources.getDrawable(R.drawable.ic_notifications_black_24dp))
 
-        //???? Gestire immagine Pillola
-
-
         return convertView
     }
 

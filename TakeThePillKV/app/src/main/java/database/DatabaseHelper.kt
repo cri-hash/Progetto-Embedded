@@ -11,7 +11,6 @@ import java.sql.Time
 import java.util.Date
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.text.DateFormat
 import java.util.ArrayList
 
 import embeddedproject.takethepillkv.AssumptionEntity
@@ -20,7 +19,6 @@ import embeddedproject.takethepillkv.TherapyEntityDB
 
 import database.Str
 
-//class DatabaseHelper(context: Context?, name: String?, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(context, "PillDb", null, 1) {
 
 class DatabaseHelper:SQLiteOpenHelper{
 
@@ -62,10 +60,8 @@ class DatabaseHelper:SQLiteOpenHelper{
             Log.d("insertTherapy()", "tentato ma fallito")
             return -1
         }
-        //ContentValues toInsert=terapia.getAllValues();
 
         val values = ContentValues()
-        //values.put(therapyID,terapia.getID());
         values.put(therapyDrug, terapia?.getDrug())
         values.put(therapyDateStart, myFormat.format(terapia?.getDateStart()))
 
@@ -141,10 +137,8 @@ class DatabaseHelper:SQLiteOpenHelper{
             return null
         }
         val count = cursor?.count
-        Log.d("sto marso de count", count.toString() + "")
         val current = TherapyEntityDB()
-        cursor?.moveToFirst() //N.B!!!! sennò dà errore
-        //Log.d("formato data stringa..",cursor.getString(cursor.getColumnIndex(therapyDateEnd)));
+        cursor?.moveToFirst()
         if (cursor?.getString(cursor.getColumnIndex(therapyDateEnd)) == null)
             current.setDateEnd(null)
         else
@@ -229,10 +223,7 @@ class DatabaseHelper:SQLiteOpenHelper{
         cursor.moveToFirst()
         do {
             val time = cursor.getString(cursor.getColumnIndex(assumptionHour))
-            //SimpleDateFormat myFormat = new SimpleDateFormat("HH:mm");
             val hour = Time.valueOf(time)
-
-            Log.d("letto orario:", hour.toString())
 
             list.add(hour)
         } while (cursor.moveToNext())
@@ -385,21 +376,15 @@ class DatabaseHelper:SQLiteOpenHelper{
     ////////////////////////////////////////////////////////////////////
     fun insertAssumption(assumption: AssumptionEntity): Long {
         val db = writableDatabase
-
         val toInsert = ContentValues()
-        //SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
         val myFormat = SimpleDateFormat("yyyy-MM-dd")
-        //SimpleDateFormat myFormat2=new SimpleDateFormat("HH-mm");
 
         val data = myFormat.format(assumption.data)
         toInsert.put(assumptionDate, data)
         toInsert.put(assumptionHour, assumption.ora.toString()) //formato di default hh:mm:ss. Per riconvertire:valueOf(String)
-        //toInsert.put(assumptionHour,myFormat2.format(assumption.getOra()));
         toInsert.put(assumptiontherapy, assumption.terapia)
-        if (assumption.stato)
-            toInsert.put(assumptionState, 1) //medicina presa
-        else
-            toInsert.put(assumptionState, 0) //medicina non presa
+        if (assumption.stato) toInsert.put(assumptionState, 1) //medicina presa
+        else toInsert.put(assumptionState, 0) //medicina non presa
 
         val id = db.insert(assumptionTable, null, toInsert)
         Log.d("insertAssuption()", "inserimento assunzione di TerapiaID: " + assumption.terapia + ", Data:" + data)
@@ -411,8 +396,6 @@ class DatabaseHelper:SQLiteOpenHelper{
 
     fun removeAssumption(assumption: AssumptionEntity): Int {
         val db = writableDatabase
-
-        //SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
         val myFormat = SimpleDateFormat("yyyy-MM-dd")
         val data = myFormat.format(assumption.data)
 
@@ -431,7 +414,6 @@ class DatabaseHelper:SQLiteOpenHelper{
     }
 
     fun setAssumption(assumption: AssumptionEntity, state: Boolean) {
-        //SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
         val myFormat = SimpleDateFormat("yyyy-MM-dd")
 
         val data = myFormat.format(assumption.data)
@@ -450,7 +432,6 @@ class DatabaseHelper:SQLiteOpenHelper{
     // Lista delle Assunzioni di oggi
     fun getAssumptionByDate(data: Date): List<AssumptionEntity> {
         val db = readableDatabase
-        //SimpleDateFormat myFormat=new SimpleDateFormat("dd/MM/yyyy");
         val myFormat = SimpleDateFormat("yyyy-MM-dd")
 
         val dataToRead = myFormat.format(data)
@@ -498,7 +479,6 @@ class DatabaseHelper:SQLiteOpenHelper{
     // Usata per le notifiche, restituisce le assunzioni con data da oggi in poi
     fun getAssumptionsFromNow(): List<AssumptionEntity> {
         val myFormat = SimpleDateFormat("yyyy-MM-dd")
-
         val list = ArrayList<AssumptionEntity>()
 
         // Database
@@ -608,9 +588,15 @@ class DatabaseHelper:SQLiteOpenHelper{
 
 
 
-    /////////////////////////////////////////////////////////////////////////////////
-// copiato da file str, perche facendo import non funzionava
-/////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
     val drugTable = "FARMACO"
     val drugName = "nomeFarmaco"
     val drugPrice = "prezzo"

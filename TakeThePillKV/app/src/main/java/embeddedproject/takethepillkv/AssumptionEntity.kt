@@ -42,14 +42,6 @@ import java.util.concurrent.TimeUnit
      // Costruttore generico
      constructor() {}
 
-     //METODI GET e SET
-
-
-
-
-
-
-
     public fun generateAssumption(th :TherapyEntityDB?, hour:Time, dataInizio: Calendar?): List<AssumptionEntity>?{
 
         if(th?.mDays==0){
@@ -77,7 +69,7 @@ import java.util.concurrent.TimeUnit
             Log.d("Data Inizio",calendar.getTime().toString())
             Log.d("n Giorni",giorni.toString())
             count= giorni.toInt()
-        } else if(th?.mDays==-1)count=10;// Se senza limiti???????????
+        } else if(th?.mDays==-1)count=10;// Se senza limiti
         else count= th?.mDays!!
 
         while(count>0){
@@ -143,11 +135,7 @@ import java.util.concurrent.TimeUnit
                 continue
             }
 
-
-
         }
-
-
 
         return list;
     }

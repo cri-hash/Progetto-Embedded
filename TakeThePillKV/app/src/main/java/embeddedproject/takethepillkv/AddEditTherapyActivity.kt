@@ -33,7 +33,7 @@ import database.DatabaseHelper
 class AddEditTherapyActivity : AppCompatActivity() {
 
     private var terapia: TherapyEntityDB? = null    // Rappresenta la terapia in considerazione
-    lateinit var drugList: Array<String?>/*? = null*/  // Rappresenta la lista dei farmaci
+    lateinit var drugList: Array<String?> // Rappresenta la lista dei farmaci
     private var listaOre: ArrayList<IntArray>? = null  // Rappresenta la lista delle ore
     private var giorniSelezionati: BooleanArray? = null    // Usata nella selezione dei giorni
     private val giorni = arrayOf("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica")
@@ -330,7 +330,6 @@ class AddEditTherapyActivity : AppCompatActivity() {
         val btnHour = findViewById(R.id.ibEditHour) as ImageButton
         btnHour.setOnClickListener { v ->
             val intent = Intent(v.context, AddHourActivity::class.java)
-            //intent.putExtra("id",id);
             intent.putExtra("listaore", listaOre)
             startActivityForResult(intent, 1)
         }
@@ -388,7 +387,6 @@ class AddEditTherapyActivity : AppCompatActivity() {
             val builder = android.app.AlertDialog.Builder(v.context)
             builder.setTitle("Sei sicuro di voler eliminare la Terapia?")
             builder.setPositiveButton("Si") { dialog, which ->
-                // AGGIUNGI CODICE DATABASE CHE CANCELLA LA TERAPIA
                 db.removeTherapyBYId(terapia?.getID())
                 // Le assunzioni si eliminano da sole in cascata dalle terapie
                 finish()

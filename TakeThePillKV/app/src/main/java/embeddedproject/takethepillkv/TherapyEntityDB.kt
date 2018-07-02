@@ -10,9 +10,6 @@ import java.util.Date
 import database.Str
 
 public class TherapyEntityDB {
-    //variabili rese pubbliche, per poter sfruttare i getter ed i setter impliciti di Kotlin
-
-
      var mID : Int?
      var mDrug: String?
      var mDateStart : Date?
@@ -27,7 +24,7 @@ public class TherapyEntityDB {
      var mSat : Boolean
      var mSun : Boolean
      var mDosaggio: Int
-       //istanza di un'oggetto Str, necessario per leggere le stringhe
+    //istanza di un'oggetto Str, necessario per leggere le stringhe
      val str: Str=Str()
 
 //serve...?
@@ -53,7 +50,7 @@ public class TherapyEntityDB {
             lun:Boolean, mar:Boolean, mer:Boolean, gio:Boolean, ven:Boolean, sab:Boolean, dom:Boolean,
      dosaggio: Int, nomeFarmaco: String?){
 
-        mID = null //?????
+        mID = null
 
          val c: Calendar = Calendar.getInstance()    // Data di oggi
         mDateStart=  Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))  // da testare se funziona
@@ -235,7 +232,6 @@ public class TherapyEntityDB {
     {   val current=  ContentValues()
         current.put(str.therapyDrug,mDrug)
         val myFormat=SimpleDateFormat("dd/mm/yyyy")
-        //Log.d("data letta da therapy",myFormat.format(mDateEnd))
 
         if(mDateEnd==null)
             current.put(str.therapyDateEnd,null as? String)
@@ -258,11 +254,6 @@ public class TherapyEntityDB {
         return current;
     }
 
-    /**
-     * simple conversion method
-     * @param value true or false
-     * @return 1 or 0
-     */
     private fun checkBool( value: Boolean) : Int
     {
         if(value) return 1
