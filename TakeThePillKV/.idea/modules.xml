@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TakeThePillKV.iml" filepath="$PROJECT_DIR$/TakeThePillKV.iml" />
+      <module fileurl="file://C:\Users\feder\Desktop\Uni\Programmazzione sistemi embedded\Project\Progetto-Embedded\TakeThePillKV\TakeThePillKV.iml" filepath="C:\Users\feder\Desktop\Uni\Programmazzione sistemi embedded\Project\Progetto-Embedded\TakeThePillKV\TakeThePillKV.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\feder\Desktop\Uni\Programmazzione sistemi embedded\Project\Progetto-Embedded\TakeThePillKV\app\app.iml" filepath="C:\Users\feder\Desktop\Uni\Programmazzione sistemi embedded\Project\Progetto-Embedded\TakeThePillKV\app\app.iml" />
     </modules>
   </component>
 </project>

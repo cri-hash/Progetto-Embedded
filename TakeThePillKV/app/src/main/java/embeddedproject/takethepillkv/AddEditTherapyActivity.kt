@@ -32,6 +32,7 @@ import database.DatabaseHelper
 
 class AddEditTherapyActivity : AppCompatActivity() {
 
+    //Definizione variabili e costanti
     private var terapia: TherapyEntityDB? = null    // Rappresenta la terapia in considerazione
     lateinit var drugList: Array<String?> // Rappresenta la lista dei farmaci
     private var listaOre: ArrayList<IntArray>? = null  // Rappresenta la lista delle ore

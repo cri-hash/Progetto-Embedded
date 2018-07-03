@@ -35,10 +35,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        //Select Home by default
+
+        //Seleziona la Home come impostazione predefinita
         nav_view.setCheckedItem(R.id.nav_today)
         val fragment = TodayFragment()
         displaySelectedFragment(fragment)
+
 
         // GESTIONE DELLE NOTIFICHE:
         // Ogni minuto manda un broadcast che attiva la classe AlarmNotificationReiceiver
@@ -81,12 +83,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     // Inserimento di ogni assunzione nuova
                     for (k in listAss!!.indices) db.insertAssumption(listAss.get(k))
                 }
-
             }
         }
-
-
     }
+
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+
     /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.activity_main_drawer, menu)
@@ -103,10 +104,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }*/
 
 
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        // Handle navigation view item clicks here.
+        //Gestione dei clicks sugli elementi di navigazione
         val id = item.itemId
 
         var fragment: Fragment? = null
@@ -139,7 +139,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentTransaction.replace(R.id.frame, fragment)
         fragmentTransaction.commit()
     }
-
-
-
 }

@@ -16,23 +16,24 @@ import android.widget.TextView
 import database.DatabaseHelper
 import java.util.ArrayList
 
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+//Definizione costanti
+private const val VAL1 = "val1"
+private const val VAL2 = "val2"
 
 class TherapyFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    //Definizione variabili
+    private var val1: String? = null
+    private var val2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            val1 = it.getString(VAL1)
+            val2 = it.getString(VAL2)
         }
     }
 
-
+    //Definizione variabili
     lateinit var listaTerapie: ArrayList<TherapyEntityDB>
     lateinit var customAdapter: CustomAdapterTherapy
     lateinit var listView: ListView
@@ -55,7 +56,7 @@ class TherapyFragment : Fragment() {
         }
 
 
-        // LISTA DELLE  TERAPIE
+        //LISTA DELLE  TERAPIE
         listView = view.findViewById(R.id.listTherapies) as ListView
 
         listaTerapie = ArrayList()
@@ -88,16 +89,13 @@ class TherapyFragment : Fragment() {
     }
 
 
-
-
-
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInst(val1: String, val2: String) =
                 TherapyFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+                        putString(VAL1, val1)
+                        putString(VAL2, val2)
                     }
                 }
     }

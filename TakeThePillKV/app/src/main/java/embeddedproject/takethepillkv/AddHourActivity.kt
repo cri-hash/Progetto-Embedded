@@ -23,6 +23,7 @@ import java.util.Calendar
 
 class AddHourActivity : AppCompatActivity() {
 
+    //Definizione variabili
     lateinit var listaOre: ArrayList<IntArray>
     private var mHour: Int = 0
     private var mMinute: Int = 0
@@ -113,8 +114,6 @@ class AddHourActivity : AppCompatActivity() {
             if (!contiene) listaOre!!.add(intArrayOf(mHour, mMinute))
             customAdapter.notifyDataSetChanged()
         }
-
-
     }
 
     // Funzione richiamata quando si clicca sul bottone X di un elemento della lista

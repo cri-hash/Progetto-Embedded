@@ -10,6 +10,8 @@ import java.util.Date
 import database.Str
 
 public class TherapyEntityDB {
+
+    //Definizione variabili
      var mID : Int?
      var mDrug: String?
      var mDateStart : Date?
@@ -27,7 +29,7 @@ public class TherapyEntityDB {
     //istanza di un'oggetto Str, necessario per leggere le stringhe
      val str: Str=Str()
 
-//serve...?
+
     constructor()
     {
         mID=null
@@ -46,6 +48,7 @@ public class TherapyEntityDB {
         mDosaggio=0
     }
 
+
     constructor( dataFine: Date?,  nGiorni: Int, minNotifica: Int,
             lun:Boolean, mar:Boolean, mer:Boolean, gio:Boolean, ven:Boolean, sab:Boolean, dom:Boolean,
      dosaggio: Int, nomeFarmaco: String?){
@@ -53,12 +56,12 @@ public class TherapyEntityDB {
         mID = null
 
          val c: Calendar = Calendar.getInstance()    // Data di oggi
-        mDateStart=  Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))  // da testare se funziona
+        mDateStart=  Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+
 
         // Uno tra dataFine e nGiorni deve essere NULL
         this.mDateEnd=dataFine
         this.mDays=nGiorni
-
         this.mNotify=minNotifica
         this.mMon=lun
         this.mTue=mar
@@ -68,10 +71,9 @@ public class TherapyEntityDB {
         this.mSat=sab
         this.mSun=dom
         this.mDosaggio=dosaggio
-
-
         this.mDrug=nomeFarmaco
     }
+
 
     // Metodo per ottere la lista dei giorni della settimana in stringa
      fun  getGiorni() : String{
@@ -114,7 +116,7 @@ public class TherapyEntityDB {
         return s
     }
 
-
+    //Funzioni get e set
     fun getID(): Int? {
         return mID
     }
@@ -227,7 +229,7 @@ public class TherapyEntityDB {
         return mDosaggio
     }
 
-
+//Funzione che ritorna tutti i valori
  fun getAllValues() : ContentValues
     {   val current=  ContentValues()
         current.put(str.therapyDrug,mDrug)
@@ -254,13 +256,11 @@ public class TherapyEntityDB {
         return current;
     }
 
+
     private fun checkBool( value: Boolean) : Int
     {
         if(value) return 1
         else return 0
     }
-
-
-
 }
 

@@ -551,11 +551,6 @@ class DatabaseHelper:SQLiteOpenHelper{
     }
 
 
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// METODI DI SUPPORTO //////////////////////////
 ///////////////////////////////////////////////////////////////////////////
@@ -585,18 +580,7 @@ class DatabaseHelper:SQLiteOpenHelper{
         return data
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    //Definizione costanti
     val drugTable = "FARMACO"
     val drugName = "nomeFarmaco"
     val drugPrice = "prezzo"

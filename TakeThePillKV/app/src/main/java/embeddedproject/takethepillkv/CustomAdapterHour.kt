@@ -22,12 +22,15 @@ class CustomAdapterHour(private val dataSet: ArrayList<IntArray>, internal var m
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         convertView = inflater.inflate(R.layout.row_item_hour, null)
 
+        //Definizione costanti
         val hour = convertView!!.findViewById(R.id.tvSingleHour) as TextView
         val ibDelete = convertView.findViewById(R.id.ibDeleteHour) as ImageButton
 
         val actual = getItem(position)
 
         var orario = ""
+
+        //Gestione orario
         if (actual!![0] < 10)
             orario = "0" + actual[0]
         else

@@ -14,24 +14,27 @@ import android.widget.ListView
 import database.DatabaseHelper
 import java.util.ArrayList
 
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+//Definizione costanti
+private const val VAL1 = "val1"
+private const val VAL2 = "val2"
 
 
 class DrugsFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+
+    //Definizioni variabili
+    private var val1: String? = null
+    private var val2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            val1 = it.getString(VAL1)
+            val2 = it.getString(VAL2)
         }
     }
 
+    //Definizioni variabili
     lateinit var listaFarmaci: ArrayList<DrugEntity>
     lateinit var customAdapter: CustomAdapterDrug
     lateinit var listView: ListView
@@ -76,9 +79,7 @@ class DrugsFragment : Fragment() {
             startActivity(intent)
             Log.d("DrugsFragment","elemento lista cliccato")
         }
-
         return view
-
     }
 
     // Quando ritorna da AddEtidDrugActivity bisogna aggiornare la lista
@@ -88,10 +89,6 @@ class DrugsFragment : Fragment() {
         listaFarmaci.addAll(db.getAllDrugs() as ArrayList<DrugEntity>)
         customAdapter.notifyDataSetChanged()
     }
-
-
-
-
 
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
@@ -103,11 +100,11 @@ class DrugsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInst(val1: String, val2: String) =
                 DrugsFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+                        putString(VAL1, val1)
+                        putString(VAL2, val2)
                     }
                 }
     }

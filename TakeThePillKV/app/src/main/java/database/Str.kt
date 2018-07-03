@@ -2,6 +2,8 @@ package database
 
 @SuppressWarnings("WeakerAccess")
 class Str {
+
+    //Definizione costanti
     val drugTable = "FARMACO"
     val drugName = "nomeFarmaco"
     val drugPrice = "prezzo"

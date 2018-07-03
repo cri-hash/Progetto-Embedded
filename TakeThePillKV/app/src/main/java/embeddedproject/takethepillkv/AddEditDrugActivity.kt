@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 
 public class AddEditDrugActivity : AppCompatActivity() {
 
+    //Definizione variabili
     private var elemSelez: Int = 0
     private var prev:Int = 0 //Gestiscono la selezione del tipo di farmaco
 
@@ -54,10 +55,12 @@ public class AddEditDrugActivity : AppCompatActivity() {
             tvTipo.text = "Tipo: " + tipiFarmaci[elemSelez]
         }
 
+
         etNome.setText(drug?.getNome())
         etDescr.setText(drug?.getDescrizione())
         etPrezzo.setText(drug?.getPrezzo().toString())
         etScorte.setText(drug?.getScorte().toString())
+
 
         // BOTTONI TOOLBAR SALVA E ANNULLA
         val tvSave = findViewById(R.id.toolbar_save) as TextView
@@ -136,8 +139,5 @@ public class AddEditDrugActivity : AppCompatActivity() {
             builder.setCancelable(false)
             builder.show()
         }
-
-
     }
-
 }

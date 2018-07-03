@@ -18,21 +18,24 @@ import android.widget.TextView
 import database.DatabaseHelper
 import java.util.*
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+//Definizione costanti
+private const val VAL1 = "val1"
+private const val VAL2 = "val2"
 
 class TodayFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    //Definizione costanti
+    private var val1: String? = null
+    private var val2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            val1 = it.getString(VAL1)
+            val2 = it.getString(VAL2)
         }
     }
 
+    //Definizione variabili
     lateinit var listAssunzioni: ArrayList<AssumptionEntity>
     lateinit var customAdapter: CustomAdapterMain
     lateinit var db: DatabaseHelper
@@ -107,7 +110,6 @@ class TodayFragment : Fragment() {
             builder.setCancelable(false)
             builder.show()
         }
-
         return view
     }
 
@@ -121,20 +123,13 @@ class TodayFragment : Fragment() {
     }
 
 
-
-
-
-
-
-
-
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInst(val1: String, val2: String) =
                 TodayFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+                        putString(VAL1, val1)
+                        putString(VAL2, val2)
                     }
                 }
     }

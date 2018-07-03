@@ -20,6 +20,7 @@ class CustomAdapterMain(private val dataSet: ArrayList<AssumptionEntity>, intern
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         convertView = inflater.inflate(R.layout.row_item_assumption, null)
 
+        //Definizioni costanti
         val drug = convertView!!.findViewById(R.id.drug) as TextView
         val hour = convertView.findViewById(R.id.hour) as TextView
         val ivStato = convertView.findViewById(R.id.ivStato) as ImageView
@@ -33,6 +34,7 @@ class CustomAdapterMain(private val dataSet: ArrayList<AssumptionEntity>, intern
         else
             ivStato.visibility = View.VISIBLE
 
+        //Definizione della costante per la formattazione dell'orario
         val formatter = SimpleDateFormat("HH:mm")
         hour.text = formatter.format(actual.ora)
 

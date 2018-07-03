@@ -14,6 +14,8 @@ import java.util.ArrayList
 import database.DatabaseHelper
 
 class CustomAdapterTherapy(private val dataSet: ArrayList<TherapyEntityDB>, internal var mContext: Context?) : ArrayAdapter<TherapyEntityDB>(mContext, R.layout.row_item_therapy, dataSet) {
+
+    //Definizione variabili e costanti
     private var giorniSelezionati: BooleanArray? = null    // Usata nella selezione dei giorni
     private val giorni = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
 
@@ -23,6 +25,7 @@ class CustomAdapterTherapy(private val dataSet: ArrayList<TherapyEntityDB>, inte
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         convertView = inflater.inflate(R.layout.row_item_therapy, null)
 
+        //Definizioni costanti
         val drug = convertView!!.findViewById(R.id.drugName) as TextView
         val tvDays = convertView.findViewById(R.id.weekDays) as TextView
         val hours = convertView.findViewById(R.id.hoursTV) as TextView
@@ -35,6 +38,8 @@ class CustomAdapterTherapy(private val dataSet: ArrayList<TherapyEntityDB>, inte
         giorniSelezionati = booleanArrayOf(terapia.isMon(), terapia.isTue(), terapia.isWed(), terapia.isThu(), terapia.isFri(), terapia.isSat(), terapia.isSun())
         // TextView Giorni
         val s = StringBuilder()
+
+        //Gestione dei giorni selezionati
         for (i in giorniSelezionati!!.indices) {
             if (giorniSelezionati!![i]) {
                 if (s.length > 0) s.append(", ")

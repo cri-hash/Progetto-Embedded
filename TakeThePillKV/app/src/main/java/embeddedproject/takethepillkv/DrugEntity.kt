@@ -7,7 +7,6 @@ import database.Str;
 public class DrugEntity {
 
 // VARIABILI
-
     private var nome:String?
     private var descrizione:String?
     private var tipo:String?
@@ -35,7 +34,6 @@ public class DrugEntity {
     }
 
 //METODI GET e SET
-
     fun getNome(): String? {
         return nome
     }

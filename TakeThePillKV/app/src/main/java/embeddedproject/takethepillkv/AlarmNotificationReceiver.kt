@@ -17,6 +17,7 @@ import database.DatabaseHelper
 
 class AlarmNotificationReceiver : BroadcastReceiver() {
 
+    //Definizione variabili
     lateinit var listAssunzioni: ArrayList<AssumptionEntity>
     lateinit var db: DatabaseHelper
 
@@ -79,8 +80,6 @@ class AlarmNotificationReceiver : BroadcastReceiver() {
             }
 
         }
-
-
     }
 
 
@@ -100,6 +99,4 @@ class AlarmNotificationReceiver : BroadcastReceiver() {
             notificationManager!!.createNotificationChannel(channel)
         }
     }
-
-
 }
