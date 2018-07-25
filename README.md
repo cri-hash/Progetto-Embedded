@@ -13,4 +13,4 @@ TakeThePill è un’App per Android che permette di ternere traccia delle terapi
 * **Federico Mantovan** - [federicoMantovan](https://github.com/federicoMantovan)
 
 ## Example
-![Picture](https://www.stefanoivancich.com/wp-content/uploads/2018/07/AppTakeThePill01.png)
+![Picture](https://www.stefanoivancich.com/wp-content/uploads/2018/07/AppTakeThePill01.png | width=300)
